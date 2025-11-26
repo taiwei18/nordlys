@@ -2,14 +2,14 @@ import { defineThemeConfig } from './types'
 
 export default defineThemeConfig({
   site: 'https://nordlys.fjelloverflow.dev',
-  title: 'Nordlys',
-  description: 'A minimal Astro blog theme',
+  title: 'TaiWei',
+  description: 'TaiWei',
   author: 'FjellOverflow',
   navbarItems: [
-    { label: 'Blog', href: '/posts/' },
-    { label: 'Projects', href: '/projects/' },
-    { label: 'Tags', href: '/tags/' },
-    { label: 'About', href: '/about/' },
+    { label: '博客', href: '/posts/' },
+    { label: '项目', href: '/projects/' },
+    { label: '标签', href: '/tags/' },
+    { label: '关于', href: '/about/' },
     {
       label: 'Other pages',
       children: [

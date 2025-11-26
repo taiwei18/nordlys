@@ -31,17 +31,19 @@ const frontmatter: PageLayoutProps['frontmatter'] = {
 ---
 
 <PageLayout {frontmatter}>
-  <div slot="top" class="mt-4">
+  <div slot="top" class="mt-4 animate-fade-in-up">
     <a href="/posts/" class="clickable flex w-fit items-center gap-1">
       <span class="iconify tabler--arrow-left text-xl"></span>
       Back to all posts
     </a>
   </div>
 
-  <h1 class="mt-2 mb-2 sm:my-4">{frontmatter.title}</h1>
-  <TagsBar tags={resolveTags(post.data.tags)} />
+  <h1 class="mt-2 mb-2 sm:my-4 animate-fade-in-up animation-delay-100">{frontmatter.title}</h1>
+  <div class="animate-fade-in-up animation-delay-150">
+    <TagsBar tags={resolveTags(post.data.tags)} />
+  </div>
 
-  <div class="mt-4">
+  <div class="mt-4 animate-fade-in-up animation-delay-200">
     <span class="opacity-75"
       >Published on <time datetime={post.data.publishedDate.toISOString()}
         >{toDateString(post.data.publishedDate)}</time
@@ -69,10 +71,47 @@ const frontmatter: PageLayoutProps['frontmatter'] = {
     )
   }
 
-  <article data-pagefind-body>
+  <article data-pagefind-body class="animate-fade-in-up animation-delay-300">
     <Content />
   </article>
 
   <AdjacentPostsBar {post} slot="bottom" />
   <HeadingAnchorsPlugin />
+
+  <style>
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fade-in-up {
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    .animation-delay-100 {
+      opacity: 0;
+      animation-delay: 0.1s;
+    }
+
+    .animation-delay-150 {
+      opacity: 0;
+      animation-delay: 0.15s;
+    }
+
+    .animation-delay-200 {
+      opacity: 0;
+      animation-delay: 0.2s;
+    }
+
+    .animation-delay-300 {
+      opacity: 0;
+      animation-delay: 0.3s;
+    }
+  </style>
 </PageLayout>
