@@ -1,22 +1,22 @@
 ---
-import Hero, { type Props as HeroProps } from '@/components/Hero.astro'
-import FooterItem from '@/components/layout/FooterItem.astro'
-import Separator from '@/components/layout/Separator.astro'
-import ModeToggle from '@/components/mode/ModeToggle.astro'
+import Hero, { type Props as HeroProps } from "@/components/Hero.astro";
+import FooterItem from "@/components/layout/FooterItem.astro";
+import Separator from "@/components/layout/Separator.astro";
+import ModeToggle from "@/components/mode/ModeToggle.astro";
 import BaseLayout, {
-  type Props as BaseLayoutProps
-} from '@/layouts/BaseLayout.astro'
-import config from '@/theme.config'
-import { getPosts } from '@/util/posts'
+  type Props as BaseLayoutProps,
+} from "@/layouts/BaseLayout.astro";
+import config from "@/theme.config";
+import { getPosts } from "@/util/posts";
 
 export type Props = BaseLayoutProps &
   HeroProps & {
-    frontmatter: { showLatestPost?: boolean }
-  }
+    frontmatter: { showLatestPost?: boolean };
+  };
 
-const { frontmatter } = Astro.props
+const { frontmatter } = Astro.props;
 
-const latestPost = (await getPosts())[0]
+const latestPost = (await getPosts())[0];
 ---
 
 <BaseLayout frontmatter={frontmatter}>
@@ -35,7 +35,7 @@ const latestPost = (await getPosts())[0]
             latestPost && frontmatter.showLatestPost && (
               <div class="mt-8">
                 <span class="text-2xl sm:text-3xl">
-                  Read my latest post{' '}
+                  Read my latest post{" "}
                   <a href={`/posts/${latestPost.id}/`}>
                     {latestPost.data.title}
                   </a>

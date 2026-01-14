@@ -1,6 +1,6 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
-@import './color-schemes.css' layer(base);
+@import "./color-schemes.css" layer(base);
 @reference './theme.css';
 
 @custom-variant dark (&:where([data-mode=dark], [data-mode=dark] *));
@@ -9,8 +9,8 @@
   :root {
     @apply bg-accent-bg selection:bg-accent/75 overflow-y-scroll scroll-smooth font-sans underline-offset-4 selection:text-white dark:selection:text-black;
 
-    img[data-img-embed=''],
-    img[data-img-embed='true'] {
+    img[data-img-embed=""],
+    img[data-img-embed="true"] {
       border-color: rgb(var(--accent));
       border-radius: var(--radius-sm);
       border-width: 1px;

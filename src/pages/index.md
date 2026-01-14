@@ -1,5 +1,5 @@
 ---
-layout: '@/layouts/LandingLayout.astro'
+layout: "@/layouts/LandingLayout.astro"
 title: Nordlys
 background: true
 logo: true

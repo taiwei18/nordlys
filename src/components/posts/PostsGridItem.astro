@@ -1,15 +1,15 @@
 ---
-import TagsBar from '@/components/TagsBar.astro'
-import { toDateString } from '@/util'
-import { resolveTags } from '@/util/tags'
-import { Image } from 'astro:assets'
-import { type CollectionEntry } from 'astro:content'
+import TagsBar from "@/components/TagsBar.astro";
+import { toDateString } from "@/util";
+import { resolveTags } from "@/util/tags";
+import { Image } from "astro:assets";
+import { type CollectionEntry } from "astro:content";
 
 export interface Props {
-  post: CollectionEntry<'posts'>
+  post: CollectionEntry<"posts">;
 }
 
-const { id, data } = Astro.props.post
+const { id, data } = Astro.props.post;
 ---
 
 <div class="relative flex h-full flex-col gap-2 md:gap-4 md:p-4">

@@ -1,25 +1,25 @@
 ---
-import logo from '@/assets/logo.svg'
-import Dropdown from '@/components/Dropdown.astro'
-import HeaderItem from '@/components/layout/HeaderItem.astro'
-import MobileNavToggle from '@/components/layout/MobileNavToggle.astro'
-import Separator from '@/components/layout/Separator.astro'
-import ModeToggle from '@/components/mode/ModeToggle.astro'
-import config from '@/theme.config'
+import logo from "@/assets/logo.svg";
+import Dropdown from "@/components/Dropdown.astro";
+import HeaderItem from "@/components/layout/HeaderItem.astro";
+import MobileNavToggle from "@/components/layout/MobileNavToggle.astro";
+import Separator from "@/components/layout/Separator.astro";
+import ModeToggle from "@/components/mode/ModeToggle.astro";
+import config from "@/theme.config";
 import type {
   HeaderItem as HeaderItemType,
-  NavItem as NavItemType
-} from '@/types'
-import { Image } from 'astro:assets'
+  NavItem as NavItemType,
+} from "@/types";
+import { Image } from "astro:assets";
 
 export interface Props {
-  activeHeaderLink?: string
+  activeHeaderLink?: string;
 }
 
-const { activeHeaderLink } = Astro.props
+const { activeHeaderLink } = Astro.props;
 
 export const isNavItem = (item: HeaderItemType): item is NavItemType =>
-  Object.hasOwn(item, 'href')
+  Object.hasOwn(item, "href");
 ---
 
 <header>

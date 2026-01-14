@@ -1,54 +1,55 @@
-import { defineThemeConfig } from './types'
+import { defineThemeConfig } from "./types";
 
 export default defineThemeConfig({
-  site: 'https://nordlys.fjelloverflow.dev',
-  title: 'TaiWei',
-  description: 'TaiWei',
-  author: 'FjellOverflow',
+  site: "https://nordlys.fjelloverflow.dev",
+  title: "TaiWei",
+  description: "TaiWei",
+  author: "FjellOverflow",
   navbarItems: [
-    { label: '博客', href: '/posts/' },
-    { label: '项目', href: '/projects/' },
-    { label: '标签', href: '/tags/' },
-    { label: '关于', href: '/about/' },
+    { label: "博客", href: "/posts/" },
+    { label: "项目", href: "/projects/" },
+    { label: "标签", href: "/tags/" },
+    { label: "时间轴", href: "/timeline/" },
+    { label: "关于", href: "/about/" },
     {
-      label: 'Other pages',
+      label: "Other pages",
       children: [
-        { label: 'Landing page', href: '/' },
-        { label: '404 page', href: '/404' },
-        { label: 'Author: FjellOverflow', href: '/authors/FjellOverflow/' },
-        { label: 'Tag: documentation', href: '/tags/documentation/' }
-      ]
-    }
+        { label: "Landing page", href: "/" },
+        { label: "404 page", href: "/404" },
+        { label: "Author: FjellOverflow", href: "/authors/FjellOverflow/" },
+        { label: "Tag: documentation", href: "/tags/documentation/" },
+      ],
+    },
   ],
   footerItems: [
     {
-      icon: 'tabler--brand-github',
-      href: 'https://github.com/FjellOverflow/nordlys',
-      label: 'Github'
+      icon: "tabler--brand-github",
+      href: "https://github.com/FjellOverflow/nordlys",
+      label: "Github",
     },
     {
-      icon: 'tabler--rss',
-      href: '/feed.xml',
-      label: 'RSS feed'
-    }
+      icon: "tabler--rss",
+      href: "/feed.xml",
+      label: "RSS feed",
+    },
   ],
 
   // optional settings
-  locale: 'en',
-  mode: 'dark',
+  locale: "zh-CN",
+  mode: "dark",
   modeToggle: true,
-  colorScheme: 'scheme-mono',
+  colorScheme: "scheme-nord",
   openGraphImage: undefined,
   postsPerPage: 4,
-  postsView: 'list',
+  postsView: "list",
   projectsPerPage: 3,
-  projectsView: 'list',
+  projectsView: "list",
   scrollProgress: false,
   scrollToTop: true,
   tagIcons: {
-    tailwindcss: 'tabler--brand-tailwind',
-    astro: 'tabler--brand-astro',
-    documentation: 'tabler--book'
+    tailwindcss: "tabler--brand-tailwind",
+    astro: "tabler--brand-astro",
+    documentation: "tabler--book",
   },
-  expressiveCodeThemes: ['vitesse-light', 'vitesse-black']
-})
+  expressiveCodeThemes: ["vitesse-light", "vitesse-black"],
+});

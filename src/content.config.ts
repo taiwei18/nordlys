@@ -1,9 +1,9 @@
-import config from '@/theme.config'
-import { glob } from 'astro/loaders'
-import { defineCollection, z } from 'astro:content'
+import config from "@/theme.config";
+import { glob } from "astro/loaders";
+import { defineCollection, z } from "astro:content";
 
 const posts = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './content/posts' }),
+  loader: glob({ pattern: "**/[^_]*.{md,mdx}", base: "./content/posts" }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
@@ -15,14 +15,14 @@ const posts = defineCollection({
       openGraphImage: image().optional(),
       tags: z.array(z.string()).default([]),
       showToC: z.boolean().optional().default(true),
-      previewImage: image().optional()
-    })
-})
+      previewImage: image().optional(),
+    }),
+});
 
 const projects = defineCollection({
   loader: glob({
-    pattern: '**/[^_]*.{md,mdx}',
-    base: './content/projects'
+    pattern: "**/[^_]*.{md,mdx}",
+    base: "./content/projects",
   }),
   schema: ({ image }) =>
     z.object({
@@ -31,8 +31,8 @@ const projects = defineCollection({
       startDate: z.date().optional().nullable(),
       endDate: z.date().optional().nullable(),
       tags: z.array(z.string()).default([]),
-      previewImage: image().optional()
-    })
-})
+      previewImage: image().optional(),
+    }),
+});
 
-export const collections = { posts, projects }
+export const collections = { posts, projects };
