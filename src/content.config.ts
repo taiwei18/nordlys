@@ -9,7 +9,7 @@ const posts = defineCollection({
       title: z.string(),
       author: z.string().default(config.author),
       description: z.string(),
-      publishedDate: z.date(),
+      publishedDate: z.coerce.date(),
       draft: z.boolean().optional().default(false),
       canonicalURL: z.string().optional(),
       openGraphImage: image().optional(),
