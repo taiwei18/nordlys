@@ -1,10 +1,11 @@
 import { defineThemeConfig } from "./types";
 
 export default defineThemeConfig({
-  site: "https://nordlys.fjelloverflow.dev",
+  site: "https://www.taiwei.site",
   title: "TaiWei",
-  description: "TaiWei",
-  author: "FjellOverflow",
+  description:
+    "TaiWei 的前端与产品工程笔记，聚焦 Astro 建站、性能优化与工程实践。",
+  author: "TaiWei",
   navbarItems: [
     { label: "博客", href: "/posts/" },
     { label: "项目", href: "/projects/" },
@@ -12,12 +13,12 @@ export default defineThemeConfig({
     { label: "时间轴", href: "/timeline/" },
     { label: "关于", href: "/about/" },
     {
-      label: "Other pages",
+      label: "其它页面",
       children: [
-        { label: "Landing page", href: "/" },
-        { label: "404 page", href: "/404" },
-        { label: "Author: FjellOverflow", href: "/authors/FjellOverflow/" },
-        { label: "Tag: documentation", href: "/tags/documentation/" },
+        { label: "首页", href: "/" },
+        { label: "404 页面", href: "/404" },
+        { label: "作者：FjellOverflow", href: "/authors/FjellOverflow/" },
+        { label: "标签：documentation", href: "/tags/documentation/" },
       ],
     },
   ],

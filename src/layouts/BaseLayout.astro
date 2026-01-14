@@ -28,6 +28,11 @@ export interface Props {
     canonicalURL: string
     openGraphImage: string | ImageMetadata
     publishedDate: Date
+    tags: string[]
+    keywords: string[]
+    structuredData:
+      | Record<string, unknown>
+      | Array<Record<string, unknown>>
   }>
 }
 
@@ -49,6 +54,34 @@ if (String(title).toLowerCase() !== String(config.title).toLowerCase())
 
 const openGraphImageUrl = new URL(resolveImageUrl(openGraphImage), Astro.site)
   .href
+
+const frontmatterTags =
+  Array.isArray(Astro.props.frontmatter?.tags) ? Astro.props.frontmatter.tags : []
+const frontmatterKeywords = Array.isArray(Astro.props.frontmatter?.keywords)
+  ? Astro.props.frontmatter.keywords
+  : []
+const keywords = frontmatterKeywords.length ? frontmatterKeywords : frontmatterTags
+const keywordsContent = keywords.length ? keywords.join(', ') : undefined
+
+const structuredDataEntries = Array.isArray(
+  Astro.props.frontmatter?.structuredData
+)
+  ? Astro.props.frontmatter.structuredData
+  : Astro.props.frontmatter?.structuredData
+  ? [Astro.props.frontmatter.structuredData]
+  : []
+const siteStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: config.title,
+  url: config.site,
+  description: config.description,
+  inLanguage: config.locale
+}
+const structuredDataJson = JSON.stringify([
+  siteStructuredData,
+  ...structuredDataEntries
+])
 ---
 
 <!doctype html>
@@ -65,7 +98,10 @@ const openGraphImageUrl = new URL(resolveImageUrl(openGraphImage), Astro.site)
     <meta name="title" content={titleWithSuffix} />
     <meta name="description" content={description} />
     <meta name="author" content={author} />
+    {keywordsContent && <meta name="keywords" content={keywordsContent} />}
+    <meta name="robots" content="index,follow" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" hreflang={config.locale} href={canonicalURL} />
     <link
       rel="alternate"
       type="application/rss+xml"
@@ -77,6 +113,8 @@ const openGraphImageUrl = new URL(resolveImageUrl(openGraphImage), Astro.site)
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={openGraphImageUrl} />
+    <meta property="og:locale" content={config.locale} />
+    <meta property="og:site_name" content={config.title} />
 
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={canonicalURL} />
@@ -104,6 +142,7 @@ const openGraphImageUrl = new URL(resolveImageUrl(openGraphImage), Astro.site)
         />
       )
     }
+    <script type="application/ld+json" set:html={structuredDataJson} />
     <ModeManager />
     <ClientRouter />
     <link href="/zoom-vanilla.js/zoom.css" rel="stylesheet" />

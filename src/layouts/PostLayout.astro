@@ -6,9 +6,10 @@ import PageLayout, {
   type Props as PageLayoutProps
 } from '@/layouts/PageLayout.astro'
 import HeadingAnchorsPlugin from '@/plugins/HeadingAnchorsPlugin.astro'
-import { toDateString } from '@/util'
+import { resolveImageUrl, toDateString } from '@/util'
 import { resolveTags } from '@/util/tags'
 import { render, type CollectionEntry } from 'astro:content'
+import config from '@/theme.config'
 
 export interface Props {
   post: CollectionEntry<'posts'>
@@ -28,6 +29,33 @@ const frontmatter: PageLayoutProps['frontmatter'] = {
   activeHeaderLink: 'Blog',
   scrollProgress: true
 }
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href
+const openGraphImageUrl = new URL(
+  resolveImageUrl(frontmatter.openGraphImage || '/ogImage.png'),
+  Astro.site
+).href
+const articleStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: frontmatter.title,
+  description: frontmatter.description,
+  datePublished: post.data.publishedDate.toISOString(),
+  author: {
+    '@type': 'Person',
+    name: post.data.author
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: config.title
+  },
+  image: openGraphImageUrl,
+  mainEntityOfPage: canonicalURL,
+  inLanguage: config.locale
+}
+
+frontmatter.structuredData = articleStructuredData
+frontmatter.keywords = [frontmatter.title, ...post.data.tags]
 ---
 
 <PageLayout {frontmatter}>

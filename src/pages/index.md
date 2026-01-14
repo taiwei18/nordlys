@@ -1,11 +1,11 @@
 ---
 layout: "@/layouts/LandingLayout.astro"
-title: Nordlys
+title: TaiWei
 background: true
 logo: true
 ---
 
-Who is .\
-Ideal for a personal [blog](/posts/) and showcasing a [projects](/projects/) portfolio.\
-Fully customizable, dark mode & built-in color schemes.\
-Read more in the [about](/about/) section.
+欢迎来到 TaiWei。\
+这里专注于 [博客](/posts/) 知识沉淀与 [项目](/projects/) 作品展示。\
+覆盖 Astro 建站、性能优化与工程实践。\
+更多信息见 [关于](/about/) 页面。
