@@ -23,5 +23,30 @@
 }
 
 @utility clickable {
-  @apply hover:text-accent cursor-pointer opacity-75 transition duration-500 ease-in-out hover:opacity-100;
+  @apply hover:text-accent cursor-pointer opacity-75 transition-[color,opacity,transform] duration-300 ease-out hover:opacity-100 active:scale-[0.98];
+}
+
+@utility soft-input {
+  @apply transition-[border-color,box-shadow,background-color,color] duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-accent-bg;
+}
+
+@utility fade-in-up {
+  animation: fade-in-up 240ms ease-out;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in-up {
+    animation: none;
+  }
 }

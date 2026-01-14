@@ -16,7 +16,7 @@ const frontmatter: PageLayoutProps['frontmatter'] = {
     <input
       type="text"
       placeholder="Type to search"
-      class="border-accent w-full rounded-sm border p-4 sm:w-[50%]"
+      class="border-accent soft-input w-full rounded-sm border p-4 sm:w-[50%]"
     />
     <button id="search-clear" class="clickable invisible text-xl">Clear</button>
   </search-input>
@@ -62,6 +62,7 @@ const frontmatter: PageLayoutProps['frontmatter'] = {
         await Promise.all(
           results.slice(0, 15).map(async (r) => {
             const li = document.createElement('li')
+            li.classList.add('fade-in-up')
             li.innerHTML = await renderSearchResult(r as PagefindResult)
             resultsContainer.appendChild(li)
           })
@@ -69,6 +70,7 @@ const frontmatter: PageLayoutProps['frontmatter'] = {
 
         if (results.length > 5) {
           const remainingLi = document.createElement('li')
+          remainingLi.classList.add('fade-in-up')
           remainingLi.innerHTML = `... and ${results.length - 5} more`
           resultsContainer.appendChild(remainingLi)
         }
