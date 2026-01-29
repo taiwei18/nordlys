@@ -23,11 +23,11 @@ export default defineThemeConfig({
     },
   ],
   footerItems: [
-    {
-      icon: "tabler--brand-github",
-      href: "https://github.com/FjellOverflow/nordlys",
-      label: "Github",
-    },
+    // {
+    //   icon: "tabler--brand-github",
+    //   href: "https://github.com/FjellOverflow/nordlys",
+    //   label: "Github",
+    // },
     {
       icon: "tabler--rss",
       href: "/feed.xml",
