@@ -1,9 +1,3 @@
-<p align="center">
-  <a href="https://nordlys.fjelloverflow.dev">
-    <img alt="logo" src="./public/favicon.svg" height="64">
-  </a>
-</p>
-
 <h1 align="center">
   <a href="https://nordlys.fjelloverflow.dev">Nordlys</a>
 </h1>
@@ -12,7 +6,9 @@
   一个简约的Astro博客主题</p>
 
 <p align="center">
-  <img src="./public/preview.png" width="85%"/>
+  <a href="https://nordlys.fjelloverflow.dev">
+    <img src="./public/preview.png" width="85%"/>
+  </a>
 </p>
 
 <p align="center">
