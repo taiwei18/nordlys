@@ -22,6 +22,7 @@ tags:
 ## 2、进入 Sparkle 加入覆写
 
 ```js
+// [!code collapse]
 // 国内DNS服务器
 const domesticNameservers = [
   "https://223.5.5.5/dns-query", // 阿里DoH

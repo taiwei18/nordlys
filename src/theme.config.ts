@@ -39,7 +39,7 @@ export default defineThemeConfig({
   locale: "zh-CN",
   mode: "dark",
   modeToggle: true,
-  colorScheme: "scheme-nord",
+  colorScheme: "scheme-aurora",
   openGraphImage: undefined,
   postsPerPage: 4,
   postsView: "list",

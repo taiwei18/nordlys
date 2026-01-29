@@ -3,7 +3,7 @@
     --accent: 0, 0, 0;
     --accent-bg: 255, 255, 255;
 
-    &[data-mode='dark'] {
+    &[data-mode="dark"] {
       --accent: 255, 255, 255;
       --accent-bg: 0, 0, 0;
     }
@@ -13,17 +13,17 @@
     --accent: 94, 129, 172;
     --accent-bg: 242, 244, 248;
 
-    &[data-mode='dark'] {
+    &[data-mode="dark"] {
       --accent: 136, 192, 208;
       --accent-bg: 36, 41, 51;
     }
   }
 
   .scheme-aurora {
-    --accent: 0, 183, 86;
-    --accent-bg: 242, 244, 248;
+    --accent: 255, 215, 0;
+    --accent-bg: 240, 255, 240;
 
-    &[data-mode='dark'] {
+    &[data-mode="dark"] {
       --accent: 0, 253, 119;
       --accent-bg: 35, 39, 48;
     }
