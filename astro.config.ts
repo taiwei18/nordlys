@@ -10,6 +10,8 @@ import sectionizePlugin from "remark-sectionize";
 import readingTimePlugin from "./src/plugins/readingTimePlugin";
 import config from "./src/theme.config";
 
+import react from "@astrojs/react";
+
 export default defineConfig({
   site: config.site,
   integrations: [
@@ -25,6 +27,7 @@ export default defineConfig({
     }),
     mdx(),
     sitemap(),
+    react(),
   ],
 
   markdown: {
