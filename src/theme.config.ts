@@ -17,8 +17,6 @@ export default defineThemeConfig({
       children: [
         { label: "首页", href: "/" },
         { label: "404 页面", href: "/404" },
-        { label: "作者：FjellOverflow", href: "/authors/FjellOverflow/" },
-        { label: "标签：documentation", href: "/tags/documentation/" },
       ],
     },
   ],

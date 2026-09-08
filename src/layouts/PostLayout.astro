@@ -55,7 +55,7 @@ const articleStructuredData = {
 }
 
 frontmatter.structuredData = articleStructuredData
-frontmatter.keywords = [frontmatter.title, ...post.data.tags]
+frontmatter.keywords = [post.data.title, ...post.data.tags]
 ---
 
 <PageLayout {frontmatter}>
@@ -99,7 +99,11 @@ frontmatter.keywords = [frontmatter.title, ...post.data.tags]
     )
   }
 
-  <article data-pagefind-body class="animate-fade-in-up animation-delay-300">
+  <article
+    data-pagefind-body
+    data-pagefind-filter="type:post"
+    class="animate-fade-in-up animation-delay-300"
+  >
     <Content />
   </article>
 

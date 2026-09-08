@@ -1,13 +1,12 @@
 <script is:inline>
-  async function loadPagefind() {
+  window.pagefindPromise ??= (async () => {
+    if (window.pagefind) return window.pagefind
+
     try {
       window.pagefind = await import('/pagefind/pagefind.js')
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (_) {
-      console.log('Pagefind not available')
-      window.pagefind = { search: () => ({ results: [] }) }
+      return window.pagefind
+    } catch {
+      return null
     }
-  }
-
-  if (!window.pagefind) loadPagefind()
+  })()
 </script>
