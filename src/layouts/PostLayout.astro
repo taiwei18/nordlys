@@ -59,19 +59,21 @@ frontmatter.keywords = [post.data.title, ...post.data.tags]
 ---
 
 <PageLayout {frontmatter}>
-  <div slot="top" class="mt-4 animate-fade-in-up">
+  <div slot="top" class="animate-fade-in-up mt-4">
     <a href="/posts/" class="clickable flex w-fit items-center gap-1">
       <span class="iconify tabler--arrow-left text-xl"></span>
       Back to all posts
     </a>
   </div>
 
-  <h1 class="mt-2 mb-2 sm:my-4 animate-fade-in-up animation-delay-100">{frontmatter.title}</h1>
+  <h1 class="animate-fade-in-up animation-delay-100 mt-2 mb-2 sm:my-4">
+    {frontmatter.title}
+  </h1>
   <div class="animate-fade-in-up animation-delay-150">
     <TagsBar tags={resolveTags(post.data.tags)} />
   </div>
 
-  <div class="mt-4 animate-fade-in-up animation-delay-200">
+  <div class="animate-fade-in-up animation-delay-200 mt-4">
     <span class="opacity-75"
       >Published on <time datetime={post.data.publishedDate.toISOString()}
         >{toDateString(post.data.publishedDate)}</time

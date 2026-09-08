@@ -51,8 +51,6 @@ export interface ThemeConfig {
   openGraphImage: ImageMetadata | string | undefined;
   postsPerPage: number;
   postsView: ViewOption;
-  projectsPerPage: number;
-  projectsView: ViewOption;
   scrollProgress: boolean;
   scrollToTop: boolean;
   tagIcons: Record<string, Icon>;
@@ -67,8 +65,6 @@ const defaults = {
   openGraphImage: undefined,
   postsPerPage: 4,
   postsView: "list" as ViewOption,
-  projectsPerPage: 3,
-  projectsView: "list" as ViewOption,
   scrollProgress: false,
   scrollToTop: true,
   tagIcons: {},

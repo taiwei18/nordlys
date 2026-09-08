@@ -1,39 +1,39 @@
 ---
-import Hero, { type Props as HeroProps } from "@/components/Hero.astro";
-import FooterItem from "@/components/layout/FooterItem.astro";
-import Separator from "@/components/layout/Separator.astro";
-import ModeToggle from "@/components/mode/ModeToggle.astro";
+import Hero, { type Props as HeroProps } from '@/components/Hero.astro'
+import FooterItem from '@/components/layout/FooterItem.astro'
+import Separator from '@/components/layout/Separator.astro'
+import ModeToggle from '@/components/mode/ModeToggle.astro'
 import BaseLayout, {
-  type Props as BaseLayoutProps,
-} from "@/layouts/BaseLayout.astro";
-import config from "@/theme.config";
-import { getPosts } from "@/util/posts";
+  type Props as BaseLayoutProps
+} from '@/layouts/BaseLayout.astro'
+import config from '@/theme.config'
+import { getPosts } from '@/util/posts'
 
 export type Props = BaseLayoutProps &
   HeroProps & {
-    frontmatter: { showLatestPost?: boolean };
-  };
+    frontmatter: { showLatestPost?: boolean }
+  }
 
-const { frontmatter } = Astro.props;
+const { frontmatter } = Astro.props
 
-const latestPost = (await getPosts())[0];
+const latestPost = (await getPosts())[0]
 ---
 
 <BaseLayout frontmatter={frontmatter}>
-  <div class="flex min-h-svh w-full flex-col justify-between relative">
-    <div class="mt-16 mx-auto max-w-[90%] md:max-w-3xl px-4 sm:mt-36 sm:px-12">
+  <div class="relative flex min-h-svh w-full flex-col justify-between">
+    <div class="mx-auto mt-16 max-w-[90%] px-4 sm:mt-36 sm:px-12 md:max-w-3xl">
       <main id="main">
         {frontmatter.title && <Hero {frontmatter}>{frontmatter.title}</Hero>}
         <div
           id="animated-links"
-          class="text-3xl font-semibold tracking-tight text-gray-700/50 sm:text-4xl sm:leading-[46px] dark:text-gray-300/50 relative z-99"
+          class="relative z-99 text-3xl font-semibold tracking-tight text-gray-700/50 sm:text-4xl sm:leading-[46px] dark:text-gray-300/50"
         >
           <slot />
           {
             latestPost && frontmatter.showLatestPost && (
               <div class="mt-8">
                 <span class="text-2xl sm:text-3xl">
-                  Read my latest post{" "}
+                  Read my latest post{' '}
                   <a href={`/posts/${latestPost.id}/`}>
                     {latestPost.data.title}
                   </a>
