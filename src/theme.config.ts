@@ -44,6 +44,9 @@ export default defineThemeConfig({
   tagIcons: {
     tailwindcss: 'tabler--brand-tailwind',
     astro: 'tabler--brand-astro',
+    pagefind: 'tabler--file-search',
+    webshare: 'tabler--world-share',
+    小程序开发: 'tabler--brand-miniprogram',
     documentation: 'tabler--book'
   },
   expressiveCodeThemes: ['vitesse-light', 'vitesse-black']
