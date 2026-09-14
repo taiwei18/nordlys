@@ -23,7 +23,7 @@
 }
 
 @utility clickable {
-  @apply hover:text-accent cursor-pointer opacity-75 transition-[color,opacity,transform] duration-300 ease-out hover:opacity-100 active:scale-[0.98];
+  @apply hover:text-accent cursor-pointer opacity-75 transition-all duration-250 ease-out hover:opacity-100 active:scale-[0.95];
 }
 
 @utility soft-input {
@@ -31,13 +31,13 @@
 }
 
 @utility fade-in-up {
-  animation: fade-in-up 240ms ease-out;
+  animation: fade-in-up 240ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -45,8 +45,38 @@
   }
 }
 
+/* Expressive Code 复制按钮微交互 */
+.expressive-code .copy button {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, opacity 0.2s ease !important;
+}
+.expressive-code .copy button:hover {
+  transform: scale(1.1) !important;
+}
+.expressive-code .copy button:active {
+  transform: scale(0.9) !important;
+}
+
+/* 锚点复制微提示 Toast */
+.anchor-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(16px) scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 10000;
+}
+.anchor-toast.show {
+  transform: translateX(-50%) translateY(0) scale(1);
+  opacity: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .fade-in-up {
-    animation: none;
+  .fade-in-up,
+  .expressive-code .copy button {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
   }
 }

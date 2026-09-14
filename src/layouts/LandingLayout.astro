@@ -46,9 +46,11 @@ const latestPost = (await getPosts())[0]
       <footer class="mt-8">
         <Separator />
         <div
-          class="flex justify-between gap-2 py-4 text-3xl sm:py-8 sm:text-5xl"
+          class="flex items-center justify-between gap-2 py-4 sm:py-8"
         >
-          {config.footerItems.map((item) => <FooterItem {item} />)}
+          <div class="flex items-center gap-2">
+            {config.footerItems.map((item) => <FooterItem {item} />)}
+          </div>
 
           <div class="grow"></div>
 
@@ -68,16 +70,21 @@ const latestPost = (await getPosts())[0]
       color: rgb(var(--accent));
 
       background-image: linear-gradient(
-        transparent calc(85% - 5px),
-        rgba(var(--accent), 0.35) 5px
+        transparent calc(85% - 4px),
+        rgba(var(--accent), 0.35) 4px
       );
       background-size: 0;
       background-repeat: no-repeat;
-      display: inline;
-      transition: 0.5s cubic-bezier(0.65, -0.05, 0.25, 1);
+      display: inline-block;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 
       &:hover {
         background-size: 100%;
+        transform: translateY(-2px);
+      }
+
+      &:active {
+        transform: scale(0.96);
       }
     }
   }

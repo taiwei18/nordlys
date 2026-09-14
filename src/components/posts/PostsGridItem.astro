@@ -12,10 +12,10 @@ export interface Props {
 const { id, data } = Astro.props.post;
 ---
 
-<div class="relative flex h-full flex-col gap-2 md:gap-4 md:p-4">
+<div class="group relative flex h-full flex-col gap-2 md:gap-4 md:p-4">
   <div class="hidden justify-end md:flex">
     <time
-      class="mt-4 text-sm opacity-75 sm:mt-0"
+      class="mt-2 text-sm opacity-75 transition-opacity duration-200 group-hover:opacity-100 sm:mt-0"
       datetime={data.publishedDate.toISOString()}
     >
       {toDateString(data.publishedDate)}
@@ -25,23 +25,32 @@ const { id, data } = Astro.props.post;
   <div class="flex justify-start md:justify-center">
     {
       data.previewImage && (
-        <Image
-          src={data.previewImage}
-          height={208}
-          alt={`${data.title} preview`}
-          class="mt-0 mb-0 max-h-52 w-fit rounded-sm object-contain md:h-32"
-        />
+        <div class="overflow-hidden rounded-md">
+          <Image
+            src={data.previewImage}
+            height={208}
+            alt={`${data.title} preview`}
+            class="mt-0 mb-0 max-h-52 w-fit object-contain transition-transform duration-500 ease-out group-hover:scale-105 md:h-32"
+          />
+        </div>
       )
     }
   </div>
 
-  <a class="text-xl font-normal" href={`/posts/${id}/`} data-astro-prefetch>
+  <a
+    class="group/title inline-flex items-center gap-1.5 text-xl font-medium transition-colors duration-200 group-hover:text-accent"
+    href={`/posts/${id}/`}
+    data-astro-prefetch
+  >
     <span>{data.title}</span>
+    <span
+      class="iconify tabler--arrow-right text-accent text-lg opacity-0 -translate-x-2 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0"
+    />
   </a>
 
   <div class="flex justify-start md:hidden">
     <time
-      class="mt-4 text-sm opacity-75 sm:mt-0"
+      class="mt-2 text-sm opacity-75 transition-opacity duration-200 group-hover:opacity-100 sm:mt-0"
       datetime={data.publishedDate.toISOString()}
     >
       {toDateString(data.publishedDate)}
@@ -52,5 +61,7 @@ const { id, data } = Astro.props.post;
     <TagsBar tags={resolveTags(data.tags)} />
   </div>
 
-  <div class="opacity-75">{data.description}</div>
+  <div class="opacity-75 transition-opacity duration-200 group-hover:opacity-90">
+    {data.description}
+  </div>
 </div>

@@ -29,19 +29,30 @@ export const isNavItem = (item: HeaderItemType): item is NavItemType =>
   <div class="flex justify-between py-4 sm:py-8">
     <a
       href="/"
-      class="text-accent flex gap-2 text-2xl font-semibold"
+      class="text-accent group flex items-center gap-2 text-2xl font-semibold transition-transform duration-300 active:scale-95"
       transition:name="branding"
     >
-      <Image
-        alt="Nordlys logo, simplified northern lights aurora visualization"
-        src={logo}
-        height={24}
-        loading="eager"
-      />
-      {config.title}
+      <div class="relative flex items-center justify-center">
+        <span
+          class="absolute inset-0 -z-1 rounded-full bg-accent/20 blur-md opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        ></span>
+        <Image
+          alt="Nordlys logo, simplified northern lights aurora visualization"
+          src={logo}
+          height={24}
+          loading="eager"
+          class="transition-transform duration-500 ease-out group-hover:scale-110 group-hover:rotate-6"
+        />
+      </div>
+      <span class="relative">
+        {config.title}
+        <span
+          class="absolute -bottom-0.5 left-0 h-[2px] w-0 rounded-full bg-accent transition-all duration-300 ease-out group-hover:w-full"
+        ></span>
+      </span>
     </a>
     <nav class="hidden flex-col justify-end sm:flex">
-      <ul class="flex gap-6">
+      <ul class="flex items-center gap-6">
         {
           config.navbarItems.map((item) => (
             <li class="flex flex-col justify-center">
@@ -59,20 +70,32 @@ export const isNavItem = (item: HeaderItemType): item is NavItemType =>
             </li>
           ))
         }
-        <li class="text-2xl">
-          <a href="/search/" class="flex items-center" aria-label="Search">
-            <span class="clickable iconify tabler--search"></span>
+        <li class="flex items-center text-2xl">
+          <a
+            href="/search/"
+            class="group flex items-center justify-center rounded-full p-2 text-current/80 transition-all duration-200 hover:bg-accent/10 hover:text-accent active:scale-90"
+            aria-label="Search"
+          >
+            <span
+              class="iconify tabler--search text-xl transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
+            ></span>
           </a>
         </li>
-        <li class="text-2xl">
+        <li class="flex items-center text-2xl">
           {config.modeToggle && <ModeToggle />}
         </li>
       </ul>
     </nav>
-    <div class="flex items-center justify-center gap-4 text-2xl sm:hidden">
+    <div class="flex items-center justify-center gap-3 text-2xl sm:hidden">
       {config.modeToggle && <ModeToggle />}
-      <a href="/search/" aria-label="Search">
-        <span class="clickable iconify tabler--search text-xl"></span>
+      <a
+        href="/search/"
+        class="group flex items-center justify-center rounded-full p-1.5 text-current/80 transition-all duration-200 hover:bg-accent/10 hover:text-accent active:scale-90"
+        aria-label="Search"
+      >
+        <span
+          class="iconify tabler--search text-xl transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
+        ></span>
       </a>
       <MobileNavToggle />
     </div>

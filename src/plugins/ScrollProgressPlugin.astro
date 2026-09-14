@@ -1,30 +1,46 @@
-<scroll-progress-bar class="fixed top-0 w-full">
-  <div class="bg-accent h-1 w-0"></div>
+<scroll-progress-bar class="fixed top-0 left-0 right-0 z-50 h-[3px] pointer-events-none">
+  <div
+    class="relative h-full w-0 bg-linear-to-r from-accent/50 via-accent to-accent shadow-[0_0_8px_rgba(var(--accent),0.7)] transition-[width] duration-100 ease-out"
+  >
+    <span
+      class="bg-accent absolute top-1/2 right-0 h-1.5 w-1.5 -translate-y-1/2 rounded-full shadow-[0_0_8px_2px_rgba(var(--accent),0.9)]"
+    ></span>
+  </div>
 </scroll-progress-bar>
 
 <script>
-  class ScrollProgressbar extends HTMLElement {
-    connectedCallback() {
-      const bar = this.children[0] as HTMLElement
+  function setupScrollProgress() {
+    const progressBar = document.querySelector('scroll-progress-bar')
+    if (!progressBar) return
+    const bar = progressBar.firstElementChild as HTMLElement
+    if (!bar) return
 
-      function calculateScrollPercentage() {
-        const scrollTop =
-          document.body.scrollTop || document.documentElement.scrollTop
+    let ticking = false
 
-        const totalHeight =
-          document.documentElement.scrollHeight -
-          document.documentElement.clientHeight
-        return (scrollTop / totalHeight) * 100
-      }
+    function updateProgress() {
+      const scrollTop =
+        document.body.scrollTop || document.documentElement.scrollTop
+      const totalHeight =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight
 
-      document.addEventListener('scroll', () => {
-        const scrollPercentage = calculateScrollPercentage()
-
-        bar.style.width = `${scrollPercentage}%`
-      })
+      const scrollPercentage =
+        totalHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / totalHeight) * 100)) : 0
+      bar.style.width = `${scrollPercentage}%`
+      ticking = false
     }
+
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateProgress)
+        ticking = true
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    updateProgress()
   }
 
-  if (!customElements.get('scroll-progress-bar'))
-    customElements.define('scroll-progress-bar', ScrollProgressbar)
+  document.addEventListener('astro:page-load', setupScrollProgress)
+  setupScrollProgress()
 </script>

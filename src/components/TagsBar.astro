@@ -8,16 +8,21 @@ export interface Props {
 const { tags } = Astro.props
 ---
 
-<div class="flex flex-wrap gap-x-6 gap-y-3 text-base">
+<div class="flex flex-wrap gap-x-5 gap-y-2 text-sm">
   {
-    tags.map(({ tag, icon }) => (
-      <a
-        class="clickable inline-flex items-center gap-1.5 no-underline"
-        href={`/tags/${tag}/`}
-      >
-        <span class={`iconify shrink-0 text-xl leading-none ${icon}`} />
-        <span class="leading-none font-normal">{tag}</span>
-      </a>
-    ))
+    tags.map(({ tag, icon }) => {
+      const isHash = icon === 'tabler--hash'
+      return (
+        <a
+          class="group inline-flex items-center gap-1.5 no-underline opacity-75 transition-all duration-200 hover:opacity-100 hover:text-accent active:scale-95"
+          href={`/tags/${tag}/`}
+        >
+          <span
+            class={`iconify shrink-0 text-base leading-none transition-transform duration-200 group-hover:scale-110 group-hover:rotate-6 ${isHash ? 'text-accent/80' : ''} ${icon}`}
+          />
+          <span class="leading-none font-normal">{tag}</span>
+        </a>
+      )
+    })
   }
 </div>

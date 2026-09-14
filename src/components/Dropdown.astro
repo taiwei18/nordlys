@@ -31,18 +31,32 @@ const menuId = generateItemId(`${label}-menu`)
     aria-controls={menuId}
     aria-expanded="false"
     class:list={[
-      'flex cursor-pointer items-center gap-1 whitespace-nowrap',
-      { 'text-accent': isActive },
-      { clickable: !isActive }
+      'group relative flex cursor-pointer items-center gap-1.5 whitespace-nowrap py-1 transition-colors duration-200 active:scale-95',
+      { 'text-accent font-medium': isActive },
+      {
+        'text-current/80 hover:text-accent opacity-85 hover:opacity-100':
+          !isActive
+      }
     ]}
   >
-    {icon && <span class={`iconify text-xl ${icon}`} />}
-    <span class:list={[{ underline: isActive }]}>
+    {
+      icon && (
+        <span
+          class={`iconify text-xl transition-transform duration-300 group-hover:-translate-y-0.5 ${icon}`}
+        />
+      )
+    }
+    <span class="relative">
       {label}
+      <span
+        class={`absolute -bottom-1 left-0 h-[2px] rounded-full bg-accent transition-all duration-300 ease-out ${
+          isActive ? 'w-full' : 'w-0 group-hover:w-full'
+        }`}
+      ></span>
     </span>
     <span
       aria-hidden="true"
-      class="iconify tabler--chevron-down text-xl transition-transform duration-500"
+      class="iconify tabler--chevron-down text-xl transition-transform duration-300 ease-out group-hover:translate-y-0.5"
     ></span>
   </button>
 
@@ -50,18 +64,24 @@ const menuId = generateItemId(`${label}-menu`)
     id={menuId}
     role="menu"
     aria-labelledby={buttonId}
-    class="border-accent/25 bg-accent-bg absolute right-0 z-10 mt-4 hidden origin-top-right flex-col gap-2 rounded-sm border p-4 shadow-sm shadow-black"
+    class="border-accent/20 bg-accent-bg/95 backdrop-blur-md absolute right-0 z-20 mt-3 hidden min-w-[130px] origin-top-right flex-col gap-1 rounded-lg border p-1.5 shadow-lg shadow-black/10 dark:shadow-black/30"
   >
     {
       children.map((item) => (
-        <li role="none">
-          <HeaderItem
-            role="menuitem"
-            {item}
-            isActive={
-              activeHeaderLink === item.label || activeHeaderLink === item.href
-            }
-          />
+        <li
+          role="none"
+          class="rounded-md transition-colors duration-150 hover:bg-accent/10"
+        >
+          <div class="px-2.5 py-1">
+            <HeaderItem
+              role="menuitem"
+              {item}
+              isActive={
+                activeHeaderLink === item.label ||
+                activeHeaderLink === item.href
+              }
+            />
+          </div>
         </li>
       ))
     }

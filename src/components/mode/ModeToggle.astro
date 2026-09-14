@@ -1,8 +1,13 @@
-<dark-light-toggle>
-  <button title="Toggle dark & light mode" class="flex items-center">
+<dark-light-toggle class="flex items-center">
+  <button
+    title="Toggle dark & light mode"
+    class="group flex items-center justify-center rounded-full p-2 text-current/80 transition-all duration-200 hover:bg-accent/10 hover:text-accent active:scale-85"
+    aria-label="Toggle dark & light mode"
+  >
     <span
       aria-hidden="true"
-      class="clickable iconify tabler--moon dark:tabler--sun"></span>
+      class="iconify tabler--moon dark:tabler--sun text-2xl transition-transform duration-500 ease-out group-hover:rotate-45 group-hover:scale-110"
+    ></span>
   </button>
 </dark-light-toggle>
 

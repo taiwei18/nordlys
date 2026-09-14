@@ -12,11 +12,14 @@ const {
 ---
 
 <a
-  class="flex flex-col justify-center"
+  class="group flex items-center justify-center rounded-full p-2 text-current/80 transition-all duration-200 hover:bg-accent/10 hover:text-accent active:scale-85"
   href={href}
   target={isAbsolute(href) ? '_blank' : '_self'}
   aria-label={label}
   rel="noopener noreferrer"
 >
-  <span title={label} class={`iconify clickable ${icon}`}></span>
+  <span
+    title={label}
+    class={`iconify text-2xl transition-transform duration-300 ease-out group-hover:scale-110 ${icon}`}
+  ></span>
 </a>

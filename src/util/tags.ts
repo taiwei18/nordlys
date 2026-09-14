@@ -6,12 +6,13 @@ export const sortTags = (t1: ResolvedTag, t2: ResolvedTag) =>
   t1.tag.localeCompare(t2.tag);
 
 export const resolveTags = (rawTags: string[]): ResolvedTag[] => {
+  const defaultIcon = config.defaultTagIcon || "tabler--hash";
   const resolvedTags = [...new Set(rawTags)].map((t) => {
     const tag = t.toLowerCase();
 
     return {
       tag,
-      icon: config.tagIcons[tag] || "tabler--tag",
+      icon: config.tagIcons[tag] || defaultIcon,
     };
   });
 

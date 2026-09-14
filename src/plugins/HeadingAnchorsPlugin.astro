@@ -2,18 +2,53 @@
 
 ---
 
+<div id="heading-toast" class="anchor-toast rounded-full border border-accent/30 bg-accent-bg/95 px-4 py-1.5 text-xs font-medium text-accent backdrop-blur-md shadow-lg shadow-black/10">
+  已复制章节链接
+</div>
+
 <script is:inline data-astro-rerun>
   function setupHeadingAnchors() {
-    const headings = Array.from(document.querySelectorAll('h2, h3, h4, h5, h6'))
+    const headings = Array.from(document.querySelectorAll('article h2, article h3, article h4, article h5, article h6'))
+    const toast = document.getElementById('heading-toast')
+    let toastTimeout = null
+
+    function showToast() {
+      if (!toast) return
+      if (toastTimeout) clearTimeout(toastTimeout)
+      toast.classList.add('show')
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show')
+      }, 1600)
+    }
+
     for (const heading of headings) {
-      if (heading.classList.contains('no-anchor')) continue
+      if (heading.classList.contains('no-anchor') || heading.querySelector('.heading-link')) continue
       heading.classList.add('group')
       const link = document.createElement('a')
       link.innerText = '#'
       link.className =
-        'heading-link hidden group-hover:inline-block ml-3 no-underline'
+        'heading-link ml-2 inline-block text-accent/60 opacity-0 transition-all duration-200 ease-out hover:text-accent hover:scale-110 group-hover:opacity-100 no-underline cursor-pointer select-none'
       link.href = '#' + heading.id
-      link.ariaHidden = 'true'
+      link.ariaLabel = `复制 ${heading.textContent} 锚点链接`
+      link.title = '复制章节链接'
+
+      link.addEventListener('click', async (e) => {
+        e.preventDefault()
+        const url = `${window.location.origin}${window.location.pathname}#${heading.id}`
+        try {
+          await navigator.clipboard.writeText(url)
+          history.pushState(null, '', '#' + heading.id)
+          link.innerText = '✓'
+          link.classList.add('text-accent')
+          showToast()
+          setTimeout(() => {
+            link.innerText = '#'
+          }, 1500)
+        } catch (_) {
+          window.location.hash = heading.id
+        }
+      })
+
       heading.appendChild(link)
     }
   }

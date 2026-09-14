@@ -26,23 +26,33 @@ const posts = await getPosts(tag)
 
 
 const frontmatter: PageLayoutProps['frontmatter'] = {
-  title: `Tag: ${tag}`,
-  activeHeaderLink: 'Tags'
+  title: `标签: ${tag}`,
+  activeHeaderLink: '标签'
 }
 ---
 
 <PageLayout {frontmatter}>
   <div slot="top" class="mt-4">
-    <a href="/tags/" class="clickable flex w-fit items-center gap-1">
-      <span class="iconify tabler--arrow-left text-xl"></span>
-      Back to all tags
+    <a
+      href="/tags/"
+      class="group inline-flex w-fit items-center gap-1.5 text-current/80 transition-colors duration-200 hover:text-accent active:scale-95"
+    >
+      <span
+        class="iconify tabler--arrow-left text-xl transition-transform duration-200 group-hover:-translate-x-1"
+      ></span>
+      返回全部标签
     </a>
   </div>
 
-  <h1>
-    <span class={`iconify align-middle text-5xl sm:text-6xl ${icon}`}></span>
-    <span>{tag}</span>
-  </h1>
-  {!!posts.length && <h2>Posts</h2>}
-  <PostsList {posts} />
+  <div class="my-6 flex items-center gap-3 border-b border-current/10 pb-6">
+    <span class={`iconify text-3xl text-accent shrink-0 ${icon}`}></span>
+    <div class="flex flex-col">
+      <h1 class="my-0 text-3xl font-bold tracking-tight sm:text-4xl">{tag}</h1>
+      <p class="mt-1 text-sm opacity-60">共收录 {posts.length} 篇相关文章</p>
+    </div>
+  </div>
+
+  <div class="not-prose">
+    <PostsList {posts} />
+  </div>
 </PageLayout>

@@ -60,8 +60,13 @@ frontmatter.keywords = [post.data.title, ...post.data.tags]
 
 <PageLayout {frontmatter}>
   <div slot="top" class="animate-fade-in-up mt-4">
-    <a href="/posts/" class="clickable flex w-fit items-center gap-1">
-      <span class="iconify tabler--arrow-left text-xl"></span>
+    <a
+      href="/posts/"
+      class="group inline-flex w-fit items-center gap-1.5 text-current/80 transition-colors duration-200 hover:text-accent active:scale-95"
+    >
+      <span
+        class="iconify tabler--arrow-left text-xl transition-transform duration-200 group-hover:-translate-x-1"
+      ></span>
       Back to all posts
     </a>
   </div>

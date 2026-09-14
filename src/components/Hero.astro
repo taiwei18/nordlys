@@ -26,18 +26,24 @@ const { gradient, background, logo: showLogo } = Astro.props.frontmatter;
       },
     ]}
   >
-    <div class="flex items-center gap-4 sm:gap-8" transition:name="branding">
+    <div
+      class="group/hero relative flex items-center gap-4 sm:gap-8"
+      transition:name="branding"
+    >
       {
         showLogo && (
-          <Image
-            loading="eager"
-            alt="Nordlys logo, simplified northern lights aurora visualization"
-            src={logo}
-            class="h-12 w-fit object-scale-down sm:h-24"
-          />
+          <div class="relative flex items-center justify-center">
+            <span class="bg-accent/25 absolute inset-0 -z-1 rounded-full blur-xl opacity-0 transition-opacity duration-500 group-hover/hero:opacity-100" />
+            <Image
+              loading="eager"
+              alt="Nordlys logo, simplified northern lights aurora visualization"
+              src={logo}
+              class="h-12 w-fit object-scale-down transition-transform duration-500 ease-out sm:h-24 group-hover/hero:scale-105 group-hover/hero:rotate-3"
+            />
+          </div>
         )
       }
-      <h1>
+      <h1 class="transition-transform duration-300 ease-out group-hover/hero:translate-x-1">
         <slot />
       </h1>
     </div>

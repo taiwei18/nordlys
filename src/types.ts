@@ -54,6 +54,7 @@ export interface ThemeConfig {
   scrollProgress: boolean;
   scrollToTop: boolean;
   tagIcons: Record<string, Icon>;
+  defaultTagIcon?: Icon;
   expressiveCodeThemes: AstroExpressiveCodeOptions["themes"];
 }
 
@@ -68,6 +69,7 @@ const defaults = {
   scrollProgress: false,
   scrollToTop: true,
   tagIcons: {},
+  defaultTagIcon: "tabler--hash" as Icon,
   expressiveCodeThemes: [
     "vitesse-light",
     "vitesse-black",

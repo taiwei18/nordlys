@@ -10,34 +10,38 @@ const { post } = Astro.props
 const { previous, next } = await adjacentPosts(post)
 ---
 
-<div class="mb-2 flex grow flex-col justify-end">
-  <div class="my-4 grid grid-cols-5">
-    <div class="col-span-5 flex flex-col items-start sm:col-span-2">
+<div class="my-8 flex grow flex-col justify-end border-t border-current/10 pt-6">
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div>
       {
         !!next && (
-          <a href={`/posts/${next.id}/`} class="clickable">
-            <div class="flex items-center justify-start gap-1">
-              <span class="iconify tabler--arrow-left text-xl" />
-              <span>Next post</span>
+          <a
+            href={`/posts/${next.id}/`}
+            class="group flex flex-col items-start rounded-lg border border-current/10 p-4 text-left no-underline transition-colors duration-200 hover:border-accent/40 active:scale-[0.98]"
+          >
+            <div class="flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-accent/80 transition-transform duration-300 ease-out group-hover:-translate-x-1">
+              <span class="iconify tabler--arrow-left text-base" />
+              <span>下一篇</span>
             </div>
-            <span class="mt-2 text-lg underline sm:text-xl">
+            <span class="mt-2 text-base font-medium text-current/90 transition-colors duration-200 group-hover:text-accent sm:text-lg">
               {next.data.title}
             </span>
           </a>
         )
       }
     </div>
-    <div
-      class="col-span-5 mt-8 flex flex-col items-end sm:col-span-2 sm:col-start-4 sm:mt-0"
-    >
+    <div class={!next ? 'sm:col-start-2' : ''}>
       {
         !!previous && (
-          <a href={`/posts/${previous.id}/`} class="clickable">
-            <div class="flex items-center justify-end gap-1">
-              <span>Previous post</span>
-              <span class="iconify tabler--arrow-right text-xl" />
+          <a
+            href={`/posts/${previous.id}/`}
+            class="group flex flex-col items-end rounded-lg border border-current/10 p-4 text-right no-underline transition-colors duration-200 hover:border-accent/40 active:scale-[0.98]"
+          >
+            <div class="flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-accent/80 transition-transform duration-300 ease-out group-hover:translate-x-1">
+              <span>上一篇</span>
+              <span class="iconify tabler--arrow-right text-base" />
             </div>
-            <span class="mt-2 text-lg underline sm:text-xl">
+            <span class="mt-2 text-base font-medium text-current/90 transition-colors duration-200 group-hover:text-accent sm:text-lg">
               {previous.data.title}
             </span>
           </a>

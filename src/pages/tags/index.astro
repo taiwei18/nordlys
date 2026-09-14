@@ -3,33 +3,60 @@ import PageLayout, {
   type Props as PageLayoutProps,
 } from "@/layouts/PageLayout.astro";
 import { generateTags, getTagUsage } from "@/util/tags";
+import { getPosts } from "@/util/posts";
 
 const tags = await generateTags();
+const totalPosts = (await getPosts()).length;
+
+const tagsWithUsage = await Promise.all(
+  tags.map(async (t) => ({
+    ...t,
+    usage: await getTagUsage(t.tag),
+  }))
+);
+
+// 按文章数量降序排序，数量相同按字母排序
+tagsWithUsage.sort((a, b) => b.usage - a.usage || a.tag.localeCompare(b.tag));
 
 const frontmatter: PageLayoutProps["frontmatter"] = {
   title: "标签",
-  activeHeaderLink: "Tags",
+  activeHeaderLink: "标签",
 };
 ---
 
 <PageLayout {frontmatter}>
-  <h1>Tags</h1>
-  <div class="flex flex-wrap justify-between gap-4 sm:gap-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">标签</h1>
+    <p class="mt-2 text-sm opacity-75">
+      共收录 {tagsWithUsage.length} 个技术标签，覆盖 {totalPosts} 篇文章。点击标签可查看对应专题内容。
+    </p>
+  </div>
+
+  <div class="not-prose grid grid-cols-1 gap-x-10 sm:grid-cols-2">
     {
-      tags.map(({ tag, icon }) => (
+      tagsWithUsage.map(({ tag, icon, usage }) => (
         <a
-          class="clickable flex flex-col items-center gap-1 no-underline"
+          class="group flex items-center justify-between border-b border-current/10 py-3.5 no-underline transition-all duration-200 hover:text-accent"
           href={`/tags/${tag}/`}
           data-astro-prefetch
         >
-          <span class={`iconify text-4xl sm:text-5xl ${icon}`} />
+          <div class="flex items-center gap-3 min-w-0">
+            <span
+              class={`iconify text-xl text-accent/80 transition-transform duration-200 group-hover:scale-110 group-hover:text-accent shrink-0 ${icon}`}
+            />
+            <span class="truncate text-base font-normal transition-colors duration-200">
+              {tag}
+            </span>
+          </div>
 
-          <span class="text-base font-normal sm:text-lg">
-            {tag} ({getTagUsage(tag)})
-          </span>
+          <div class="flex items-center gap-2 shrink-0">
+            <span class="text-xs font-mono opacity-40 transition-opacity duration-200 group-hover:opacity-100">
+              {usage} 篇
+            </span>
+            <span class="iconify tabler--arrow-right text-sm opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0" />
+          </div>
         </a>
       ))
     }
-    <div class="mr-auto"></div>
   </div>
 </PageLayout>

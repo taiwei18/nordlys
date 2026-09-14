@@ -41,13 +41,20 @@ export default defineThemeConfig({
   postsView: 'list',
   scrollProgress: false,
   scrollToTop: true,
+  defaultTagIcon: 'tabler--hash',
   tagIcons: {
     tailwindcss: 'tabler--brand-tailwind',
     astro: 'tabler--brand-astro',
     pagefind: 'tabler--file-search',
     webshare: 'tabler--world-share',
     小程序开发: 'tabler--brand-miniprogram',
-    documentation: 'tabler--book'
+    documentation: 'tabler--book',
+    vue3: 'tabler--brand-vue',
+    'ai agent': 'tabler--robot',
+    'claude code': 'tabler--sparkles',
+    codex: 'tabler--code',
+    开发工具: 'tabler--tools',
+    工程化: 'tabler--cpu'
   },
   expressiveCodeThemes: ['vitesse-light', 'vitesse-black']
 })
