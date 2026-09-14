@@ -2,6 +2,7 @@
 title: 从真实项目出发，重新设计 UniApp + Vue3 埋点
 description: 复盘 HaoLi168 项目的页面曝光、data-md 编译注入与手动埋点，整理一套能逐步落地的改造方案
 publishedDate: 2026-03-15
+updatedDate: 2026-09-09
 tags:
   - 小程序开发
   - Vue3

@@ -19,38 +19,63 @@ const { post } = Astro.props
 
 const {
   Content,
-  remarkPluginFrontmatter: { readingTime },
+  remarkPluginFrontmatter: { readingTime, wordCount },
   headings
 } = await render(post)
 
+const canonicalURL = new URL(
+  post.data.canonicalURL || Astro.url.pathname,
+  Astro.site
+).href
+const authorURL = new URL(
+  `/authors/${encodeURIComponent(post.data.author)}/`,
+  Astro.site
+).href
+const openGraphImage = post.data.openGraphImage || `/posts/${post.id}.png`
+const openGraphImageUrl = new URL(resolveImageUrl(openGraphImage), Astro.site).href
+const dateModified = post.data.updatedDate || post.data.publishedDate
+
 const frontmatter: PageLayoutProps['frontmatter'] = {
   ...post.data,
-  openGraphImage: post.data.openGraphImage || `/posts/${post.id}.png`,
+  canonicalURL,
+  openGraphImage,
+  openGraphType: 'article',
+  updatedDate: dateModified,
   activeHeaderLink: 'Blog',
   scrollProgress: true
 }
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site).href
-const openGraphImageUrl = new URL(
-  resolveImageUrl(frontmatter.openGraphImage || '/ogImage.png'),
-  Astro.site
-).href
 const articleStructuredData = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
-  headline: frontmatter.title,
-  description: frontmatter.description,
+  headline: post.data.title,
+  description: post.data.description,
+  url: canonicalURL,
   datePublished: post.data.publishedDate.toISOString(),
+  dateModified: dateModified.toISOString(),
   author: {
     '@type': 'Person',
-    name: post.data.author
+    name: post.data.author,
+    url: authorURL
   },
   publisher: {
-    '@type': 'Organization',
-    name: config.title
+    '@type': 'Person',
+    name: config.author,
+    url: new URL('/about/', Astro.site).href
   },
-  image: openGraphImageUrl,
-  mainEntityOfPage: canonicalURL,
+  image: {
+    '@type': 'ImageObject',
+    url: openGraphImageUrl,
+    width: 1200,
+    height: 630
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': canonicalURL
+  },
+  keywords: post.data.tags,
+  articleSection: post.data.tags[0],
+  wordCount,
   inLanguage: config.locale
 }
 

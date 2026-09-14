@@ -1,7 +1,8 @@
 ---
-title: webshare的使用和覆写
-description: webshare
+title: Webshare 静态住宅代理购买与 Sparkle 覆写配置教程
+description: 介绍 Webshare 静态住宅代理的购买配置，以及在 Sparkle 中编写代理覆写、DNS 与分流规则的方法。
 publishedDate: !!timestamp 2026-01-14
+updatedDate: 2026-01-29
 tags:
   - webshare
 ---

@@ -27,7 +27,10 @@ export interface Props {
     description: string
     canonicalURL: string
     openGraphImage: string | ImageMetadata
+    openGraphType: 'website' | 'article'
+    robots: string
     publishedDate: Date
+    updatedDate: Date
     tags: string[]
     keywords: string[]
     structuredData:
@@ -43,7 +46,10 @@ const {
     description = config.description,
     canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
     openGraphImage = config.openGraphImage || '/ogImage.png',
-    publishedDate
+    openGraphType = 'website',
+    robots = 'index,follow',
+    publishedDate,
+    updatedDate
   }
 } = Astro.props
 
@@ -54,6 +60,11 @@ if (String(title).toLowerCase() !== String(config.title).toLowerCase())
 
 const openGraphImageUrl = new URL(resolveImageUrl(openGraphImage), Astro.site)
   .href
+const openGraphImageAlt = `${titleWithSuffix} 分享图片`
+const articleAuthorUrl = new URL(
+  `/authors/${encodeURIComponent(author)}/`,
+  Astro.site
+).href
 
 const frontmatterTags =
   Array.isArray(Astro.props.frontmatter?.tags) ? Astro.props.frontmatter.tags : []
@@ -99,7 +110,7 @@ const structuredDataJson = JSON.stringify([
     <meta name="description" content={description} />
     <meta name="author" content={author} />
     {keywordsContent && <meta name="keywords" content={keywordsContent} />}
-    <meta name="robots" content="index,follow" />
+    <meta name="robots" content={robots} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" hreflang={config.locale} href={canonicalURL} />
     <link
@@ -109,18 +120,24 @@ const structuredDataJson = JSON.stringify([
       href={new URL('feed.xml', Astro.site)}
     />
 
+    <meta property="og:type" content={openGraphType} />
     <meta property="og:title" content={titleWithSuffix} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={openGraphImageUrl} />
-    <meta property="og:locale" content={config.locale} />
+    <meta property="og:image:alt" content={openGraphImageAlt} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:locale" content={config.locale.replace('-', '_')} />
     <meta property="og:site_name" content={config.title} />
 
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonicalURL} />
-    <meta property="twitter:title" content={titleWithSuffix} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={openGraphImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={titleWithSuffix} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={openGraphImageUrl} />
+    <meta name="twitter:image:alt" content={openGraphImageAlt} />
 
     {
       preloadFonts.map((font) => (
@@ -142,7 +159,28 @@ const structuredDataJson = JSON.stringify([
         />
       )
     }
-    <script type="application/ld+json" set:html={structuredDataJson} />
+    {
+      updatedDate && (
+        <meta
+          property="article:modified_time"
+          content={updatedDate.toISOString()}
+        />
+      )
+    }
+    {
+      openGraphType === 'article' && (
+        <>
+          <meta property="article:author" content={articleAuthorUrl} />
+          {frontmatterTags[0] && (
+            <meta property="article:section" content={frontmatterTags[0]} />
+          )}
+          {frontmatterTags.map((tag) => (
+            <meta property="article:tag" content={tag} />
+          ))}
+        </>
+      )
+    }
+    <script is:inline type="application/ld+json" set:html={structuredDataJson} />
     <ModeManager />
     <ClientRouter />
     <link href="/zoom-vanilla.js/zoom.css" rel="stylesheet" />

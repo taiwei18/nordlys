@@ -22,7 +22,8 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const posts = await getPosts(undefined, author);
 
 const frontmatter: PageLayoutProps["frontmatter"] = {
-  title: `Author: ${author}`,
+  title: `作者：${author}`,
+  description: `浏览 ${author} 发布的 ${posts.length} 篇前端开发、产品工程与 AI 编码实践文章。`,
   activeHeaderLink: "Blog",
 };
 ---

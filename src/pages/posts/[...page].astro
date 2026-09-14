@@ -19,19 +19,23 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { page } = Astro.props;
 
+const pageTitle = page.currentPage === 1 ? "文章" : `文章 - 第 ${page.currentPage} 页`;
+const pageDescription =
+  page.currentPage === 1
+    ? "浏览 TaiWei 的前端开发、产品工程、AI 编码 Agent 与小程序实践文章。"
+    : `TaiWei 技术文章列表第 ${page.currentPage} 页，涵盖前端工程、Vue3、UniApp 与开发工具实践。`;
+
 const frontmatter: PageLayoutProps["frontmatter"] = {
-  title: "文章",
+  title: pageTitle,
+  description: pageDescription,
   activeHeaderLink: "Blog",
-  canonicalURL: new URL("/posts/1/", Astro.site).toString(),
 };
 
 const PageDescription = getPostsPageDescription();
 ---
 
 <PageLayout {frontmatter}>
-  <h1>
-    {frontmatter.title}
-  </h1>
+  <h1>文章{page.currentPage > 1 && <span>{` · 第 ${page.currentPage} 页`}</span>}</h1>
 
   {PageDescription && <PageDescription />}
 

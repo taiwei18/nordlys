@@ -20,6 +20,7 @@ tagsWithUsage.sort((a, b) => b.usage - a.usage || a.tag.localeCompare(b.tag));
 
 const frontmatter: PageLayoutProps["frontmatter"] = {
   title: "标签",
+  description: `按 ${tagsWithUsage.length} 个技术标签浏览 TaiWei 的 ${totalPosts} 篇前端开发、工程化与 AI 编码实践文章。`,
   activeHeaderLink: "标签",
 };
 ---

@@ -1,6 +1,6 @@
 ---
 title: UniApp + Vue3 自动化埋点体系设计方案
-description: 关于小程序埋点方案
+description: 设计一套适用于 UniApp 与 Vue3 小程序的自动化埋点体系，结合运行时 Mixin、AST 编译注入和 Vitest 测试。
 publishedDate: 2025-11-26
 tags:
   - 小程序开发

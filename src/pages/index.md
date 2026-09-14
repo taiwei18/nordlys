@@ -1,6 +1,7 @@
 ---
 layout: "@/layouts/LandingLayout.astro"
 title: TaiWei
+description: TaiWei 的中文技术博客，记录 Astro、Vue3、UniApp、前端工程化与 AI 编码工具实践。
 background: true
 logo: true
 ---

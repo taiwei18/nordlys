@@ -2,6 +2,7 @@
 title: Claude Code、Codex、Pi 与 OMP：编码 Agent 到底差在哪
 description: 用一次陌生仓库的跨文件修改，对比 Claude Code、Codex CLI、Pi 与 OMP 的检索、编辑、权限、扩展和任务拆分方式
 publishedDate: 2026-06-15
+updatedDate: 2026-09-11
 tags:
   - AI Agent
   - Claude Code

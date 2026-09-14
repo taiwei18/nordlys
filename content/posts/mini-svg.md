@@ -1,6 +1,6 @@
 ---
-title: 关于小程序中使用svg图标的方案
-description: 小程序使用base64显示svg
+title: 微信小程序使用 Base64 字体与 SVG 图标的实现方案
+description: 讲解微信小程序通过 Base64 内嵌 Iconfont 字体和 SVG 图标的原理、实现方式、限制与适用场景。
 publishedDate: 2026-01-19
 tags:
   - 小程序开发

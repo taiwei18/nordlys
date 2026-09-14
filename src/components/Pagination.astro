@@ -6,6 +6,11 @@ export interface Props {
 }
 
 const { page } = Astro.props
+
+const normalizePageUrl = (url: string) => {
+  const normalized = url === '/posts/1' ? '/posts/' : `${url}/`
+  return normalized.replace(/\/+/g, '/')
+}
 ---
 
 {
@@ -13,7 +18,7 @@ const { page } = Astro.props
     <nav class="mb-8 flex w-full grow items-end justify-center">
       <div class="flex gap-4">
         {page.url.prev ? (
-          <a class="clickable" href={`${page.url.prev}/`}>
+          <a class="clickable" href={normalizePageUrl(page.url.prev)}>
             Previous
           </a>
         ) : (
@@ -25,7 +30,7 @@ const { page } = Astro.props
         {page.url.next ? (
           <a
             class={!page.url.next ? 'no-underline opacity-25' : 'clickable'}
-            href={`${page.url.next}/`}
+            href={normalizePageUrl(page.url.next)}
           >
             Next
           </a>

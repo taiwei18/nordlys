@@ -24,9 +24,9 @@ export async function getStaticPaths() {
 
 const posts = await getPosts(tag)
 
-
 const frontmatter: PageLayoutProps['frontmatter'] = {
-  title: `标签: ${tag}`,
+  title: `标签：${tag}`,
+  description: `浏览 TaiWei 关于 ${tag} 的 ${posts.length} 篇技术文章与工程实践记录。`,
   activeHeaderLink: '标签'
 }
 ---
