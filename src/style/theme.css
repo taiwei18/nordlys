@@ -1,12 +1,23 @@
 @theme inline {
-  --font-sans: 'IBM Plex Sans', ui-sans-serif;
+  --font-sans: 'Geist Sans', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Newsreader', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
-  --color-accent: rgb(var(--accent));
-  --color-accent-bg: rgb(var(--accent-bg));
+  --color-canvas: var(--bg-canvas);
+  --color-title: var(--text-title);
+  --color-body: var(--text-body);
+  --color-muted: var(--text-muted);
+  --color-faint: var(--text-faint);
+
+  --color-surface: var(--card-surface);
+  --color-surface-hover: var(--card-hover);
+
+  --color-border-subtle: var(--border-subtle);
+  --color-border-medium: var(--border-medium);
+  --color-border-strong: var(--border-strong);
 }
 
 @plugin '@tailwindcss/typography';
-
 @plugin 'tailwind-scrollbar-hide';
 
 @plugin '@iconify/tailwind4' {

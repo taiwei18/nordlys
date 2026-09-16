@@ -32,24 +32,21 @@ const frontmatter: PageLayoutProps['frontmatter'] = {
 ---
 
 <PageLayout {frontmatter}>
-  <div slot="top" class="mt-4">
+  <div slot="top" class="mb-8">
     <a
       href="/tags/"
-      class="group inline-flex w-fit items-center gap-1.5 text-current/80 transition-colors duration-200 hover:text-accent active:scale-95"
+      class="group inline-flex items-center gap-1.5 font-mono text-xs text-muted hover:text-title transition-colors"
     >
-      <span
-        class="iconify tabler--arrow-left text-xl transition-transform duration-200 group-hover:-translate-x-1"
-      ></span>
-      返回全部标签
+      <span class="iconify tabler--arrow-left text-sm transition-transform duration-200 group-hover:-translate-x-0.5"></span>
+      <span>所有标签</span>
     </a>
   </div>
 
-  <div class="my-6 flex items-center gap-3 border-b border-current/10 pb-6">
-    <span class={`iconify text-3xl text-accent shrink-0 ${icon}`}></span>
-    <div class="flex flex-col">
-      <h1 class="my-0 text-3xl font-bold tracking-tight sm:text-4xl">{tag}</h1>
-      <p class="mt-1 text-sm opacity-60">共收录 {posts.length} 篇相关文章</p>
-    </div>
+  <div class="mb-10 pb-4 hairline-bottom">
+    <h1 class="font-sans text-2xl sm:text-3xl font-semibold tracking-tight text-title">
+      #{tag}
+    </h1>
+    <p class="font-mono text-xs text-muted mt-1">收录 {posts.length} 篇文章</p>
   </div>
 
   <div class="not-prose">

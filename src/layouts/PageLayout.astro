@@ -29,28 +29,31 @@ const {
 ---
 
 <BaseLayout frontmatter={frontmatter}>
-  <div
-    class="mx-auto flex min-h-svh w-full max-w-[90%] flex-col justify-between md:max-w-3xl"
-  >
+  <div class="flex min-h-screen flex-col">
     <Header activeHeaderLink={activeHeaderLink} />
-    <slot name="top" />
 
-    <aside
-      class="scrollbar-hide fixed h-screen w-fit max-w-sm -translate-x-full overflow-y-auto overscroll-y-none pr-8"
-    >
-      <slot name="aside" />
-    </aside>
+    <div class="mx-auto w-full max-w-2xl px-6 sm:px-0 flex-1 flex flex-col">
+      <slot name="top" />
 
-    <main
-      id="main"
-      class="mt-6 sm:mt-12"
-      data-pagefind-body={searchable ? true : undefined}
-    >
-      <Prose class="mb-6 sm:mb-12">
-        <slot />
-      </Prose>
-    </main>
-    <slot name="bottom" />
+      <aside
+        class="scrollbar-hide fixed left-8 top-28 h-[calc(100vh-8rem)] w-60 -translate-x-[120%] 2xl:translate-x-0 overflow-y-auto overscroll-y-none pr-4 hidden 2xl:block z-20"
+      >
+        <slot name="aside" />
+      </aside>
+
+      <main
+        id="main"
+        class="flex-1"
+        data-pagefind-body={searchable ? true : undefined}
+      >
+        <Prose class="mb-16">
+          <slot />
+        </Prose>
+      </main>
+
+      <slot name="bottom" />
+    </div>
+
     <Footer />
   </div>
   {scrollProgress && <ScrollProgressPlugin />}

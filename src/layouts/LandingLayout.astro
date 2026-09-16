@@ -1,91 +1,89 @@
 ---
-import Hero, { type Props as HeroProps } from '@/components/Hero.astro'
-import FooterItem from '@/components/layout/FooterItem.astro'
-import Separator from '@/components/layout/Separator.astro'
-import ModeToggle from '@/components/mode/ModeToggle.astro'
+import Footer from '@/components/layout/Footer.astro'
+import Header from '@/components/layout/Header.astro'
 import BaseLayout, {
   type Props as BaseLayoutProps
 } from '@/layouts/BaseLayout.astro'
-import config from '@/theme.config'
 import { getPosts } from '@/util/posts'
+import { toDateString } from '@/util'
 
-export type Props = BaseLayoutProps &
-  HeroProps & {
-    frontmatter: { showLatestPost?: boolean }
-  }
+export type Props = BaseLayoutProps & {
+  frontmatter: { showLatestPost?: boolean }
+}
 
 const { frontmatter } = Astro.props
 
-const latestPost = (await getPosts())[0]
+const allPosts = await getPosts()
+const recentPosts = allPosts.slice(0, 6)
 ---
 
 <BaseLayout frontmatter={frontmatter}>
-  <div class="relative flex min-h-svh w-full flex-col justify-between">
-    <div class="mx-auto mt-16 max-w-[90%] px-4 sm:mt-36 sm:px-12 md:max-w-3xl">
-      <main id="main">
-        {frontmatter.title && <Hero {frontmatter}>{frontmatter.title}</Hero>}
-        <div
-          id="animated-links"
-          class="relative z-99 text-3xl font-semibold tracking-tight text-gray-700/50 sm:text-4xl sm:leading-[46px] dark:text-gray-300/50"
-        >
-          <slot />
+  <div class="flex min-h-screen flex-col">
+    <Header activeHeaderLink="首页" />
+
+    <main id="main" class="mx-auto w-full max-w-2xl px-6 sm:px-0 flex-1">
+      <!-- 个人理念与导言 -->
+      <section class="mb-14 sm:mb-20">
+        <h1 class="font-serif italic text-3xl sm:text-4xl text-title mb-4 font-normal tracking-tight">
+          TaiWei
+        </h1>
+        <p class="text-base sm:text-lg text-body font-sans leading-relaxed text-balance">
+          专注于现代前端、应用架构、Astro 与 AI 协同开发实践。追求纯粹、轻量与极致的工程交付体验。
+        </p>
+        <div class="mt-6 flex items-center gap-4 text-xs font-mono text-muted">
+          <span>Writing & Notes</span>
+          <span>·</span>
+          <span>Shanghai</span>
+          <span>·</span>
+          <a href="/about/" class="text-title hover:opacity-80 link-hover-line transition-opacity">
+            关于我 →
+          </a>
+        </div>
+      </section>
+
+      <!-- 文章序列 -->
+      <section class="mb-16">
+        <div class="flex items-center justify-between mb-8 pb-3 hairline-bottom">
+          <h2 class="font-mono text-xs uppercase tracking-widest text-muted">
+            Selected Writing ({allPosts.length})
+          </h2>
+          <a
+            href="/posts/"
+            class="font-mono text-xs text-muted hover:text-title transition-colors"
+          >
+            All posts →
+          </a>
+        </div>
+
+        <div class="flex flex-col divide-y divide-border-subtle">
           {
-            latestPost && frontmatter.showLatestPost && (
-              <div class="mt-8">
-                <span class="text-2xl sm:text-3xl">
-                  Read my latest post{' '}
-                  <a href={`/posts/${latestPost.id}/`}>
-                    {latestPost.data.title}
+            recentPosts.map((post) => (
+              <article class="group py-5 first:pt-0 last:pb-0 transition-transform duration-200 hover:translate-x-1">
+                <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4 mb-1.5">
+                  <a
+                    href={`/posts/${post.id}/`}
+                    class="font-sans text-base font-medium text-title group-hover:opacity-80 transition-opacity duration-150 inline-flex items-center gap-1.5"
+                  >
+                    <span>{post.data.title}</span>
+                    <span class="iconify tabler--arrow-up-right text-xs opacity-0 -translate-x-1 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 text-muted"></span>
                   </a>
-                </span>
-              </div>
-            )
+                  <time
+                    class="shrink-0 font-mono text-xs text-muted"
+                    datetime={post.data.publishedDate.toISOString()}
+                  >
+                    {toDateString(post.data.publishedDate)}
+                  </time>
+                </div>
+                <p class="text-sm text-muted line-clamp-2 leading-relaxed font-sans">
+                  {post.data.description}
+                </p>
+              </article>
+            ))
           }
         </div>
-      </main>
-      <footer class="mt-8">
-        <Separator />
-        <div
-          class="flex items-center justify-between gap-2 py-4 sm:py-8"
-        >
-          <div class="flex items-center gap-2">
-            {config.footerItems.map((item) => <FooterItem {item} />)}
-          </div>
+      </section>
+    </main>
 
-          <div class="grow"></div>
-
-          {config.modeToggle && <ModeToggle />}
-        </div>
-      </footer>
-    </div>
+    <Footer />
   </div>
 </BaseLayout>
-<style is:global>
-  :root {
-    overflow-y: auto !important;
-  }
-
-  #animated-links {
-    a {
-      color: rgb(var(--accent));
-
-      background-image: linear-gradient(
-        transparent calc(85% - 4px),
-        rgba(var(--accent), 0.35) 4px
-      );
-      background-size: 0;
-      background-repeat: no-repeat;
-      display: inline-block;
-      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-
-      &:hover {
-        background-size: 100%;
-        transform: translateY(-2px);
-      }
-
-      &:active {
-        transform: scale(0.96);
-      }
-    }
-  }
-</style>

@@ -3,7 +3,6 @@ import logo from "@/assets/logo.svg";
 import Dropdown from "@/components/Dropdown.astro";
 import HeaderItem from "@/components/layout/HeaderItem.astro";
 import MobileNavToggle from "@/components/layout/MobileNavToggle.astro";
-import Separator from "@/components/layout/Separator.astro";
 import ModeToggle from "@/components/mode/ModeToggle.astro";
 import config from "@/theme.config";
 import type {
@@ -22,40 +21,38 @@ export const isNavItem = (item: HeaderItemType): item is NavItemType =>
   Object.hasOwn(item, "href");
 ---
 
-<header>
-  <a href="#main" class="absolute -top-full left-8 px-2 py-2 focus:top-8"
-    >Skip to main content</a
-  >
-  <div class="flex justify-between py-4 sm:py-8">
+<header class="w-full pt-8 pb-12 sm:pt-14 sm:pb-16 transition-colors duration-300">
+  <div class="mx-auto flex max-w-2xl items-center justify-between px-6 sm:px-0">
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:bg-title focus:px-3 focus:py-1 focus:text-canvas font-mono text-xs">
+      Skip to content
+    </a>
+
+    <!-- Wordmark & Logo Mark -->
     <a
       href="/"
-      class="text-accent group flex items-center gap-2 text-2xl font-semibold transition-transform duration-300 active:scale-95"
+      class="group flex items-center gap-2.5 text-title hover:opacity-80 transition-opacity"
       transition:name="branding"
     >
-      <div class="relative flex items-center justify-center">
-        <span
-          class="absolute inset-0 -z-1 rounded-full bg-accent/20 blur-md opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        ></span>
+      <div class="h-6 w-6 text-title transition-transform duration-300 group-hover:scale-105">
         <Image
-          alt="Nordlys logo, simplified northern lights aurora visualization"
           src={logo}
+          alt={`${config.title} logo`}
+          width={24}
           height={24}
-          loading="eager"
-          class="transition-transform duration-500 ease-out group-hover:scale-110 group-hover:rotate-6"
+          class="h-full w-full object-contain"
         />
       </div>
-      <span class="relative">
+      <span class="font-sans font-medium text-sm tracking-tight text-title">
         {config.title}
-        <span
-          class="absolute -bottom-0.5 left-0 h-[2px] w-0 rounded-full bg-accent transition-all duration-300 ease-out group-hover:w-full"
-        ></span>
       </span>
     </a>
-    <nav class="hidden flex-col justify-end sm:flex">
-      <ul class="flex items-center gap-6">
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden items-center gap-6 sm:flex">
+      <ul class="flex items-center gap-5 text-sm">
         {
           config.navbarItems.map((item) => (
-            <li class="flex flex-col justify-center">
+            <li>
               {isNavItem(item) ? (
                 <HeaderItem
                   {item}
@@ -70,43 +67,42 @@ export const isNavItem = (item: HeaderItemType): item is NavItemType =>
             </li>
           ))
         }
-        <li class="flex items-center text-2xl">
-          <a
-            href="/search/"
-            class="group flex items-center justify-center rounded-full p-2 text-current/80 transition-all duration-200 hover:bg-accent/10 hover:text-accent active:scale-90"
-            aria-label="Search"
-          >
-            <span
-              class="iconify tabler--search text-xl transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
-            ></span>
-          </a>
-        </li>
-        <li class="flex items-center text-2xl">
-          {config.modeToggle && <ModeToggle />}
-        </li>
       </ul>
+
+      <div class="flex items-center gap-3 border-l border-border-subtle pl-5">
+        <a
+          href="/search/"
+          class="text-muted hover:text-title transition-colors text-xs font-mono p-1 rounded hover:bg-surface-hover"
+          aria-label="Search"
+        >
+          <span class="iconify tabler--search text-base"></span>
+        </a>
+
+        {config.modeToggle && <ModeToggle />}
+      </div>
     </nav>
-    <div class="flex items-center justify-center gap-3 text-2xl sm:hidden">
-      {config.modeToggle && <ModeToggle />}
+
+    <!-- Mobile Nav Toggle -->
+    <div class="flex items-center gap-3 sm:hidden">
       <a
         href="/search/"
-        class="group flex items-center justify-center rounded-full p-1.5 text-current/80 transition-all duration-200 hover:bg-accent/10 hover:text-accent active:scale-90"
+        class="text-muted hover:text-title transition-colors p-1"
         aria-label="Search"
       >
-        <span
-          class="iconify tabler--search text-xl transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
-        ></span>
+        <span class="iconify tabler--search text-lg"></span>
       </a>
+      {config.modeToggle && <ModeToggle />}
       <MobileNavToggle />
     </div>
   </div>
-  <Separator />
-  <div id="mobile-nav" class="hidden">
-    <nav class="flex-col justify-end py-6">
-      <ul class="flex flex-col items-center gap-2">
+
+  <!-- Mobile Drawer -->
+  <div id="mobile-nav" class="hidden sm:hidden hairline-bottom px-6 py-4 mt-4">
+    <nav>
+      <ul class="flex flex-col gap-3 text-sm">
         {
           config.navbarItems.map((item) => (
-            <li class="flex flex-col justify-center">
+            <li>
               {isNavItem(item) ? (
                 <HeaderItem
                   {item}
@@ -123,6 +119,5 @@ export const isNavItem = (item: HeaderItemType): item is NavItemType =>
         }
       </ul>
     </nav>
-    <Separator />
   </div>
 </header>

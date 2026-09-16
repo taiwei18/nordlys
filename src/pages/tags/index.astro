@@ -26,36 +26,29 @@ const frontmatter: PageLayoutProps["frontmatter"] = {
 ---
 
 <PageLayout {frontmatter}>
-  <div class="mb-8">
-    <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">标签</h1>
-    <p class="mt-2 text-sm opacity-75">
-      共收录 {tagsWithUsage.length} 个技术标签，覆盖 {totalPosts} 篇文章。点击标签可查看对应专题内容。
+  <div class="mb-10 pb-4 hairline-bottom">
+    <h1 class="font-sans text-2xl sm:text-3xl font-semibold tracking-tight text-title">
+      标签
+    </h1>
+    <p class="mt-2 text-sm text-muted font-sans">
+      共 {tagsWithUsage.length} 个技术维度与分类。
     </p>
   </div>
 
-  <div class="not-prose grid grid-cols-1 gap-x-10 sm:grid-cols-2">
+  <div class="not-prose grid grid-cols-2 sm:grid-cols-3 gap-3">
     {
-      tagsWithUsage.map(({ tag, icon, usage }) => (
+      tagsWithUsage.map(({ tag, usage }) => (
         <a
-          class="group flex items-center justify-between border-b border-current/10 py-3.5 no-underline transition-all duration-200 hover:text-accent"
+          class="group p-3 rounded-lg subtle-card flex items-center justify-between no-underline"
           href={`/tags/${tag}/`}
           data-astro-prefetch
         >
-          <div class="flex items-center gap-3 min-w-0">
-            <span
-              class={`iconify text-xl text-accent/80 transition-transform duration-200 group-hover:scale-110 group-hover:text-accent shrink-0 ${icon}`}
-            />
-            <span class="truncate text-base font-normal transition-colors duration-200">
-              {tag}
-            </span>
-          </div>
-
-          <div class="flex items-center gap-2 shrink-0">
-            <span class="text-xs font-mono opacity-40 transition-opacity duration-200 group-hover:opacity-100">
-              {usage} 篇
-            </span>
-            <span class="iconify tabler--arrow-right text-sm opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0" />
-          </div>
+          <span class="font-sans text-sm text-body group-hover:text-title transition-colors truncate">
+            #{tag}
+          </span>
+          <span class="font-mono text-xs text-muted group-hover:text-title">
+            {usage}
+          </span>
         </a>
       ))
     }

@@ -1,0 +1,150 @@
+---
+import PageLayout, {
+  type Props as PageLayoutProps
+} from '@/layouts/PageLayout.astro'
+
+const frontmatter: PageLayoutProps['frontmatter'] = {
+  title: '404 · Nothing Here',
+  description: 'The requested page has dissolved into void.',
+  robots: 'noindex,follow',
+  searchable: false
+}
+---
+
+<PageLayout {frontmatter}>
+  <div class="not-prose my-8 sm:my-16 select-text" data-pagefind-ignore>
+    
+    <!-- 先锋杂志封面式布局网格：双栏非对称排印 -->
+    <div class="border-t-2 border-b-2 border-[var(--text-title)] py-12 sm:py-20 relative">
+      
+      <!-- 极小上标序列编号 -->
+      <div class="flex items-center justify-between font-mono text-xs uppercase tracking-widest text-muted mb-8 pb-4 hairline-bottom">
+        <div class="flex items-center gap-3">
+          <span class="text-title font-bold">ISSUE // 404</span>
+          <span>·</span>
+          <span>PAGE NOT FOUND</span>
+        </div>
+        <div class="hidden sm:flex items-center gap-4 text-faint">
+          <span>STATIC ARCHIVE</span>
+          <span>[ LOST IN VOID ]</span>
+        </div>
+      </div>
+
+      <!-- 巨型先锋排版焦点 -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-baseline">
+        
+        <!-- 左侧：超大衬线/等宽混合数字 -->
+        <div class="lg:col-span-7 select-none">
+          <div class="font-serif italic text-8xl sm:text-9xl tracking-tighter text-title leading-none">
+            Void.
+          </div>
+          <div class="font-mono text-xs text-muted tracking-widest uppercase mt-4 flex items-center gap-2">
+            <span class="inline-block w-8 h-px bg-[var(--text-title)]"></span>
+            <span>ERROR CODE: HTTP_404_PAGE_MISSING</span>
+          </div>
+        </div>
+
+        <!-- 右侧：先锋杂志导读块与哲学阐述 -->
+        <div class="lg:col-span-5 flex flex-col justify-between font-sans">
+          <div>
+            <p class="text-lg sm:text-xl font-serif italic text-title leading-snug mb-4">
+              “The page you are looking for has been moved, archived, or never existed in this dimension.”
+            </p>
+            <p class="text-sm text-muted leading-relaxed font-sans mb-8">
+              你访问的路径在博客路由拓扑中处于未定义状态。它也许曾作为草稿存在，或在某次架构重构中归于虚无。
+            </p>
+          </div>
+
+          <!-- 先锋单线操作区 -->
+          <div class="flex flex-col gap-3 font-mono text-xs">
+            <a
+              href="/"
+              data-astro-prefetch
+              class="group flex items-center justify-between py-2.5 px-3 rounded bg-surface border border-border-subtle hover:border-title text-title transition-all no-underline"
+            >
+              <span class="flex items-center gap-2">
+                <span class="text-muted group-hover:text-title transition-colors">01</span>
+                <span class="font-sans font-medium">返回主页</span>
+              </span>
+              <span class="group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+
+            <a
+              href="/search/"
+              data-astro-prefetch
+              class="group flex items-center justify-between py-2.5 px-3 rounded bg-transparent border border-border-subtle hover:border-title text-muted hover:text-title transition-all no-underline"
+            >
+              <span class="flex items-center gap-2">
+                <span class="text-faint group-hover:text-muted transition-colors">02</span>
+                <span class="font-sans font-medium">检索站点归档</span>
+              </span>
+              <span class="group-hover:translate-x-1 transition-transform">↗</span>
+            </a>
+
+            <button
+              id="editorial-back"
+              type="button"
+              class="group flex items-center justify-between py-2.5 px-3 rounded bg-transparent border border-transparent hover:border-border-subtle text-muted hover:text-title transition-all cursor-pointer text-left"
+            >
+              <span class="flex items-center gap-2">
+                <span class="text-faint group-hover:text-muted transition-colors">03</span>
+                <span class="font-sans font-medium">退回上个页面</span>
+              </span>
+              <span class="font-mono text-[10px] text-faint group-hover:text-muted">ESC</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 底部脚注：纯粹的杂志元信息条 -->
+      <div class="mt-12 pt-6 hairline-top flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono text-[11px] text-muted">
+        <div class="flex items-center gap-2">
+          <span class="text-faint">$</span>
+          <span>REQUEST:</span>
+          <span id="editorial-path" class="text-title font-medium">/</span>
+        </div>
+        <div class="flex items-center gap-4 text-faint">
+          <span>LATITUDE: UNKNOWN</span>
+          <span>·</span>
+          <span>STATUS: UNRESOLVED</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</PageLayout>
+
+<script>
+  function setupEditorial404() {
+    const pathEl = document.getElementById('editorial-path')
+    if (pathEl) {
+      pathEl.textContent = window.location.pathname || '/'
+    }
+
+    const backBtn = document.getElementById('editorial-back')
+    if (backBtn) {
+      backBtn.addEventListener('click', () => {
+        if (window.history.length > 1) {
+          window.history.back()
+        } else {
+          window.location.href = '/'
+        }
+      })
+    }
+  }
+
+  setupEditorial404()
+  document.addEventListener('astro:page-load', setupEditorial404)
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (window.history.length > 1) {
+        window.history.back()
+      } else {
+        window.location.href = '/'
+      }
+    }
+  })
+</script>

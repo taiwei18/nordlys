@@ -1,5 +1,4 @@
 ---
-import AdjacentPostsBar from '@/components/AdjacentPostsBar.astro'
 import TagsBar from '@/components/TagsBar.astro'
 import ToC from '@/components/ToC.astro'
 import PageLayout, {
@@ -41,7 +40,7 @@ const frontmatter: PageLayoutProps['frontmatter'] = {
   openGraphImage,
   openGraphType: 'article',
   updatedDate: dateModified,
-  activeHeaderLink: 'Blog',
+  activeHeaderLink: '博客',
   scrollProgress: true
 }
 
@@ -84,48 +83,50 @@ frontmatter.keywords = [post.data.title, ...post.data.tags]
 ---
 
 <PageLayout {frontmatter}>
-  <div slot="top" class="animate-fade-in-up mt-4">
+  <div slot="top" class="mb-10">
     <a
       href="/posts/"
-      class="group inline-flex w-fit items-center gap-1.5 text-current/80 transition-colors duration-200 hover:text-accent active:scale-95"
+      class="group inline-flex items-center gap-1.5 font-mono text-xs text-muted hover:text-title transition-colors"
     >
-      <span
-        class="iconify tabler--arrow-left text-xl transition-transform duration-200 group-hover:-translate-x-1"
-      ></span>
-      Back to all posts
+      <span class="iconify tabler--arrow-left text-sm transition-transform duration-200 group-hover:-translate-x-0.5"></span>
+      <span>cd ..</span>
     </a>
   </div>
 
-  <h1 class="animate-fade-in-up animation-delay-100 mt-2 mb-2 sm:my-4">
-    {frontmatter.title}
-  </h1>
-  <div class="animate-fade-in-up animation-delay-150">
-    <TagsBar tags={resolveTags(post.data.tags)} />
-  </div>
+  <!-- 杂志与工坊式文章标题排印 -->
+  <header class="mb-12 pb-8 hairline-bottom">
+    <div class="flex items-center gap-3 text-xs font-mono text-muted mb-4">
+      <time datetime={post.data.publishedDate.toISOString()}>
+        {toDateString(post.data.publishedDate)}
+      </time>
+      <span>·</span>
+      <span>{readingTime}</span>
+      {wordCount && (
+        <>
+          <span>·</span>
+          <span>{wordCount} 字</span>
+        </>
+      )}
+    </div>
 
-  <div class="animate-fade-in-up animation-delay-200 mt-4">
-    <span class="opacity-75"
-      >Published on <time datetime={post.data.publishedDate.toISOString()}
-        >{toDateString(post.data.publishedDate)}</time
-      > by</span
-    >
-    <a class="clickable" href={`/authors/${post.data.author}/`}
-      >{post.data.author}</a
-    > · <span class="whitespace-nowrap opacity-75">{readingTime} </span>
-  </div>
+    <h1 class="font-sans text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-title leading-snug mb-6 text-balance">
+      {frontmatter.title}
+    </h1>
+
+    <div class="flex flex-wrap items-center gap-2">
+      <TagsBar tags={resolveTags(post.data.tags)} />
+    </div>
+  </header>
 
   {
     !!post.data.showToC && (
       <div
         slot="aside"
-        class="border-accent mt-24 hidden border-r pr-4 opacity-75 transition duration-500 ease-in-out hover:opacity-100 2xl:block"
+        class="border-l border-border-subtle pl-4 py-1"
       >
-        <ToC {headings} open />
-      </div>
-    )
-  }{
-    !!post.data.showToC && (
-      <div class="mt-8 w-fit rounded-sm border 2xl:hidden">
+        <div class="font-mono text-xs uppercase tracking-widest text-muted mb-3">
+          On this page
+        </div>
         <ToC {headings} />
       </div>
     )
@@ -134,48 +135,10 @@ frontmatter.keywords = [post.data.title, ...post.data.tags]
   <article
     data-pagefind-body
     data-pagefind-filter="type:post"
-    class="animate-fade-in-up animation-delay-300"
+    class="prose max-w-none text-body font-sans text-base leading-relaxed"
   >
     <Content />
   </article>
 
-  <AdjacentPostsBar {post} slot="bottom" />
   <HeadingAnchorsPlugin />
-
-  <style>
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .animate-fade-in-up {
-      animation: fadeInUp 0.6s ease-out forwards;
-    }
-
-    .animation-delay-100 {
-      opacity: 0;
-      animation-delay: 0.1s;
-    }
-
-    .animation-delay-150 {
-      opacity: 0;
-      animation-delay: 0.15s;
-    }
-
-    .animation-delay-200 {
-      opacity: 0;
-      animation-delay: 0.2s;
-    }
-
-    .animation-delay-300 {
-      opacity: 0;
-      animation-delay: 0.3s;
-    }
-  </style>
 </PageLayout>

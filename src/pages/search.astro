@@ -27,19 +27,35 @@ const serializedSearchDocuments = JSON.stringify(searchDocuments).replace(
 ---
 
 <PageLayout {frontmatter}>
-  <h1>{frontmatter.title}</h1>
-  <search-input class="flex w-full items-center justify-center gap-4 sm:gap-8">
-    <input
-      type="search"
-      aria-label="搜索文章"
-      autocomplete="off"
-      placeholder="输入关键词搜索文章"
-      class="border-accent soft-input w-full rounded-sm border p-4 sm:w-[50%]"
-    />
-    <button id="search-clear" class="clickable invisible text-xl">清空</button>
+  <div class="mb-8 pb-4 hairline-bottom">
+    <h1 class="font-sans text-2xl sm:text-3xl font-semibold tracking-tight text-title">
+      搜索
+    </h1>
+    <p class="mt-2 text-sm text-muted">检索全站文章与技术主题</p>
+  </div>
+
+  <search-input class="relative flex w-full flex-col gap-4 mb-8">
+    <div class="relative w-full">
+      <input
+        type="search"
+        aria-label="搜索文章"
+        autocomplete="off"
+        placeholder="输入关键词进行搜索..."
+        class="w-full bg-surface text-title placeholder:text-muted px-4 py-3 rounded-lg border border-border-subtle focus:border-border-strong focus:outline-none transition-colors font-sans text-sm"
+      />
+      <button id="search-clear" class="invisible absolute right-3 top-1/2 -translate-y-1/2 font-mono text-xs text-muted hover:text-title cursor-pointer kbd-pill">
+        ESC
+      </button>
+    </div>
   </search-input>
-  <h2 id="results-heading" aria-live="polite">输入关键词搜索文章</h2>
-  <ul id="results-list" class="list-none p-0"></ul>
+
+  <div class="pb-2 mb-4">
+    <h2 id="results-heading" aria-live="polite" class="font-mono text-xs text-muted uppercase tracking-wider">
+      等待输入...
+    </h2>
+  </div>
+
+  <ul id="results-list" class="list-none p-0 flex flex-col divide-y divide-border-subtle"></ul>
 
   <script
     is:inline
@@ -67,11 +83,6 @@ const serializedSearchDocuments = JSON.stringify(searchDocuments).replace(
       )?.textContent
 
     return data ? JSON.parse(data) : []
-  }
-
-  const toPlainText = (value: string) => {
-    const parsed = new DOMParser().parseFromString(value, 'text/html')
-    return parsed.body.textContent ?? ''
   }
 
   class SearchInput extends HTMLElement {
@@ -105,11 +116,11 @@ const serializedSearchDocuments = JSON.stringify(searchDocuments).replace(
           const link = document.createElement('a')
           const excerpt = document.createElement('div')
 
-          item.classList.add('fade-in-up')
-          link.className = 'text-xl font-normal'
+          item.className = 'py-4 first:pt-0 transition-transform duration-200 hover:translate-x-1'
+          link.className = 'font-sans text-base font-medium text-title hover:opacity-80 transition-opacity block'
           link.href = result.url
           link.textContent = result.title
-          excerpt.className = 'mt-4 opacity-75'
+          excerpt.className = 'text-xs text-muted mt-1 line-clamp-2 leading-relaxed font-sans'
           excerpt.textContent = result.excerpt
           item.append(link, excerpt)
           resultsContainer.append(item)
@@ -117,102 +128,94 @@ const serializedSearchDocuments = JSON.stringify(searchDocuments).replace(
 
         if (total > RESULT_LIMIT) {
           const remaining = document.createElement('li')
-          remaining.classList.add('fade-in-up')
-          remaining.textContent = `另有 ${total - RESULT_LIMIT} 条结果`
+          remaining.className = 'font-mono text-xs text-muted text-center py-3'
+          remaining.textContent = `+ 另有 ${total - RESULT_LIMIT} 条结果未展开`
           resultsContainer.append(remaining)
         }
-
-        setStatus(`找到 ${total} 篇文章`)
       }
 
-      const searchWithPagefind = async (
-        pagefind: PagefindApi,
-        query: string
-      ): Promise<{ results: SearchResult[]; total: number }> => {
-        const response = await pagefind.search(query, {
-          filters: { type: 'post' }
-        })
-        const resultData = await Promise.all(
-          response.results.slice(0, RESULT_LIMIT).map((result) => result.data())
-        )
+      const performSearch = async (query: string) => {
+        const trimmedQuery = query.trim()
 
-        return {
-          total: response.results.length,
-          results: resultData.map((data) => ({
-            title: data.meta.title,
-            excerpt: toPlainText(data.excerpt),
-            url: data.url
-          }))
-        }
-      }
-
-      const runSearch = async (query: string, currentRequestId: number) => {
-        setStatus('正在搜索…')
-        clearResults()
-
-        try {
-          const pagefind = await (window.pagefindPromise ??
-            Promise.resolve(window.pagefind ?? null))
-          let searchResponse: { results: SearchResult[]; total: number }
-
-          if (pagefind) {
-            try {
-              searchResponse = await searchWithPagefind(pagefind, query)
-            } catch {
-              const results = searchDocuments(documents, query)
-              searchResponse = { results, total: results.length }
-            }
-          } else {
-            const results = searchDocuments(documents, query)
-            searchResponse = { results, total: results.length }
-          }
-
-          if (currentRequestId !== this.requestId) return
-
-          if (searchResponse.total === 0) {
-            setStatus('没有找到相关文章')
-            clearResults()
-            return
-          }
-
-          renderResults(searchResponse.results, searchResponse.total)
-        } catch {
-          if (currentRequestId !== this.requestId) return
-          setStatus('搜索暂时不可用，请稍后重试')
+        if (!trimmedQuery) {
           clearResults()
-        }
-      }
-
-      const onInput = () => {
-        const query = searchInput.value.trim()
-        const currentRequestId = ++this.requestId
-
-        window.clearTimeout(this.timeoutId)
-        clearBtn.classList.toggle('invisible', query.length === 0)
-
-        if (!query) {
-          setStatus('输入关键词搜索文章')
-          clearResults()
+          setStatus('等待输入...')
+          clearBtn.classList.add('invisible')
           return
         }
 
-        this.timeoutId = window.setTimeout(
-          () => void runSearch(query, currentRequestId),
-          SEARCH_DELAY
-        )
+        clearBtn.classList.remove('invisible')
+        setStatus('正在搜索...')
+
+        const currentRequestId = ++this.requestId
+
+        try {
+          if (window.pagefind) {
+            const pagefindResults = await window.pagefind.search(trimmedQuery)
+            if (this.requestId !== currentRequestId) return
+
+            const detailedResults = await Promise.all(
+              pagefindResults.results.map((result) => result.data())
+            )
+            if (this.requestId !== currentRequestId) return
+
+            const normalizedResults: SearchResult[] = detailedResults.map(
+              (item) => ({
+                url: item.url,
+                title: item.meta.title,
+                excerpt: item.excerpt
+              })
+            )
+
+            if (!normalizedResults.length) {
+              clearResults()
+              setStatus(`未找到匹配 "${trimmedQuery}" 的内容`)
+              return
+            }
+
+            setStatus(`找到 ${normalizedResults.length} 条结果`)
+            renderResults(normalizedResults, normalizedResults.length)
+            return
+          }
+        } catch {
+          // fallback
+        }
+
+        const localResults = searchDocuments(documents, trimmedQuery)
+        if (this.requestId !== currentRequestId) return
+
+        if (!localResults.length) {
+          clearResults()
+          setStatus(`未找到匹配 "${trimmedQuery}" 的内容`)
+          return
+        }
+
+        setStatus(`找到 ${localResults.length} 条结果`)
+        renderResults(localResults, localResults.length)
       }
 
-      searchInput.addEventListener('input', onInput)
+      searchInput.addEventListener('input', () => {
+        window.clearTimeout(this.timeoutId)
+        this.timeoutId = window.setTimeout(
+          () => performSearch(searchInput.value),
+          SEARCH_DELAY
+        )
+      })
+
       clearBtn.addEventListener('click', () => {
         searchInput.value = ''
-        onInput()
+        clearResults()
+        setStatus('等待输入...')
+        clearBtn.classList.add('invisible')
         searchInput.focus()
       })
-    }
 
-    disconnectedCallback() {
-      window.clearTimeout(this.timeoutId)
-      this.requestId += 1
+      // 支持从 URL ?q= 参数初始化搜索
+      const urlQuery = new URLSearchParams(window.location.search).get('q')
+      if (urlQuery) {
+        searchInput.value = urlQuery
+        performSearch(urlQuery)
+      }
     }
   }
 

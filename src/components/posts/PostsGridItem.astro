@@ -12,56 +12,44 @@ export interface Props {
 const { id, data } = Astro.props.post;
 ---
 
-<div class="group relative flex h-full flex-col gap-2 md:gap-4 md:p-4">
-  <div class="hidden justify-end md:flex">
-    <time
-      class="mt-2 text-sm opacity-75 transition-opacity duration-200 group-hover:opacity-100 sm:mt-0"
-      datetime={data.publishedDate.toISOString()}
-    >
-      {toDateString(data.publishedDate)}
-    </time>
-  </div>
+<div class="group subtle-card relative flex h-full flex-col justify-between p-5 rounded-lg">
+  <div>
+    <div class="flex items-center justify-between gap-2 mb-3">
+      <time
+        class="font-mono text-xs text-muted"
+        datetime={data.publishedDate.toISOString()}
+      >
+        {toDateString(data.publishedDate)}
+      </time>
+    </div>
 
-  <div class="flex justify-start md:justify-center">
     {
       data.previewImage && (
-        <div class="overflow-hidden rounded-md">
+        <div class="overflow-hidden rounded mb-4 border border-border-subtle h-36 w-full relative">
           <Image
             src={data.previewImage}
-            height={208}
+            height={160}
             alt={`${data.title} preview`}
-            class="mt-0 mb-0 max-h-52 w-fit object-contain transition-transform duration-500 ease-out group-hover:scale-105 md:h-32"
+            class="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
           />
         </div>
       )
     }
-  </div>
 
-  <a
-    class="group/title inline-flex items-center gap-1.5 text-xl font-medium transition-colors duration-200 group-hover:text-accent"
-    href={`/posts/${id}/`}
-    data-astro-prefetch
-  >
-    <span>{data.title}</span>
-    <span
-      class="iconify tabler--arrow-right text-accent text-lg opacity-0 -translate-x-2 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0"
-    />
-  </a>
-
-  <div class="flex justify-start md:hidden">
-    <time
-      class="mt-2 text-sm opacity-75 transition-opacity duration-200 group-hover:opacity-100 sm:mt-0"
-      datetime={data.publishedDate.toISOString()}
+    <a
+      class="block font-sans text-base font-medium tracking-tight text-title group-hover:opacity-80 transition-opacity duration-150 line-clamp-2"
+      href={`/posts/${id}/`}
+      data-astro-prefetch
     >
-      {toDateString(data.publishedDate)}
-    </time>
+      <span>{data.title}</span>
+    </a>
+
+    <p class="mt-2 text-xs text-muted line-clamp-3 leading-relaxed">
+      {data.description}
+    </p>
   </div>
 
-  <div class="flex w-full justify-start">
+  <div class="pt-3 mt-4 hairline-bottom">
     <TagsBar tags={resolveTags(data.tags)} />
-  </div>
-
-  <div class="opacity-75 transition-opacity duration-200 group-hover:opacity-90">
-    {data.description}
   </div>
 </div>

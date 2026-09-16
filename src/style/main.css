@@ -7,76 +7,164 @@
 
 @layer base {
   :root {
-    @apply bg-accent-bg selection:bg-accent/75 overflow-y-scroll scroll-smooth font-sans underline-offset-4 selection:text-white dark:selection:text-black;
+    color-scheme: dark;
+    background-color: var(--bg-canvas);
+    color: var(--text-body);
+    @apply overflow-y-scroll scroll-smooth font-sans antialiased;
+    letter-spacing: -0.012em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
 
-    img[data-img-embed=""],
-    img[data-img-embed="true"] {
-      border-color: rgb(var(--accent));
-      border-radius: var(--radius-sm);
-      border-width: 1px;
-    }
+  [data-mode="light"] {
+    color-scheme: light;
+    background-color: var(--bg-canvas);
+    color: var(--text-body);
+  }
 
-    .zoom-overlay {
-      background-color: #000000bf !important;
-    }
+  /* 物理级质感微细滚动条 */
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-medium);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--border-strong);
+  }
+
+  img[data-img-embed=""],
+  img[data-img-embed="true"] {
+    border-radius: 8px;
+    border: 1px solid var(--border-subtle);
+  }
+
+  .zoom-overlay {
+    background-color: var(--bg-canvas) !important;
+    opacity: 0.95 !important;
+    backdrop-filter: blur(20px);
   }
 }
 
-@utility clickable {
-  @apply hover:text-accent cursor-pointer opacity-75 transition-all duration-250 ease-out hover:opacity-100 active:scale-[0.95];
+@utility text-balance {
+  text-wrap: balance;
 }
 
-@utility soft-input {
-  @apply transition-[border-color,box-shadow,background-color,color] duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-accent-bg;
+@utility hairline-border {
+  border: 1px solid var(--border-subtle);
 }
 
-@utility fade-in-up {
-  animation: fade-in-up 240ms cubic-bezier(0.16, 1, 0.3, 1);
+@utility hairline-bottom {
+  border-bottom: 1px solid var(--border-subtle);
 }
 
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
+@utility subtle-card {
+  background-color: var(--card-surface);
+  border: 1px solid var(--border-subtle);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  &:hover {
+    border-color: var(--border-medium);
+    background-color: var(--card-hover);
+    transform: translateY(-1px);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+}
+
+@utility link-hover-line {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--text-title);
+    transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  &:hover::after {
+    width: 100%;
   }
 }
 
-/* Expressive Code 复制按钮微交互 */
+@utility kbd-pill {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  background: var(--kbd-bg);
+  border: 1px solid var(--kbd-border);
+  color: var(--text-muted);
+}
+
+/* Expressive Code 编辑器质感适配 */
+.expressive-code {
+  border-radius: 8px !important;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle) !important;
+  margin: 1.75rem 0 !important;
+}
+
 .expressive-code .copy button {
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, opacity 0.2s ease !important;
-}
-.expressive-code .copy button:hover {
-  transform: scale(1.1) !important;
-}
-.expressive-code .copy button:active {
-  transform: scale(0.9) !important;
+  transition: opacity 0.2s ease !important;
+  border-radius: 6px !important;
 }
 
 /* 锚点复制微提示 Toast */
 .anchor-toast {
   position: fixed;
-  bottom: 24px;
+  bottom: 28px;
   left: 50%;
-  transform: translateX(-50%) translateY(16px) scale(0.95);
+  transform: translateX(-50%) translateY(12px);
   opacity: 0;
   pointer-events: none;
-  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 10000;
+  background: var(--card-surface);
+  border: 1px solid var(--border-medium);
+  color: var(--text-title);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.2);
 }
 .anchor-toast.show {
-  transform: translateX(-50%) translateY(0) scale(1);
+  transform: translateX(-50%) translateY(0);
   opacity: 1;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .fade-in-up,
-  .expressive-code .copy button {
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
-  }
+/* 全站 Typography 排版微调 */
+.prose {
+  color: var(--text-body) !important;
+}
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  color: var(--text-title) !important;
+  letter-spacing: -0.02em;
+}
+.prose strong {
+  color: var(--text-title) !important;
+}
+.prose a {
+  color: var(--text-title) !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+  text-decoration-color: var(--border-medium) !important;
+  transition: text-decoration-color 0.2s ease;
+}
+.prose a:hover {
+  text-decoration-color: var(--text-title) !important;
+}
+.prose blockquote {
+  color: var(--text-muted) !important;
+  border-left-color: var(--border-medium) !important;
+  font-style: italic;
+}
+.prose hr {
+  border-color: var(--border-subtle) !important;
 }

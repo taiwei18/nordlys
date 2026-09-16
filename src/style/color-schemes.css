@@ -1,31 +1,53 @@
 @layer base {
-  .scheme-mono {
-    --accent: 0, 0, 0;
-    --accent-bg: 255, 255, 255;
-
-    &[data-mode="dark"] {
-      --accent: 255, 255, 255;
-      --accent-bg: 0, 0, 0;
-    }
-  }
-
-  .scheme-nord {
-    --accent: 94, 129, 172;
-    --accent-bg: 242, 244, 248;
-
-    &[data-mode="dark"] {
-      --accent: 136, 192, 208;
-      --accent-bg: 36, 41, 51;
-    }
-  }
-
+  /* 极致高阶双模色彩体系：Warm Paper / Obsidian Void */
+  :root,
+  .scheme-mono,
+  .scheme-nord,
   .scheme-aurora {
-    --accent: 255, 215, 0;
-    --accent-bg: 240, 255, 240;
+    --bg-canvas: #09090b;
+    --text-title: #f4f4f5;
+    --text-body: #a1a1aa;
+    --text-muted: #71717a;
+    --text-faint: #52525b;
+    
+    --card-surface: #121215;
+    --card-hover: #18181b;
+    
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-medium: rgba(255, 255, 255, 0.16);
+    --border-strong: rgba(255, 255, 255, 0.28);
 
-    &[data-mode="dark"] {
-      --accent: 0, 253, 119;
-      --accent-bg: 35, 39, 48;
+    --accent-highlight: #ffffff;
+    --accent-selection-bg: rgba(255, 255, 255, 0.15);
+    --accent-selection-text: #ffffff;
+
+    --kbd-bg: rgba(255, 255, 255, 0.06);
+    --kbd-border: rgba(255, 255, 255, 0.12);
+
+    --ambient-spotlight: rgba(255, 255, 255, 0.035);
+
+    &[data-mode="light"] {
+      --bg-canvas: #fafaf9;
+      --text-title: #18181b;
+      --text-body: #52525b;
+      --text-muted: #71717a;
+      --text-faint: #a1a1aa;
+
+      --card-surface: #ffffff;
+      --card-hover: #f4f4f5;
+
+      --border-subtle: rgba(0, 0, 0, 0.07);
+      --border-medium: rgba(0, 0, 0, 0.14);
+      --border-strong: rgba(0, 0, 0, 0.25);
+
+      --accent-highlight: #09090b;
+      --accent-selection-bg: rgba(0, 0, 0, 0.08);
+      --accent-selection-text: #09090b;
+
+      --kbd-bg: rgba(0, 0, 0, 0.04);
+      --kbd-border: rgba(0, 0, 0, 0.1);
+
+      --ambient-spotlight: rgba(0, 0, 0, 0.02);
     }
   }
 }

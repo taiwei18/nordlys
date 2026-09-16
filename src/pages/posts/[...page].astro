@@ -28,14 +28,21 @@ const pageDescription =
 const frontmatter: PageLayoutProps["frontmatter"] = {
   title: pageTitle,
   description: pageDescription,
-  activeHeaderLink: "Blog",
+  activeHeaderLink: "博客",
 };
 
 const PageDescription = getPostsPageDescription();
 ---
 
 <PageLayout {frontmatter}>
-  <h1>文章{page.currentPage > 1 && <span>{` · 第 ${page.currentPage} 页`}</span>}</h1>
+  <header class="mb-10 pb-4 hairline-bottom">
+    <h1 class="font-sans text-2xl sm:text-3xl font-semibold tracking-tight text-title">
+      文章
+    </h1>
+    <p class="mt-2 text-sm text-muted font-sans">
+      共 {page.total} 篇工程实践与技术思考。
+    </p>
+  </header>
 
   {PageDescription && <PageDescription />}
 

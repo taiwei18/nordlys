@@ -1,18 +1,17 @@
 ---
 import FooterItem from '@/components/layout/FooterItem.astro'
-import Separator from '@/components/layout/Separator.astro'
 import config from '@/theme.config'
 
 const currentYear = new Date().getFullYear()
 ---
 
-<footer class="mt-auto">
-  <Separator />
-  <div class="flex items-center justify-between gap-2 py-4 sm:py-8">
-    <span class="text-base opacity-75">&#169; {currentYear} {config.author}</span>
+<footer class="mt-auto w-full pt-16 pb-12 transition-colors duration-300">
+  <div class="mx-auto flex max-w-2xl flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-6 sm:px-0 border-t border-border-subtle pt-6">
+    <div class="font-mono text-xs text-muted">
+      &#169; {currentYear} {config.author}
+    </div>
 
-    <div class="grow"></div>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-4 text-xs font-mono text-muted">
       {config.footerItems.map((item) => <FooterItem {item} />)}
     </div>
   </div>
