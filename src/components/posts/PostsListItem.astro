@@ -31,7 +31,7 @@ const { id, data } = Astro.props.post
     {data.description}
   </p>
 
-  <div class="mt-3 flex items-center gap-2">
+  <div class="mt-3 flex flex-wrap items-center gap-1.5">
     {
       data.tags.map((tag: string) => (
         <a

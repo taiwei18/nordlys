@@ -21,8 +21,8 @@ export const isNavItem = (item: HeaderItemType): item is NavItemType =>
   Object.hasOwn(item, "href");
 ---
 
-<header class="w-full pt-8 pb-12 sm:pt-14 sm:pb-16 transition-colors duration-300">
-  <div class="mx-auto flex max-w-2xl items-center justify-between px-6 sm:px-0">
+<header class="w-full pt-6 pb-10 sm:pt-14 sm:pb-16 transition-colors duration-300">
+  <div class="mx-auto flex max-w-2xl items-center justify-between px-5 sm:px-6 md:px-0">
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:bg-title focus:px-3 focus:py-1 focus:text-canvas font-mono text-xs">
       Skip to content
     </a>
@@ -86,7 +86,7 @@ export const isNavItem = (item: HeaderItemType): item is NavItemType =>
     <div class="flex items-center gap-3 sm:hidden">
       <a
         href="/search/"
-        class="text-muted hover:text-title transition-colors p-1"
+        class="flex size-11 items-center justify-center rounded-full text-muted hover:text-title hover:bg-surface-hover transition-colors"
         aria-label="Search"
       >
         <span class="iconify tabler--search text-lg"></span>
@@ -97,9 +97,9 @@ export const isNavItem = (item: HeaderItemType): item is NavItemType =>
   </div>
 
   <!-- Mobile Drawer -->
-  <div id="mobile-nav" class="hidden sm:hidden hairline-bottom px-6 py-4 mt-4">
-    <nav>
-      <ul class="flex flex-col gap-3 text-sm">
+  <div id="mobile-nav" class="hidden sm:hidden hairline-bottom px-5 pt-2 pb-5 mt-2">
+    <nav aria-label="Mobile navigation">
+      <ul class="flex flex-col gap-1 text-sm">
         {
           config.navbarItems.map((item) => (
             <li>

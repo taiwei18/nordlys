@@ -38,9 +38,9 @@ const frontmatter: PageLayoutProps['frontmatter'] = {
           <div class="font-serif italic text-8xl sm:text-9xl tracking-tighter text-title leading-none">
             Void.
           </div>
-          <div class="font-mono text-xs text-muted tracking-widest uppercase mt-4 flex items-center gap-2">
-            <span class="inline-block w-8 h-px bg-[var(--text-title)]"></span>
-            <span>ERROR CODE: HTTP_404_PAGE_MISSING</span>
+          <div class="font-mono text-xs text-muted tracking-widest uppercase mt-4 flex items-start gap-2">
+            <span class="mt-2 inline-block w-6 sm:w-8 shrink-0 h-px bg-[var(--text-title)]"></span>
+            <span class="min-w-0 break-words">ERROR CODE: HTTP_404_PAGE_MISSING</span>
           </div>
         </div>
 
@@ -99,10 +99,10 @@ const frontmatter: PageLayoutProps['frontmatter'] = {
 
       <!-- 底部脚注：纯粹的杂志元信息条 -->
       <div class="mt-12 pt-6 hairline-top flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono text-[11px] text-muted">
-        <div class="flex items-center gap-2">
+        <div class="flex min-w-0 flex-wrap items-center gap-2">
           <span class="text-faint">$</span>
           <span>REQUEST:</span>
-          <span id="editorial-path" class="text-title font-medium">/</span>
+          <span id="editorial-path" class="min-w-0 break-all text-title font-medium">/</span>
         </div>
         <div class="flex items-center gap-4 text-faint">
           <span>LATITUDE: UNKNOWN</span>

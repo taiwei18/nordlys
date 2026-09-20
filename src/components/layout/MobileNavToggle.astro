@@ -1,8 +1,10 @@
 <mobile-nav-toggle>
   <button
-    class="group flex items-center justify-center rounded-full p-1.5 text-current/80 transition-all duration-200 hover:bg-accent/10 hover:text-accent active:scale-90"
+    class="group flex size-11 items-center justify-center rounded-full text-current/80 transition-all duration-200 hover:bg-surface-hover hover:text-title active:scale-90"
     title="Toggle mobile nav"
-    aria-label="closed"
+    aria-label="打开导航菜单"
+    aria-controls="mobile-nav"
+    aria-expanded="false"
   >
     <span
       aria-hidden="true"
@@ -29,13 +31,15 @@
       const close = () => {
         nav.classList.add('hidden')
         icon.classList.replace(iconOpen, iconClosed)
-        button.setAttribute('aria-label', 'closed')
+        button.setAttribute('aria-label', '打开导航菜单')
+        button.setAttribute('aria-expanded', 'false')
       }
 
       const open = () => {
         nav.classList.remove('hidden')
         icon.classList.replace(iconClosed, iconOpen)
-        button.setAttribute('aria-label', 'open')
+        button.setAttribute('aria-label', '关闭导航菜单')
+        button.setAttribute('aria-expanded', 'true')
       }
 
       const handleToggle = () => {
