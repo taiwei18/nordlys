@@ -28,7 +28,15 @@
           button.setAttribute('aria-label', newMode)
         }
 
-        if (!document.startViewTransition) {
+        const useSimpleTransition =
+          !document.startViewTransition ||
+          window.matchMedia('(pointer: coarse)').matches ||
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+        // Mobile browsers have inconsistent View Transition support. Apply the
+        // mode synchronously there so a tap can never be swallowed by a
+        // partially implemented transition API.
+        if (useSimpleTransition) {
           switchMode()
           return
         }
@@ -40,26 +48,29 @@
           Math.max(y, window.innerHeight - y)
         )
 
-        const transition = document.startViewTransition(() => {
-          switchMode()
-        })
+        try {
+          const transition = document.startViewTransition(switchMode)
 
-        transition.ready.then(() => {
-          const duration = 450
-          document.documentElement.animate(
-            {
-              clipPath: [
-                `circle(0px at ${x}px ${y}px)`,
-                `circle(${endRadius}px at ${x}px ${y}px)`
-              ]
-            },
-            {
-              duration: duration,
-              easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
-              pseudoElement: '::view-transition-new(root)'
-            }
-          )
-        })
+          transition.ready
+            .then(() => {
+              document.documentElement.animate(
+                {
+                  clipPath: [
+                    `circle(0px at ${x}px ${y}px)`,
+                    `circle(${endRadius}px at ${x}px ${y}px)`
+                  ]
+                },
+                {
+                  duration: 450,
+                  easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                  pseudoElement: '::view-transition-new(root)'
+                }
+              )
+            })
+            .catch(() => {})
+        } catch {
+          switchMode()
+        }
       }
 
       button.addEventListener('click', handleToggle)

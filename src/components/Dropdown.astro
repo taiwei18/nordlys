@@ -22,7 +22,7 @@ const menuId = generateItemId(`${label}-menu`)
 ---
 
 <dropdown-parent
-  class="relative inline-block"
+  class="relative block sm:inline-block"
   data-is-active={String(isActive)}
 >
   <button
@@ -31,7 +31,7 @@ const menuId = generateItemId(`${label}-menu`)
     aria-controls={menuId}
     aria-expanded="false"
     class:list={[
-      'group relative flex min-h-11 cursor-pointer items-center gap-1.5 whitespace-nowrap transition-colors duration-200 active:scale-95 sm:min-h-0 sm:py-1',
+      'group relative flex min-h-11 w-full cursor-pointer items-center gap-1.5 whitespace-nowrap transition-colors duration-200 active:scale-95 sm:min-h-0 sm:w-auto sm:py-1',
       { 'text-accent font-medium': isActive },
       {
         'text-current/80 hover:text-accent opacity-85 hover:opacity-100':
@@ -56,7 +56,7 @@ const menuId = generateItemId(`${label}-menu`)
     </span>
     <span
       aria-hidden="true"
-      class="iconify tabler--chevron-down text-xl transition-transform duration-300 ease-out group-hover:translate-y-0.5"
+      class="iconify tabler--chevron-down ml-auto text-xl transition-transform duration-300 ease-out group-hover:translate-y-0.5 sm:ml-0"
     ></span>
   </button>
 
@@ -64,7 +64,7 @@ const menuId = generateItemId(`${label}-menu`)
     id={menuId}
     role="menu"
     aria-labelledby={buttonId}
-    class="border-accent/20 bg-accent-bg/95 backdrop-blur-md absolute right-0 z-20 mt-3 hidden min-w-[130px] origin-top-right flex-col gap-1 rounded-lg border p-1.5 shadow-lg shadow-black/10 dark:shadow-black/30"
+    class="border-accent/20 bg-accent-bg/95 mt-1 hidden w-full flex-col gap-1 rounded-lg border p-1.5 shadow-sm sm:absolute sm:right-0 sm:z-20 sm:mt-3 sm:min-w-[130px] sm:w-auto sm:origin-top-right sm:backdrop-blur-md sm:shadow-lg sm:shadow-black/10 dark:sm:shadow-black/30"
   >
     {
       children.map((item) => (
