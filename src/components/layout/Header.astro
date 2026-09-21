@@ -35,6 +35,7 @@ export const isNavItem = (item: HeaderItemType): item is NavItemType =>
     >
       <div class="h-6 w-6 text-title transition-transform duration-300 group-hover:rotate-[-6deg] group-hover:scale-105">
         <Image
+          loading="eager"
           src={logo}
           alt={`${config.title} logo`}
           width={24}
