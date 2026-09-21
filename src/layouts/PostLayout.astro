@@ -121,15 +121,24 @@ frontmatter.keywords = [post.data.title, ...post.data.tags]
   </header>
 
   {
-    !!post.data.showToC && (
+    !!post.data.showToC && headings.length >= 2 && (
       <div
         slot="aside"
         class="border-l border-border-subtle pl-4 py-1"
       >
-        <div class="font-mono text-xs uppercase tracking-widest text-muted mb-3">
-          On this page
+        <div class="font-mono text-[11px] uppercase tracking-widest text-muted mb-3.5 flex items-center gap-1.5">
+          <span class="iconify tabler--list-tree text-accent text-xs" aria-hidden="true" />
+          <span>On this page</span>
         </div>
         <ToC {headings} />
+      </div>
+    )
+  }
+
+  {
+    !!post.data.showToC && headings.length >= 2 && (
+      <div class="2xl:hidden">
+        <ToC {headings} isInline />
       </div>
     )
   }

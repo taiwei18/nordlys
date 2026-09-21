@@ -1,117 +1,160 @@
 ---
-import Prose from '@/components/layout/Prose.astro'
-
 interface Heading {
   depth: number
   slug: string
   text: string
 }
 
-type ProcessedHeading = Heading & { children: ProcessedHeading[] }
-
 export interface Props {
   headings: Heading[]
-  open?: boolean
+  isInline?: boolean
+  class?: string
 }
 
-const { headings, open = false } = Astro.props
+const { headings, isInline = false, class: className = '' } = Astro.props
 
-function appendHeading(headings: ProcessedHeading[], newHeading: Heading) {
-  const previousHeading = headings[headings.length - 1]
+const filteredHeadings = (headings || []).filter(
+  (h) => h.depth === 2 || h.depth === 3
+)
 
-  if (!previousHeading || previousHeading.depth === newHeading.depth)
-    headings.push({ ...newHeading, children: [] })
-  else appendHeading(previousHeading.children, newHeading)
-}
-
-const processedHeadings: ProcessedHeading[] = []
-
-headings.forEach((heading) => {
-  appendHeading(processedHeadings, heading)
+let h2Counter = 0
+const processedHeadings = filteredHeadings.map((h) => {
+  if (h.depth === 2) {
+    h2Counter++
+    return { ...h, indexStr: String(h2Counter).padStart(2, '0') }
+  }
+  return { ...h, indexStr: '·' }
 })
-
-function renderList(headings: ProcessedHeading[]): string {
-  if (!headings.length) return ''
-
-  return `<ul class="mt-1 mb-1 list-none pl-2">
-          ${headings
-            .map(
-              (heading) => `<li class="my-0.5">
-                              <a href="#${heading.slug}" class="toc-el block px-2.5 py-1 text-sm text-current/75 no-underline transition-all duration-200 hover:text-accent hover:translate-x-1" aria-label="${heading.text}">
-                                ${heading.text}
-                              </a>
-                              ${renderList(heading.children)}
-                            </li>`
-            )
-            .join('')}
-          </ul>`
-}
 ---
 
-<div class="overflow-x-hidden p-4">
-  <Prose>
-    <h2 class="no-anchor mb-2">Table of Contents</h2>
+{
+  processedHeadings.length > 0 && (
+    isInline ? (
+      <nav
+        aria-label="文章导览目录"
+        class={`toc-inline not-prose mb-8 sm:mb-10 rounded-[2px] border border-border-subtle bg-surface/50 p-4 sm:p-5 ${className}`}
+      >
+        <div class="flex items-center justify-between border-b border-border-subtle/80 pb-2.5 font-mono text-xs">
+          <div class="flex items-center gap-2 font-medium text-title">
+            <span class="iconify tabler--list-tree text-accent text-sm" aria-hidden="true" />
+            <span>文章导览</span>
+            <span class="text-faint font-normal text-[11px]">/ Contents</span>
+          </div>
+          <span class="font-mono text-[11px] text-muted tabular-nums">
+            {processedHeadings.length} 节
+          </span>
+        </div>
 
-    <details {open}>
-      <summary>Show more</summary>
-      <Fragment set:html={renderList(processedHeadings)} />
-    </details>
-  </Prose>
-</div>
+        <ul class="mt-3.5 space-y-1.5 text-xs font-sans">
+          {processedHeadings.map((h) => (
+            <li class={h.depth === 3 ? 'pl-4 sm:pl-5' : ''}>
+              <a
+                href={`#${h.slug}`}
+                class="group inline-flex items-baseline gap-2 py-0.5 text-muted transition-colors hover:text-title no-underline line-clamp-1"
+              >
+                <span class="font-mono text-[10px] text-faint group-hover:text-accent transition-colors tabular-nums shrink-0">
+                  {h.indexStr}
+                </span>
+                <span class="group-hover:translate-x-0.5 transition-transform duration-150 leading-relaxed">
+                  {h.text}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    ) : (
+      <nav
+        aria-label="页面大纲目录"
+        class={`toc-aside not-prose font-sans text-xs select-none ${className}`}
+      >
+        <ul class="space-y-1">
+          {processedHeadings.map((h) => (
+            <li class={h.depth === 3 ? 'pl-3' : ''}>
+              <a
+                href={`#${h.slug}`}
+                data-toc-slug={h.slug}
+                class="toc-aside-link block rounded-[2px] px-2.5 py-1 text-[12px] leading-relaxed text-muted transition-all duration-150 hover:bg-surface-hover hover:text-title no-underline line-clamp-2"
+              >
+                {h.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )
+  )
+}
 
 <style is:global>
-  .toc-el {
-    border-left: 2px solid transparent;
-  }
-  .toc-el.toc-active {
-    border-left-color: rgb(var(--accent)) !important;
+  .toc-aside-link.is-active {
+    color: var(--accent) !important;
+    font-weight: 500 !important;
+    background-color: color-mix(in oklab, var(--accent) 10%, transparent) !important;
   }
 </style>
 
 <script>
-  function attachTocObserver() {
-    const intersectionRatios: Record<string, number> = {}
+  function setupTocScrollSpy() {
+    const asideLinks = document.querySelectorAll<HTMLAnchorElement>('.toc-aside-link')
+    if (asideLinks.length === 0) return
 
-    const tocObserver = new IntersectionObserver(
-      (articleSections) => {
-        for (const section of articleSections) {
-          const sectionId = section.target.querySelector('h2,h3,h4,h5')?.id
-
-          if (sectionId)
-            intersectionRatios[sectionId] = section.intersectionRatio
-        }
-
-        document
-          .querySelectorAll('.toc-el')
-          .forEach((e) => {
-            e.classList.remove('toc-active', 'text-accent', 'font-medium', 'bg-accent/10', 'translate-x-1')
-          })
-
-        const maxVisibility = Math.max(...Object.values(intersectionRatios))
-        const [sectionId] =
-          Object.entries(intersectionRatios).find(
-            ([_id, visibility]) => visibility == maxVisibility && visibility > 0
-          ) || []
-
-        if (sectionId) {
-          document
-            .querySelectorAll(`[href="#${sectionId}"]`)
-            .forEach((el) => {
-              el.classList.add('toc-active', 'text-accent', 'font-medium', 'bg-accent/10', 'translate-x-1')
-            })
-        }
-      },
-      {
-        threshold: [0.2, 0.5, 0.8, 1]
-      }
+    const headings = Array.from(
+      document.querySelectorAll<HTMLElement>('article h2[id], article h3[id]')
     )
+    if (headings.length === 0) return
 
-    document
-      .querySelectorAll('article section')
-      .forEach((articleSection) => tocObserver.observe(articleSection))
+    const controller = new AbortController()
+    const { signal } = controller
+
+    let activeSlug = ''
+
+    const updateActiveHeading = () => {
+      const scrollPosition = window.scrollY + 120 // Header height offset
+      let currentHeading: HTMLElement | null = null
+
+      for (const h of headings) {
+        if (h.offsetTop <= scrollPosition) {
+          currentHeading = h
+        } else {
+          break
+        }
+      }
+
+      const slug = currentHeading ? currentHeading.id : headings[0]?.id || ''
+      if (slug === activeSlug) return
+      activeSlug = slug
+
+      asideLinks.forEach((link) => {
+        if (link.dataset.tocSlug === slug) {
+          link.classList.add('is-active')
+          link.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+        } else {
+          link.classList.remove('is-active')
+        }
+      })
+    }
+
+    window.addEventListener('scroll', updateActiveHeading, {
+      passive: true,
+      signal
+    })
+    updateActiveHeading()
+
+    return () => {
+      controller.abort()
+    }
   }
 
+  let cleanupSpy: (() => void) | undefined
+
   document.addEventListener('astro:page-load', () => {
-    attachTocObserver()
+    cleanupSpy?.()
+    cleanupSpy = setupTocScrollSpy()
+  })
+
+  document.addEventListener('astro:before-swap', () => {
+    cleanupSpy?.()
+    cleanupSpy = undefined
   })
 </script>
