@@ -49,52 +49,15 @@
           {
             yPercent: 0,
             opacity: 1,
-            stagger: 0.08,
-            duration: 0.8,
+            stagger: 0.1,
+            duration: 0.75,
             ...reset
           },
-          0.06
+          0.04
         )
       }
 
-      // 2. Scramble Effect for Hero Tagline
-      const scrambleEl = document.querySelector<HTMLElement>('[data-hero-scramble]')
-      if (scrambleEl) {
-        const originalText = scrambleEl.dataset.heroScramble || scrambleEl.textContent || '写得清楚。'
-        const chars = '0123456789ABCDEF!<>-_\\/[]{}~=+*^?#'
-        const runScramble = (duration = 0.8) => {
-          const steps = Math.floor(duration * 28)
-          let step = 0
-          let timer: number | undefined = undefined
-          timer = window.setInterval(() => {
-            step++
-            const progress = step / steps
-            scrambleEl.textContent = originalText
-              .split('')
-              .map((char, index) => {
-                if (char === ' ') return ' '
-                if (index / originalText.length < progress) return char
-                return chars[Math.floor(Math.random() * chars.length)]
-              })
-              .join('')
-
-            if (step >= steps && timer !== undefined) {
-              window.clearInterval(timer)
-              scrambleEl.textContent = originalText
-            }
-          }, 1000 / 28)
-
-          signal.addEventListener('abort', () => {
-            if (timer !== undefined) window.clearInterval(timer)
-            scrambleEl.textContent = originalText
-          })
-        }
-
-        entranceTimeline.call(() => runScramble(0.85), undefined, 0.35)
-        scrambleEl.addEventListener('mouseenter', () => runScramble(0.5), { signal })
-      }
-
-      // 3. Staggered reveal for articles, cards & milestones on scroll
+      // 2. Staggered reveal for articles, cards & milestones on scroll
       const observer = new IntersectionObserver(
         (entries) => {
           let staggerIndex = 0
@@ -241,7 +204,7 @@
         'focusin',
         (event) => {
           const target = event.target as HTMLElement
-          if (target.closest('.hero-surface')) entranceTimeline.progress(1)
+          if (target.closest('section, main')) entranceTimeline.progress(1)
           const element = target.closest('[data-reveal]')
           if (element) {
             seen.add(element)
@@ -258,36 +221,6 @@
         controller.abort()
         activeTweens.forEach((t) => t.kill())
         activeTweens.clear()
-      }
-    })
-
-    // 8. Interactive pointer illumination on Hero
-    media.add('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
-      const hero = document.querySelector<HTMLElement>('.hero-surface')
-      const light = hero?.querySelector<HTMLElement>('[data-hero-light]')
-      if (!hero || !light) return
-      const controller = new AbortController()
-      const x = gsap.quickTo(light, 'x', { duration: 0.8, ease: 'power3.out' })
-      const y = gsap.quickTo(light, 'y', { duration: 0.8, ease: 'power3.out' })
-      hero.addEventListener(
-        'pointermove',
-        (event) => {
-          const rect = hero.getBoundingClientRect()
-          x((event.clientX - rect.left - rect.width / 2) * 0.14)
-          y((event.clientY - rect.top - rect.height / 2) * 0.14)
-        },
-        { signal: controller.signal }
-      )
-      hero.addEventListener(
-        'pointerleave',
-        () => {
-          x(0)
-          y(0)
-        },
-        { signal: controller.signal }
-      )
-      return () => {
-        controller.abort()
       }
     })
 

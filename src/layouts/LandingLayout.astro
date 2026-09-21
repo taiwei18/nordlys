@@ -23,79 +23,40 @@ const recentPosts = allPosts.slice(0, 6)
 
     <main id="main" class="mx-auto flex w-full max-w-2xl flex-1 flex-col px-5 sm:px-6 md:px-0">
       <!-- Precision Hero Section -->
-      <section class="hero-surface relative mb-16 sm:mb-20 overflow-hidden border-y border-border-subtle py-10 sm:py-14">
-        <!-- Fluid Ambient Light -->
-        <div data-hero-light class="pointer-events-none absolute -right-16 -top-24 h-56 w-56 rounded-full bg-accent/12 blur-3xl" aria-hidden="true"></div>
-
-        <div class="relative">
-          <!-- Main Heading with Scramble Reveal -->
-          <h1 class="max-w-xl text-balance font-sans text-4xl font-semibold leading-[1.05] tracking-[-0.055em] text-title sm:text-6xl">
-            <span class="block overflow-hidden pb-1"><span data-title-line class="block">把复杂的技术，</span></span>
-            <span class="block overflow-hidden pb-1 text-accent"><span data-title-line data-hero-scramble="写得清楚。" class="block select-none cursor-default">写得清楚。</span></span>
+      <section class="relative mb-10 sm:mb-14 pt-1 sm:pt-3">
+        <div class="relative max-w-xl">
+          <!-- Main Heading with Dual Tone & Terminal Point -->
+          <h1 class="font-sans text-3xl sm:text-5xl lg:text-[3.25rem] font-medium tracking-[-0.035em] leading-[1.18]">
+            <span class="block overflow-hidden pb-1">
+              <span data-title-line class="block text-body font-normal">把复杂的技术，</span>
+            </span>
+            <span class="block overflow-hidden pb-1 mt-1">
+              <span data-title-line class="inline-flex items-baseline flex-wrap font-semibold text-title">
+                <span>写得</span>
+                <span class="text-accent mx-0.5 drop-shadow-[0_0_18px_rgba(var(--accent),0.25)]">清楚</span>
+                <span class="inline-block size-2 sm:size-2.5 bg-accent rounded-[1px] ml-1.5 shadow-[0_0_10px_rgba(var(--accent),0.5)] transition-all duration-300 ease-out hover:scale-125 hover:shadow-[0_0_14px_rgba(var(--accent),0.9)]" aria-hidden="true"></span>
+              </span>
+            </span>
           </h1>
 
-          <p data-entrance class="mt-7 max-w-lg text-base leading-8 text-body sm:text-lg">
-            专注于现代前端架构、AI 协同系统与极致交互触感。记录真实构建与工程复盘，寻找纯粹、轻量而可靠的交付方式。
-          </p>
-
-          <div data-entrance class="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-mono text-muted">
-            <span class="text-body font-medium">Writing & Architecture</span>
-            <a href="/about/" data-magnetic class="group inline-flex items-center gap-2 border border-border-subtle bg-surface px-3 py-1 font-sans text-xs font-medium text-title transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-accent hover:text-accent active:scale-[0.98]">
+          <!-- Tactile Action Bar -->
+          <div data-entrance class="mt-7 sm:mt-8 flex flex-wrap items-center gap-3.5 text-xs font-mono">
+            <a
+              href="/about/"
+              data-magnetic
+              class="group inline-flex items-center gap-2 rounded-[2px] border border-border-medium bg-surface/90 px-3.5 py-1.5 font-sans text-xs font-medium text-title shadow-sm transition-all duration-200 hover:border-accent hover:text-accent active:scale-[0.98]"
+            >
               <span>关于 TaiWei</span>
-              <span class="flex size-3.5 items-center justify-center border border-border-subtle bg-canvas font-mono text-[9px] text-muted transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0.5 group-hover:text-accent" aria-hidden="true">→</span>
+              <span class="text-accent transition-transform duration-200 ease-out group-hover:translate-x-0.5" aria-hidden="true">→</span>
             </a>
-          </div>
-        </div>
-      </section>
 
-      <!-- Featured Focus Spotlight Cards -->
-      <section data-reveal class="mb-16 sm:mb-20 flex flex-col gap-4">
-        <div class="flex items-center justify-between border-b border-border-subtle pb-3 font-mono text-xs">
-          <h2 class="font-sans text-base font-semibold text-title tracking-tight">核心实践方向</h2>
-          <span class="text-muted font-mono text-xs uppercase tracking-wider">Focus & Systems</span>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-          <!-- Card 1: Architecture -->
-          <div data-spotlight data-reveal-child class="spotlight-card p-6 flex flex-col justify-between gap-5">
-            <div class="flex flex-col gap-2.5">
-              <div class="flex items-center justify-between font-mono text-xs text-muted">
-                <span class="text-accent uppercase tracking-wider">Architecture</span>
-                <span class="text-faint">01</span>
-              </div>
-              <h3 class="font-sans text-base sm:text-lg font-semibold text-title">现代 Web 架构与触感物理</h3>
-              <p class="text-xs sm:text-sm text-muted leading-relaxed">
-                以 Astro 5、静态先验与原生规范为底座，结合精密阻尼动效与微圆角秩序，追求毫秒级首屏与极致纯粹的阅读体验。
-              </p>
-            </div>
-            <div class="flex flex-wrap gap-2 pt-1">
-              {['Astro 5', 'TypeScript', 'GSAP Motion', 'Zero-JS Base'].map((tag) => (
-                <span class="border border-border-subtle bg-surface px-2.5 py-1 font-mono text-xs text-title transition-colors hover:border-accent hover:text-accent">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <!-- Card 2: AI Agent Systems -->
-          <div data-spotlight data-reveal-child class="spotlight-card p-6 flex flex-col justify-between gap-5">
-            <div class="flex flex-col gap-2.5">
-              <div class="flex items-center justify-between font-mono text-xs text-muted">
-                <span class="text-accent uppercase tracking-wider">AI Systems</span>
-                <span class="text-faint">02</span>
-              </div>
-              <h3 class="font-sans text-base sm:text-lg font-semibold text-title">AI 协同与编码 Agent 工具链</h3>
-              <p class="text-xs sm:text-sm text-muted leading-relaxed">
-                深度探索 Claude Code、Pi CLI 与多模型协作流，结合上下文记忆与自动化评测系统，构建真实可靠的自主交付流水线。
-              </p>
-            </div>
-            <div class="flex flex-wrap gap-2 pt-1">
-              {['Claude Code', 'Pi Agent', 'MCP Protocol', 'Agent Harness'].map((tag) => (
-                <span class="border border-border-subtle bg-surface px-2.5 py-1 font-mono text-xs text-title transition-colors hover:border-accent hover:text-accent">
-                  {tag}
-                </span>
-              ))}
-            </div>
+            <a
+              href="/posts/"
+              class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-muted transition-colors hover:text-title"
+            >
+              <span>浏览全部文章</span>
+              <span class="text-[10px] text-faint tabular-nums font-mono">({allPosts.length})</span>
+            </a>
           </div>
         </div>
       </section>
@@ -115,7 +76,7 @@ const recentPosts = allPosts.slice(0, 6)
             recentPosts.map((post, index) => (
               <article data-reveal class="post-row group border-b border-border-subtle py-6 sm:py-7">
                 <div class="flex flex-col gap-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-                  <a href={`/posts/${post.id}/`} class="interactive-underline inline-flex items-start gap-2.5 text-base font-medium tracking-tight text-title sm:text-lg" data-astro-prefetch>
+                  <a href={`/posts/${post.id}/`} class="interactive-underline inline-flex items-start gap-2.5 text-base font-medium tracking-tight text-title sm:text-lg no-underline" data-astro-prefetch>
                     <span class="font-mono text-xs text-accent font-normal mt-1 opacity-70 group-hover:opacity-100 transition-opacity">
                       {String(index + 1).padStart(2, '0')}
                     </span>
@@ -124,7 +85,7 @@ const recentPosts = allPosts.slice(0, 6)
                       <span class="iconify tabler--arrow-up-right text-[11px]"></span>
                     </span>
                   </a>
-                  <time class="shrink-0 font-mono text-xs text-muted" datetime={post.data.publishedDate.toISOString()}>
+                  <time class="shrink-0 font-mono text-xs text-muted tabular-nums" datetime={post.data.publishedDate.toISOString()}>
                     {toDateString(post.data.publishedDate)}
                   </time>
                 </div>
