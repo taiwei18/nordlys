@@ -1,0 +1,299 @@
+<script>
+  import { gsap } from 'gsap'
+
+  let cleanup = () => {}
+
+  const setupMotion = () => {
+    cleanup()
+    const media = gsap.matchMedia()
+
+    media.add('(prefers-reduced-motion: no-preference)', () => {
+      const controller = new AbortController()
+      const { signal } = controller
+      const seen = new WeakSet<Element>()
+      const activeTweens = new Set<gsap.core.Tween | gsap.core.Timeline>()
+      const reset = { clearProps: 'transform,opacity' }
+
+      // 1. Coordinated entrance sequence for page headers & key landmarks
+      const entrances = gsap.utils.toArray<HTMLElement>('[data-entrance]')
+      const lines = gsap.utils.toArray<HTMLElement>('[data-title-line]')
+      const entranceTimeline = gsap.timeline({ defaults: { ease: 'power3.out' } })
+      activeTweens.add(entranceTimeline)
+
+      if (entrances.length) {
+        // Sort entrances if data-entrance-order is provided
+        entrances.sort((a, b) => {
+          const orderA = Number(a.dataset.entranceOrder ?? 0)
+          const orderB = Number(b.dataset.entranceOrder ?? 0)
+          return orderA - orderB
+        })
+
+        entranceTimeline.fromTo(
+          entrances,
+          { y: 12, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.65,
+            stagger: 0.06,
+            ...reset
+          },
+          0
+        )
+      }
+
+      if (lines.length) {
+        entranceTimeline.fromTo(
+          lines,
+          { yPercent: 105, opacity: 0 },
+          {
+            yPercent: 0,
+            opacity: 1,
+            stagger: 0.08,
+            duration: 0.8,
+            ...reset
+          },
+          0.06
+        )
+      }
+
+      // 2. Scramble Effect for Hero Tagline
+      const scrambleEl = document.querySelector<HTMLElement>('[data-hero-scramble]')
+      if (scrambleEl) {
+        const originalText = scrambleEl.dataset.heroScramble || scrambleEl.textContent || '写得清楚。'
+        const chars = '0123456789ABCDEF!<>-_\\/[]{}~=+*^?#'
+        const runScramble = (duration = 0.8) => {
+          const steps = Math.floor(duration * 28)
+          let step = 0
+          let timer: number | undefined = undefined
+          timer = window.setInterval(() => {
+            step++
+            const progress = step / steps
+            scrambleEl.textContent = originalText
+              .split('')
+              .map((char, index) => {
+                if (char === ' ') return ' '
+                if (index / originalText.length < progress) return char
+                return chars[Math.floor(Math.random() * chars.length)]
+              })
+              .join('')
+
+            if (step >= steps && timer !== undefined) {
+              window.clearInterval(timer)
+              scrambleEl.textContent = originalText
+            }
+          }, 1000 / 28)
+
+          signal.addEventListener('abort', () => {
+            if (timer !== undefined) window.clearInterval(timer)
+            scrambleEl.textContent = originalText
+          })
+        }
+
+        entranceTimeline.call(() => runScramble(0.85), undefined, 0.35)
+        scrambleEl.addEventListener('mouseenter', () => runScramble(0.5), { signal })
+      }
+
+      // 3. Staggered reveal for articles, cards & milestones on scroll
+      const observer = new IntersectionObserver(
+        (entries) => {
+          let staggerIndex = 0
+          for (const entry of entries) {
+            if (!entry.isIntersecting || seen.has(entry.target)) continue
+            seen.add(entry.target)
+            observer.unobserve(entry.target)
+
+            const delay = Math.min(staggerIndex++ * 0.06, 0.24)
+            const target = entry.target as HTMLElement
+
+            // Check if element has child items to stagger
+            const childItems = target.querySelectorAll<HTMLElement>('[data-reveal-child]')
+            if (childItems.length > 0) {
+              const tween = gsap.fromTo(
+                childItems,
+                { y: 10, opacity: 0 },
+                {
+                  y: 0,
+                  opacity: 1,
+                  duration: 0.55,
+                  stagger: 0.04,
+                  delay,
+                  ease: 'power3.out',
+                  ...reset,
+                  onComplete: () => {
+                    activeTweens.delete(tween)
+                  }
+                }
+              )
+              activeTweens.add(tween)
+            } else {
+              const tween = gsap.fromTo(
+                target,
+                { y: 14, opacity: 0 },
+                {
+                  y: 0,
+                  opacity: 1,
+                  duration: 0.65,
+                  delay,
+                  ease: 'power3.out',
+                  ...reset,
+                  onComplete: () => {
+                    activeTweens.delete(tween)
+                  }
+                }
+              )
+              activeTweens.add(tween)
+            }
+          }
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      )
+
+      document.querySelectorAll('[data-reveal]').forEach((element) => observer.observe(element))
+
+      // 4. Subtle Number Counter Reveal
+      const counterObserver = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue
+            counterObserver.unobserve(entry.target)
+            const el = entry.target as HTMLElement
+            const targetVal = Number(el.dataset.counterTarget || 0)
+            if (Number.isNaN(targetVal) || targetVal <= 0) continue
+
+            const obj = { val: 0 }
+            const tween = gsap.to(obj, {
+              val: targetVal,
+              duration: 0.8,
+              ease: 'power2.out',
+              onUpdate: () => {
+                el.textContent = String(Math.round(obj.val))
+              },
+              onComplete: () => {
+                el.textContent = String(targetVal)
+                activeTweens.delete(tween)
+              }
+            })
+            activeTweens.add(tween)
+          }
+        },
+        { threshold: 0.2 }
+      )
+      document.querySelectorAll('[data-counter-target]').forEach((el) => counterObserver.observe(el))
+
+      // 5. Spotlight card pointer tracking with smooth interpolation
+      const spotlightCards = document.querySelectorAll<HTMLElement>('[data-spotlight]')
+      spotlightCards.forEach((card) => {
+        card.addEventListener(
+          'pointermove',
+          (event) => {
+            const rect = card.getBoundingClientRect()
+            const x = event.clientX - rect.left
+            const y = event.clientY - rect.top
+            card.style.setProperty('--mouse-x', `${x}px`)
+            card.style.setProperty('--mouse-y', `${y}px`)
+          },
+          { signal }
+        )
+        card.addEventListener(
+          'pointerleave',
+          () => {
+            card.style.removeProperty('--mouse-x')
+            card.style.removeProperty('--mouse-y')
+          },
+          { signal }
+        )
+      })
+
+      // 6. Restrained Magnetic Micro-interaction on buttons & interactive tags
+      const magneticElements = document.querySelectorAll<HTMLElement>('[data-magnetic]')
+      magneticElements.forEach((el) => {
+        const xTo = gsap.quickTo(el, 'x', { duration: 0.5, ease: 'power3.out' })
+        const yTo = gsap.quickTo(el, 'y', { duration: 0.5, ease: 'power3.out' })
+
+        el.addEventListener(
+          'pointermove',
+          (e) => {
+            const rect = el.getBoundingClientRect()
+            const centerX = rect.left + rect.width / 2
+            const centerY = rect.top + rect.height / 2
+            // Clamp offset to maximum 3.5px for understated tactile feel
+            const deltaX = Math.max(-3.5, Math.min(3.5, (e.clientX - centerX) * 0.2))
+            const deltaY = Math.max(-3.5, Math.min(3.5, (e.clientY - centerY) * 0.2))
+            xTo(deltaX)
+            yTo(deltaY)
+          },
+          { signal }
+        )
+
+        el.addEventListener(
+          'pointerleave',
+          () => {
+            xTo(0)
+            yTo(0)
+          },
+          { signal }
+        )
+      })
+
+      // 7. Focus accessibility bypass
+      document.addEventListener(
+        'focusin',
+        (event) => {
+          const target = event.target as HTMLElement
+          if (target.closest('.hero-surface')) entranceTimeline.progress(1)
+          const element = target.closest('[data-reveal]')
+          if (element) {
+            seen.add(element)
+            observer.unobserve(element)
+            gsap.set(element, { y: 0, opacity: 1, clearProps: 'transform,opacity' })
+          }
+        },
+        { signal }
+      )
+
+      return () => {
+        observer.disconnect()
+        counterObserver.disconnect()
+        controller.abort()
+        activeTweens.forEach((t) => t.kill())
+        activeTweens.clear()
+      }
+    })
+
+    // 8. Interactive pointer illumination on Hero
+    media.add('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
+      const hero = document.querySelector<HTMLElement>('.hero-surface')
+      const light = hero?.querySelector<HTMLElement>('[data-hero-light]')
+      if (!hero || !light) return
+      const controller = new AbortController()
+      const x = gsap.quickTo(light, 'x', { duration: 0.8, ease: 'power3.out' })
+      const y = gsap.quickTo(light, 'y', { duration: 0.8, ease: 'power3.out' })
+      hero.addEventListener(
+        'pointermove',
+        (event) => {
+          const rect = hero.getBoundingClientRect()
+          x((event.clientX - rect.left - rect.width / 2) * 0.14)
+          y((event.clientY - rect.top - rect.height / 2) * 0.14)
+        },
+        { signal: controller.signal }
+      )
+      hero.addEventListener(
+        'pointerleave',
+        () => {
+          x(0)
+          y(0)
+        },
+        { signal: controller.signal }
+      )
+      return () => {
+        controller.abort()
+      }
+    })
+
+    cleanup = () => media.revert()
+  }
+
+  document.addEventListener('astro:page-load', setupMotion)
+  document.addEventListener('astro:before-swap', () => cleanup())
+</script>

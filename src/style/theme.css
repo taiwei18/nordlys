@@ -8,6 +8,9 @@
   --color-body: var(--text-body);
   --color-muted: var(--text-muted);
   --color-faint: var(--text-faint);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
 
   --color-surface: var(--card-surface);
   --color-surface-hover: var(--card-hover);

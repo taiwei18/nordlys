@@ -7,6 +7,7 @@ import '@fontsource/geist-mono/latin-400.css'
 import '@fontsource/newsreader/latin-400-italic.css'
 
 import AmbientBackground from '@/components/AmbientBackground.astro'
+import Motion from '@/components/Motion.astro'
 import ModeManager from '@/components/mode/ModeManager.astro'
 import CodeBlockIconsPlugin from '@/plugins/CodeBlockIconsPlugin.astro'
 import config from '@/theme.config'
@@ -50,7 +51,7 @@ const {
 let titleWithSuffix = title
 
 if (String(title).toLowerCase() !== String(config.title).toLowerCase())
-  titleWithSuffix += ` — ${config.title}`
+  titleWithSuffix += ` - ${config.title}`
 
 const openGraphImageUrl = new URL(resolveImageUrl(openGraphImage), Astro.site).href
 const openGraphImageAlt = `${titleWithSuffix} Cover`
@@ -83,7 +84,7 @@ const structuredDataJson = JSON.stringify([siteStructuredData, ...structuredData
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
 
@@ -121,6 +122,7 @@ const structuredDataJson = JSON.stringify([siteStructuredData, ...structuredData
   </head>
   <body class="relative min-h-screen">
     <AmbientBackground />
+    <Motion />
     <slot />
     <CodeBlockIconsPlugin />
     <script is:inline data-astro-rerun src="/zoom-vanilla.js/zoom-vanilla.min.js"></script>

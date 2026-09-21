@@ -9,18 +9,20 @@ export interface Props {
 const { id, data } = Astro.props.post
 ---
 
-<article class="group py-6 first:pt-0 last:pb-0 transition-transform duration-200 hover:translate-x-1">
+<article data-reveal class="post-row group py-6 first:pt-0 last:pb-0">
   <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4 mb-2">
     <a
-      class="font-sans text-lg font-medium text-title group-hover:opacity-80 transition-opacity duration-150 inline-flex items-center gap-1.5"
+      class="interactive-underline font-sans text-lg font-medium text-title inline-flex items-center gap-2 no-underline"
       href={`/posts/${id}/`}
       data-astro-prefetch
     >
       <span>{data.title}</span>
-      <span class="iconify tabler--arrow-up-right text-xs opacity-0 -translate-x-1 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 text-muted"></span>
+      <span aria-hidden="true" class="post-arrow flex size-4 shrink-0 items-center justify-center border border-border-subtle bg-surface/80 text-[10px] text-accent transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]">
+        <span class="iconify tabler--arrow-up-right text-[11px]"></span>
+      </span>
     </a>
     <time
-      class="shrink-0 font-mono text-xs text-muted"
+      class="shrink-0 font-mono text-xs text-muted tabular-nums"
       datetime={data.publishedDate.toISOString()}
     >
       {toDateString(data.publishedDate)}
@@ -36,7 +38,7 @@ const { id, data } = Astro.props.post
       data.tags.map((tag: string) => (
         <a
           href={`/tags/${tag}/`}
-          class="font-mono text-xs text-muted hover:text-title hover:bg-surface-hover px-1.5 py-0.5 rounded transition-colors"
+          class="font-mono text-xs text-muted hover:text-title hover:bg-surface-hover px-1.5 py-0.5 transition-colors"
         >
           #{tag}
         </a>

@@ -12,7 +12,7 @@ export interface Props {
 const { id, data } = Astro.props.post;
 ---
 
-<div class="group subtle-card relative flex h-full flex-col justify-between p-5 rounded-lg">
+<div class="group subtle-card relative flex h-full flex-col justify-between p-5">
   <div>
     <div class="flex items-center justify-between gap-2 mb-3">
       <time
@@ -25,7 +25,7 @@ const { id, data } = Astro.props.post;
 
     {
       data.previewImage && (
-        <div class="overflow-hidden rounded mb-4 border border-border-subtle h-36 w-full relative">
+        <div class="relative mb-4 h-36 w-full overflow-hidden border border-border-subtle">
           <Image
             src={data.previewImage}
             height={160}

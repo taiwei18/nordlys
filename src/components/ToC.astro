@@ -37,7 +37,7 @@ function renderList(headings: ProcessedHeading[]): string {
           ${headings
             .map(
               (heading) => `<li class="my-0.5">
-                              <a href="#${heading.slug}" class="toc-el block rounded-r-md px-2.5 py-1 text-sm text-current/75 no-underline transition-all duration-200 hover:text-accent hover:translate-x-1" aria-label="${heading.text}">
+                              <a href="#${heading.slug}" class="toc-el block px-2.5 py-1 text-sm text-current/75 no-underline transition-all duration-200 hover:text-accent hover:translate-x-1" aria-label="${heading.text}">
                                 ${heading.text}
                               </a>
                               ${renderList(heading.children)}

@@ -27,11 +27,9 @@ const serializedSearchDocuments = JSON.stringify(searchDocuments).replace(
 ---
 
 <PageLayout {frontmatter}>
-  <div class="mb-8 pb-4 hairline-bottom">
-    <h1 class="font-sans text-2xl sm:text-3xl font-semibold tracking-tight text-title">
-      搜索
-    </h1>
-    <p class="mt-2 text-sm text-muted">检索全站文章与技术主题</p>
+  <div class="mb-10 border-b border-border-subtle pb-6">
+    <h1 class="font-sans text-3xl font-semibold tracking-[-0.04em] text-title sm:text-4xl">搜索</h1>
+    <p class="mt-3 text-sm leading-7 text-muted">检索全站文章与技术主题</p>
   </div>
 
   <search-input class="relative flex w-full flex-col gap-4 mb-8">
@@ -41,9 +39,9 @@ const serializedSearchDocuments = JSON.stringify(searchDocuments).replace(
         aria-label="搜索文章"
         autocomplete="off"
         placeholder="输入关键词进行搜索..."
-        class="w-full bg-surface text-title placeholder:text-muted pl-4 pr-16 py-3 rounded-lg border border-border-subtle focus:border-border-strong focus:outline-none transition-colors font-sans text-base sm:text-sm"
+        class="w-full border border-border-subtle bg-surface px-4 py-3 font-sans text-base text-title transition-colors placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none sm:text-sm"
       />
-      <button id="search-clear" class="invisible absolute right-1 top-1/2 flex min-h-11 min-w-11 -translate-y-1/2 cursor-pointer items-center justify-center font-mono text-xs text-muted hover:text-title">
+      <button id="search-clear" class="invisible absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer border border-border-subtle bg-surface px-2 py-0.5 font-mono text-[10px] text-muted transition-colors hover:border-accent hover:text-accent">
         ESC
       </button>
     </div>

@@ -26,27 +26,25 @@ const frontmatter: PageLayoutProps["frontmatter"] = {
 ---
 
 <PageLayout {frontmatter}>
-  <div class="mb-10 pb-4 hairline-bottom">
-    <h1 class="font-sans text-2xl sm:text-3xl font-semibold tracking-tight text-title">
-      标签
-    </h1>
-    <p class="mt-2 text-sm text-muted font-sans">
-      共 {tagsWithUsage.length} 个技术维度与分类。
-    </p>
+  <div data-entrance class="mb-10 border-b border-border-subtle pb-6">
+    <h1 class="font-sans text-3xl font-semibold tracking-[-0.04em] text-title sm:text-4xl">标签</h1>
+    <p class="mt-3 text-sm leading-7 text-muted">共 <span data-counter-target={tagsWithUsage.length}>{tagsWithUsage.length}</span> 个技术维度与分类。</p>
   </div>
 
-  <div class="not-prose grid grid-cols-2 sm:grid-cols-3 gap-3">
+  <div data-reveal class="not-prose grid grid-cols-2 sm:grid-cols-3 gap-3">
     {
       tagsWithUsage.map(({ tag, usage }) => (
         <a
-          class="group p-3 rounded-lg subtle-card flex items-center justify-between no-underline"
+          data-reveal-child
+          data-magnetic
+          class="group subtle-card flex items-center justify-between p-3 no-underline active:scale-[0.98]"
           href={`/tags/${tag}/`}
           data-astro-prefetch
         >
           <span class="font-sans text-sm text-body group-hover:text-title transition-colors truncate">
             #{tag}
           </span>
-          <span class="font-mono text-xs text-muted group-hover:text-title">
+          <span class="font-mono text-xs text-muted tabular-nums group-hover:text-title">
             {usage}
           </span>
         </a>

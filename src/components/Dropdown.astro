@@ -17,12 +17,14 @@ const isActive = children.some(
   (item) => activeHeaderLink === item.label || activeHeaderLink === item.href
 )
 
-const buttonId = generateItemId(`${label}-button`)
-const menuId = generateItemId(`${label}-menu`)
+const instanceId = crypto.randomUUID()
+const buttonId = generateItemId(`${label}-${instanceId}-button`)
+const menuId = generateItemId(`${label}-${instanceId}-menu`)
 ---
 
 <dropdown-parent
   class="relative block sm:inline-block"
+  data-open="false"
   data-is-active={String(isActive)}
 >
   <button
@@ -31,12 +33,9 @@ const menuId = generateItemId(`${label}-menu`)
     aria-controls={menuId}
     aria-expanded="false"
     class:list={[
-      'group relative flex min-h-11 w-full cursor-pointer items-center gap-1.5 whitespace-nowrap transition-colors duration-200 active:scale-95 sm:min-h-0 sm:w-auto sm:py-1',
-      { 'text-accent font-medium': isActive },
-      {
-        'text-current/80 hover:text-accent opacity-85 hover:opacity-100':
-          !isActive
-      }
+      'group relative flex min-h-11 w-full cursor-pointer items-center gap-1.5 whitespace-nowrap transition-colors duration-150 sm:min-h-0 sm:w-auto sm:py-1',
+      { 'text-title font-medium': isActive },
+      { 'text-muted hover:text-title': !isActive }
     ]}
   >
     {
@@ -49,8 +48,8 @@ const menuId = generateItemId(`${label}-menu`)
     <span class="relative">
       {label}
       <span
-        class={`absolute -bottom-1 left-0 h-[2px] rounded-full bg-accent transition-all duration-300 ease-out ${
-          isActive ? 'w-full' : 'w-0 group-hover:w-full'
+        class={`absolute -bottom-1 left-0 h-[1.5px] w-full origin-left bg-accent transition-transform duration-250 ease-out ${
+          isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100'
         }`}
       ></span>
     </span>
@@ -64,13 +63,15 @@ const menuId = generateItemId(`${label}-menu`)
     id={menuId}
     role="menu"
     aria-labelledby={buttonId}
-    class="border-accent/20 bg-accent-bg/95 mt-1 hidden w-full flex-col gap-1 rounded-lg border p-1.5 shadow-sm sm:absolute sm:right-0 sm:z-20 sm:mt-3 sm:min-w-[130px] sm:w-auto sm:origin-top-right sm:backdrop-blur-md sm:shadow-lg sm:shadow-black/10 dark:sm:shadow-black/30"
+    hidden
+    inert
+    class="dropdown-surface mt-1 w-full flex-col gap-1 border border-border-medium bg-surface p-1.5 sm:absolute sm:right-0 sm:z-20 sm:mt-3 sm:min-w-[150px] sm:w-auto"
   >
     {
       children.map((item) => (
         <li
           role="none"
-          class="rounded-md transition-colors duration-150 hover:bg-accent/10"
+          class="transition-colors duration-150 hover:bg-accent/10"
         >
           <div class="px-2.5 sm:py-1">
             <HeaderItem
@@ -90,53 +91,78 @@ const menuId = generateItemId(`${label}-menu`)
 
 <script>
   class Dropdown extends HTMLElement {
-    connectedCallback() {
-      const isActive = this.dataset.isActive == 'true'
+    private controller?: AbortController
+    private animation?: Animation
 
+    disconnectedCallback() {
+      this.controller?.abort()
+      this.animation?.cancel()
+    }
+
+    connectedCallback() {
+      this.controller?.abort()
+      this.controller = new AbortController()
+      const { signal } = this.controller
       const button = this.querySelector('button')
       const menu = this.querySelector('ul')
 
       if (!button || !menu) return
 
-      const firstItem = menu.querySelector('a')
-
-      const showMenu = () => {
-        if (!isActive) button.classList.replace('clickable', 'text-accent/100')
-        button.setAttribute('aria-expanded', 'true')
-
-        menu.classList.replace('hidden', 'flex')
-
-        this.querySelector('.tabler--chevron-down')?.classList.add(
-          '-rotate-180'
-        )
-
-        firstItem?.focus()
-      }
-      const hideMenu = () => {
-        if (!isActive) button.classList.replace('text-accent/100', 'clickable')
-        button.setAttribute('aria-expanded', 'false')
-
-        menu.classList.replace('flex', 'hidden')
-
-        this.querySelector('.tabler--chevron-down')?.classList.remove(
-          '-rotate-180'
-        )
-      }
-
-      button.addEventListener('click', () => {
-        if (menu.className.includes('hidden')) {
-          showMenu()
+      const items = Array.from(menu.querySelectorAll<HTMLAnchorElement>('a'))
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
+      reduced.addEventListener('change', () => {
+        this.animation?.cancel()
+        menu.hidden = this.dataset.open !== 'true'
+      }, { signal })
+      const setOpen = (open: boolean, focus = false) => {
+        this.animation?.cancel()
+        this.dataset.open = String(open)
+        button.setAttribute('aria-expanded', String(open))
+        menu.inert = !open
+        if (!open && menu.contains(document.activeElement)) button.focus()
+        if (open) menu.hidden = false
+        if (reduced.matches) {
+          menu.hidden = !open
         } else {
-          hideMenu()
+          this.animation = menu.animate(
+            open
+              ? [{ opacity: 0, transform: 'translateY(-6px)' }, { opacity: 1, transform: 'translateY(0)' }]
+              : [{ opacity: 1, transform: 'translateY(0)' }, { opacity: 0, transform: 'translateY(-4px)' }],
+            { duration: open ? 220 : 150, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
+          )
+          this.animation.onfinish = () => { menu.hidden = !open }
         }
-      })
+        if (open && focus) items[0]?.focus()
+      }
 
-      document.addEventListener('click', function (event) {
-        const target = event.target as Node | null
-        if (!button.contains(target) && !menu.contains(target)) {
-          hideMenu()
+      button.addEventListener('click', (event) => {
+        setOpen(this.dataset.open !== 'true', event.detail === 0)
+      }, { signal })
+
+      this.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && this.dataset.open === 'true') {
+          event.preventDefault()
+          event.stopPropagation()
+          setOpen(false)
+          button.focus()
         }
-      })
+        if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
+          event.preventDefault()
+          if (this.dataset.open !== 'true') setOpen(true)
+          const current = items.indexOf(document.activeElement as HTMLAnchorElement)
+          const next = event.key === 'Home' ? 0 : event.key === 'End' ? items.length - 1
+            : event.key === 'ArrowDown' ? (current + 1) % items.length
+            : current < 0 ? items.length - 1 : (current - 1 + items.length) % items.length
+          items[next]?.focus()
+        }
+      }, { signal })
+
+      document.addEventListener('click', (event) => {
+        if (!this.contains(event.target as Node) && this.dataset.open === 'true') setOpen(false)
+      }, { signal })
+      this.addEventListener('focusout', (event) => {
+        if (!this.contains(event.relatedTarget as Node) && this.dataset.open === 'true') setOpen(false)
+      }, { signal })
     }
   }
 

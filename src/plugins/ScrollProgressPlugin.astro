@@ -1,46 +1,50 @@
-<scroll-progress-bar class="fixed top-0 left-0 right-0 z-50 h-[3px] pointer-events-none">
+<scroll-progress-bar class="fixed top-0 left-0 right-0 z-50 h-[2px] pointer-events-none origin-left">
   <div
-    class="relative h-full w-0 bg-linear-to-r from-accent/50 via-accent to-accent shadow-[0_0_8px_rgba(var(--accent),0.7)] transition-[width] duration-100 ease-out"
-  >
-    <span
-      class="bg-accent absolute top-1/2 right-0 h-1.5 w-1.5 -translate-y-1/2 rounded-full shadow-[0_0_8px_2px_rgba(var(--accent),0.9)]"
-    ></span>
-  </div>
+    class="progress-indicator h-full w-full bg-accent origin-left scale-x-0 will-change-transform shadow-[0_0_10px_rgba(var(--accent),0.6)]"
+  ></div>
 </scroll-progress-bar>
 
 <script>
+  import { gsap } from 'gsap'
+
+  let cleanup = () => {}
+
   function setupScrollProgress() {
+    cleanup()
     const progressBar = document.querySelector('scroll-progress-bar')
     if (!progressBar) return
-    const bar = progressBar.firstElementChild as HTMLElement
-    if (!bar) return
+    const indicator = progressBar.querySelector<HTMLElement>('.progress-indicator')
+    if (!indicator) return
 
-    let ticking = false
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const controller = new AbortController()
+    const { signal } = controller
 
-    function updateProgress() {
-      const scrollTop =
-        document.body.scrollTop || document.documentElement.scrollTop
-      const totalHeight =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight
+    const updateScale = gsap.quickTo(indicator, 'scaleX', {
+      duration: reduced ? 0 : 0.2,
+      ease: 'power2.out'
+    })
 
-      const scrollPercentage =
-        totalHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / totalHeight) * 100)) : 0
-      bar.style.width = `${scrollPercentage}%`
-      ticking = false
+    const calculateProgress = () => {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+      const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight
+      return totalHeight > 0 ? Math.min(1, Math.max(0, scrollTop / totalHeight)) : 0
     }
 
     const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateProgress)
-        ticking = true
-      }
+      updateScale(calculateProgress())
     }
 
-    window.addEventListener('scroll', onScroll, { passive: true })
-    updateProgress()
+    window.addEventListener('scroll', onScroll, { passive: true, signal })
+    window.addEventListener('resize', onScroll, { passive: true, signal })
+    updateScale(calculateProgress())
+
+    cleanup = () => {
+      controller.abort()
+      gsap.killTweensOf(indicator)
+    }
   }
 
   document.addEventListener('astro:page-load', setupScrollProgress)
-  setupScrollProgress()
+  document.addEventListener('astro:before-swap', () => cleanup())
 </script>

@@ -15,10 +15,10 @@ const normalizePageUrl = (url: string) => {
 
 {
   page.lastPage > 1 && (
-    <nav class="mb-8 flex w-full grow items-end justify-center">
-      <div class="flex gap-4">
+    <nav data-reveal class="mb-8 flex w-full grow items-end justify-center border-t border-border-subtle pt-6">
+      <div class="flex items-center gap-4 font-mono text-xs">
         {page.url.prev ? (
-          <a class="clickable" href={normalizePageUrl(page.url.prev)}>
+          <a data-magnetic class="text-muted transition-colors hover:text-accent" href={normalizePageUrl(page.url.prev)}>
             Previous
           </a>
         ) : (
@@ -29,7 +29,8 @@ const normalizePageUrl = (url: string) => {
         {page.currentPage} / {page.lastPage}
         {page.url.next ? (
           <a
-            class={!page.url.next ? 'no-underline opacity-25' : 'clickable'}
+            data-magnetic
+            class="text-muted transition-colors hover:text-accent"
             href={normalizePageUrl(page.url.next)}
           >
             Next

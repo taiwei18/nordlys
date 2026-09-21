@@ -18,7 +18,7 @@ const {
 
 <a
   href={href}
-  class={`relative inline-flex min-h-11 items-center gap-1.5 transition-colors duration-150 sm:min-h-0 sm:py-0.5 ${
+  class={`group/nav relative inline-flex min-h-11 items-center gap-1.5 transition-colors duration-150 sm:min-h-0 sm:py-1 ${
     isActive
       ? 'text-title font-medium'
       : 'text-muted hover:text-title'
@@ -34,8 +34,10 @@ const {
   <span class="relative">
     {label}
     <span
-      class={`absolute -bottom-0.5 left-0 h-[1.5px] rounded-full bg-title transition-all duration-200 ease-out ${
-        isActive ? 'w-full opacity-100' : 'w-0 opacity-0 group-hover:w-full group-hover:opacity-100'
+      class={`absolute -bottom-1 left-0 h-[1.5px] w-full origin-left bg-accent transition-transform duration-250 ease-out ${
+        isActive
+          ? 'scale-x-100'
+          : 'scale-x-0 group-hover/nav:scale-x-100 group-focus-visible/nav:scale-x-100'
       }`}
     ></span>
   </span>

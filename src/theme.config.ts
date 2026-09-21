@@ -6,6 +6,7 @@ export default defineThemeConfig({
   description: 'TaiWei 的前端与产品工程笔记',
   author: 'TaiWei',
   navbarItems: [
+    { label: '首页', href: '/' },
     { label: '博客', href: '/posts/' },
     { label: '标签', href: '/tags/' },
     { label: '时间轴', href: '/timeline/' },
@@ -13,7 +14,6 @@ export default defineThemeConfig({
     {
       label: '其它页面',
       children: [
-        { label: '首页', href: '/' },
         { label: '404 页面', href: '/404' }
       ]
     }

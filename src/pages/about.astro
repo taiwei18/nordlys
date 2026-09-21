@@ -1,0 +1,320 @@
+---
+import PageLayout, {
+  type Props as PageLayoutProps
+} from '@/layouts/PageLayout.astro'
+
+const frontmatter: PageLayoutProps['frontmatter'] = {
+  title: '关于',
+  description: '了解 TaiWei 的工程哲学、技术栈架构与 AI 协同系统实践。',
+  activeHeaderLink: '关于'
+}
+---
+
+<PageLayout {frontmatter}>
+  <div class="not-prose about-container flex flex-col gap-12 sm:gap-16">
+    <!-- Hero Title & Identity -->
+    <section data-about-hero class="flex flex-col gap-5 pt-2">
+      <div class="flex flex-col gap-4">
+        <h1 class="flex flex-wrap items-baseline gap-3 text-4xl sm:text-6xl font-semibold tracking-[-0.05em] text-title">
+          <span id="scramble-name" class="cursor-default select-none font-sans">TAIWEI</span>
+        </h1>
+        <p id="scramble-tagline" class="max-w-xl text-base sm:text-lg leading-relaxed text-body">
+          在代码与界面之间，雕琢秩序、触感与极简系统。专注于现代前端架构、AI 协同研发体系与高保真交互触感。
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-2 pt-2 font-mono text-xs text-muted">
+        <span>Role: Frontend Engineer & Creator</span>
+        <span class="text-border-medium hidden sm:inline">/</span>
+        <span>Focus: AI Agent Tooling & Web Architecture</span>
+      </div>
+    </section>
+
+    <!-- Spacious Card 1: Core Principles -->
+    <section class="flex flex-col gap-4">
+      <div class="flex items-center justify-between border-b border-border-subtle pb-3 font-mono text-xs">
+        <h2 class="font-sans text-base font-semibold text-title tracking-tight">核心工程哲学</h2>
+        <span class="text-muted font-mono text-xs uppercase tracking-wider">Axioms</span>
+      </div>
+
+      <div data-spotlight class="spotlight-card p-6 sm:p-10 flex flex-col gap-8">
+        <div class="flex items-center justify-between border-b border-border-subtle pb-4 font-mono text-xs text-muted">
+          <span class="text-accent uppercase tracking-wider font-medium">DESIGN & SYSTEM PRINCIPLES</span>
+          <span class="text-faint font-mono text-xs">CORE</span>
+        </div>
+
+        <div class="flex flex-col gap-8 divide-y divide-border-subtle/60">
+          <div class="flex flex-col sm:flex-row items-start sm:items-baseline justify-between gap-3 sm:gap-6 pt-0">
+            <div class="flex items-center gap-3 sm:w-48 shrink-0">
+              <span class="font-mono text-sm text-accent font-semibold">01.</span>
+              <h3 class="font-sans text-base font-semibold text-title">保持纯粹</h3>
+            </div>
+            <div class="flex-1">
+              <p class="text-xs uppercase font-mono tracking-wider text-accent/80 mb-1">Zero-Bloat First</p>
+              <p class="text-sm leading-relaxed text-muted">
+                拒绝为了抽象而抽象。崇尚静态先验、瞬时响应与近乎零无效客户端运行时，将渲染重心交还给内容本体。
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-start sm:items-baseline justify-between gap-3 sm:gap-6 pt-6">
+            <div class="flex items-center gap-3 sm:w-48 shrink-0">
+              <span class="font-mono text-sm text-accent font-semibold">02.</span>
+              <h3 class="font-sans text-base font-semibold text-title">触感物理</h3>
+            </div>
+            <div class="flex-1">
+              <p class="text-xs uppercase font-mono tracking-wider text-accent/80 mb-1">Tactile Fidelity</p>
+              <p class="text-sm leading-relaxed text-muted">
+                微圆角、微按压、细微边框高光。动效严格基于阻尼物理与缓动曲线，让数字界面拥有如同精密工业仪器般的温润与秩序。
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-start sm:items-baseline justify-between gap-3 sm:gap-6 pt-6">
+            <div class="flex items-center gap-3 sm:w-48 shrink-0">
+              <span class="font-mono text-sm text-accent font-semibold">03.</span>
+              <h3 class="font-sans text-base font-semibold text-title">真实构建</h3>
+            </div>
+            <div class="flex-1">
+              <p class="text-xs uppercase font-mono tracking-wider text-accent/80 mb-1">Pragmatic Engineering</p>
+              <p class="text-sm leading-relaxed text-muted">
+                拒绝纸上谈兵。每一次重构、方案对比与工具探索，均源于真实工业业务与独立产品交付中的实战复盘。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Spacious Card 2: Craft & Systems Radar -->
+    <section class="flex flex-col gap-4">
+      <div class="flex items-center justify-between border-b border-border-subtle pb-3 font-mono text-xs">
+        <h2 class="font-sans text-base font-semibold text-title tracking-tight">技术栈与工具链</h2>
+        <span class="text-muted font-mono text-xs uppercase tracking-wider">Stack & Tools</span>
+      </div>
+
+      <div data-spotlight class="spotlight-card p-6 sm:p-10 flex flex-col gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10">
+          <!-- Column 1: Frontend Architecture -->
+          <div class="flex flex-col justify-between gap-5">
+            <div class="flex flex-col gap-2">
+              <span class="font-mono text-xs text-accent uppercase tracking-wider">FOUNDATION & CRAFT</span>
+              <h3 class="font-sans text-base sm:text-lg font-semibold text-title">前端工程与交互体系</h3>
+              <p class="text-xs sm:text-sm text-muted leading-relaxed">
+                以静态构建优先为底座，结合现代 TypeScript 生态、设计系统与 GSAP 物理阻尼动效。
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-2.5 pt-2">
+              {['Astro', 'TypeScript', 'Vue 3', 'React', 'GSAP', 'Tailwind CSS', 'Vite', 'Node.js'].map((tech) => (
+                <span class="border border-border-subtle bg-surface px-3 py-1.5 font-mono text-xs text-title transition-all duration-200 hover:border-accent hover:text-accent">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <!-- Column 2: Agent Tooling -->
+          <div class="flex flex-col justify-between gap-5">
+            <div class="flex flex-col gap-2">
+              <span class="font-mono text-xs text-accent uppercase tracking-wider">AI AGENT & HARNESS</span>
+              <h3 class="font-sans text-base sm:text-lg font-semibold text-title">AI 协同与研发工具链</h3>
+              <p class="text-xs sm:text-sm text-muted leading-relaxed">
+                深入探索 Claude Code、Pi CLI、Codex 等新一代编码 Agent，构建自动化工程工具链与上下文记忆机制。
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-2.5 pt-2">
+              {['Claude Code', 'Codex CLI', 'Pi Agent', 'MCP Protocol', 'Pagefind WASM', 'Tailwind 4'].map((tool) => (
+                <span class="border border-border-subtle bg-surface px-3 py-1.5 font-mono text-xs text-title transition-all duration-200 hover:border-accent hover:text-accent">
+                  {tool}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dossier Card: Engineering Preferences & Manifesto -->
+    <section class="flex flex-col gap-4">
+      <div class="flex items-center justify-between border-b border-border-subtle pb-3 font-mono text-xs">
+        <h2 class="font-sans text-base font-semibold text-title tracking-tight">工程手记与配置</h2>
+        <span class="text-muted font-mono text-xs uppercase tracking-wider">Engineering Notes</span>
+      </div>
+
+      <div class="terminal-window p-5 sm:p-8 flex flex-col gap-5">
+        <!-- Titlebar & Tabs -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-border-subtle pb-4">
+          <div class="flex items-center gap-2 font-mono text-xs text-muted">
+            <span class="text-accent font-semibold">sys://dossier</span>
+            <span class="text-faint">/</span>
+            <span>engineering-spec</span>
+          </div>
+          <!-- Tabs -->
+          <div class="flex items-center gap-1.5 font-mono text-xs overflow-x-auto max-w-full">
+            <button
+              data-term-tab="manifesto"
+              class="terminal-tab active border border-accent bg-accent/10 px-2.5 py-1 text-accent cursor-pointer transition-colors shrink-0"
+            >
+              manifesto.md
+            </button>
+            <button
+              data-term-tab="specs"
+              class="terminal-tab border border-transparent px-2.5 py-1 text-muted hover:text-title cursor-pointer transition-colors shrink-0"
+            >
+              toolchain.json
+            </button>
+            <button
+              data-term-tab="log"
+              class="terminal-tab border border-transparent px-2.5 py-1 text-muted hover:text-title cursor-pointer transition-colors shrink-0"
+            >
+              principles.log
+            </button>
+          </div>
+        </div>
+
+        <!-- Content Panels -->
+        <div id="term-panel-manifesto" class="terminal-content font-sans text-sm leading-relaxed text-body min-h-[140px]">
+          <p class="text-muted leading-relaxed">
+            软件的复杂与迟滞，往往始于对抽象边界的无度放任。<br />
+            过度依赖臃肿的客户端运行时与黑盒封装，容易让人忽视工程最质朴的诉求。<br /><br />
+            Nordlys 与 TaiWei 实践的核心是回归本质：<br />
+            <span class="text-title font-medium">静态优先，毫秒加载，纯粹排版，精密动效。</span>
+          </p>
+        </div>
+
+        <div id="term-panel-specs" class="terminal-content hidden font-mono text-xs sm:text-sm leading-relaxed text-body min-h-[140px] overflow-x-auto">
+          <pre class="text-muted"><code class="text-muted"><span class="text-accent">&#123;</span>
+  <span class="text-title">"author"</span>: <span class="text-accent">"TaiWei"</span>,
+  <span class="text-title">"framework"</span>: <span class="text-accent">"Astro 5 (SSG)"</span>,
+  <span class="text-title">"runtime"</span>: <span class="text-accent">"Zero-JS default, leaf motion"</span>,
+  <span class="text-title">"styling"</span>: <span class="text-accent">"Tailwind CSS v4 + Semantic CSS Variables"</span>,
+  <span class="text-title">"search"</span>: <span class="text-accent">"Pagefind WASM offline index"</span>,
+  <span class="text-title">"motion"</span>: <span class="text-accent">"GSAP / prefers-reduced-motion respected"</span>
+<span class="text-accent">&#125;</span></code></pre>
+        </div>
+
+        <div id="term-panel-log" class="terminal-content hidden font-mono text-xs sm:text-sm leading-loose text-body flex flex-col gap-2 min-h-[140px]">
+          <div class="terminal-line text-muted">[ARCH] 页面按需水合，静态文章与 Markdown 无冗余客户端负担。</div>
+          <div class="terminal-line text-muted">[DESIGN] 坚持无圆角或微圆角秩序，拒绝 AI 模板化紫粉渐变。</div>
+          <div class="terminal-line text-muted">[SEARCH] 离线全文索引构建于部署期，毫秒级就绪且零外部依赖。</div>
+          <div class="terminal-line text-accent font-semibold">[A11Y] 动效支持减弱动态设置，色系满足 WCAG AA 高对比度标准。</div>
+        </div>
+      </div>
+    </section>
+  </div>
+</PageLayout>
+
+<script>
+  import { gsap } from 'gsap'
+
+  let cleanup = () => {}
+
+  const setupAboutInteractions = () => {
+    cleanup()
+    const controller = new AbortController()
+    const { signal } = controller
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    // 1. Text Scramble Animation
+    const scramble = (element: HTMLElement, originalText: string, duration = 0.8) => {
+      if (reduced.matches) {
+        element.textContent = originalText
+        return
+      }
+      const chars = '0123456789ABCDEF!<>-_\\/[]{}~=+*^?#'
+      const steps = Math.floor(duration * 30)
+      let step = 0
+      let timer: number | undefined = undefined
+      timer = window.setInterval(() => {
+        step++
+        const progress = step / steps
+        element.textContent = originalText
+          .split('')
+          .map((char, index) => {
+            if (char === ' ') return ' '
+            if (index / originalText.length < progress) return char
+            return chars[Math.floor(Math.random() * chars.length)]
+          })
+          .join('')
+
+        if (step >= steps && timer !== undefined) {
+          window.clearInterval(timer)
+          element.textContent = originalText
+        }
+      }, 1000 / 30)
+
+      signal.addEventListener('abort', () => {
+        if (timer !== undefined) window.clearInterval(timer)
+        element.textContent = originalText
+      })
+    }
+
+    const nameEl = document.querySelector<HTMLElement>('#scramble-name')
+    if (nameEl) {
+      const nameText = nameEl.textContent?.trim() || 'TAIWEI'
+      scramble(nameEl, nameText, 0.9)
+      nameEl.addEventListener('mouseenter', () => scramble(nameEl, nameText, 0.6), { signal })
+    }
+
+    // 3. Spotlight effect following mouse on cards
+    const spotlightCards = document.querySelectorAll<HTMLElement>('[data-spotlight]')
+    spotlightCards.forEach((card) => {
+      card.addEventListener('pointermove', (event) => {
+        const rect = card.getBoundingClientRect()
+        const x = event.clientX - rect.left
+        const y = event.clientY - rect.top
+        card.style.setProperty('--mouse-x', `${x}px`)
+        card.style.setProperty('--mouse-y', `${y}px`)
+      }, { signal })
+      card.addEventListener('pointerleave', () => {
+        card.style.removeProperty('--mouse-x')
+        card.style.removeProperty('--mouse-y')
+      }, { signal })
+    })
+
+    // 4. Terminal Tabs Switching
+    const tabs = document.querySelectorAll<HTMLButtonElement>('.terminal-tab')
+    const panels = {
+      log: document.querySelector<HTMLElement>('#term-panel-log'),
+      specs: document.querySelector<HTMLElement>('#term-panel-specs'),
+      manifesto: document.querySelector<HTMLElement>('#term-panel-manifesto')
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.termTab as keyof typeof panels
+        if (!target || !panels[target]) return
+
+        tabs.forEach((t) => {
+          t.classList.remove('active', 'border-accent', 'bg-accent/10', 'text-accent')
+          t.classList.add('border-transparent', 'text-muted')
+        })
+        tab.classList.add('active', 'border-accent', 'bg-accent/10', 'text-accent')
+        tab.classList.remove('border-transparent', 'text-muted')
+
+        Object.values(panels).forEach((p) => p?.classList.add('hidden'))
+        panels[target]?.classList.remove('hidden')
+      }, { signal })
+    })
+
+    // 5. Entrance GSAP Animation Sequence
+    if (!reduced.matches) {
+      const timeline = gsap.timeline({ defaults: { ease: 'power3.out' } })
+      timeline
+        .fromTo('[data-about-hero]', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6 })
+        .fromTo('.spotlight-card', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.55, stagger: 0.1 }, '-=0.3')
+        .fromTo('.terminal-window', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5 }, '-=0.2')
+
+      signal.addEventListener('abort', () => {
+        timeline.kill()
+      })
+    }
+
+    cleanup = () => {
+      controller.abort()
+    }
+  }
+
+  document.addEventListener('astro:page-load', setupAboutInteractions)
+  document.addEventListener('astro:before-swap', () => cleanup())
+</script>

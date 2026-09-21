@@ -35,12 +35,13 @@ const PageDescription = getPostsPageDescription();
 ---
 
 <PageLayout {frontmatter}>
-  <header class="mb-10 pb-4 hairline-bottom">
-    <h1 class="font-sans text-2xl sm:text-3xl font-semibold tracking-tight text-title">
+  <header data-entrance class="mb-12 border-b border-border-subtle pb-6">
+    <p class="mb-3 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-accent">Archive / Writing</p>
+    <h1 class="font-sans text-3xl font-semibold tracking-[-0.04em] text-title sm:text-4xl">
       文章
     </h1>
-    <p class="mt-2 text-sm text-muted font-sans">
-      共 {page.total} 篇工程实践与技术思考。
+    <p class="mt-3 text-sm leading-7 text-muted">
+      共 <span data-counter-target={page.total}>{page.total}</span> 篇工程实践与技术思考。
     </p>
   </header>
 

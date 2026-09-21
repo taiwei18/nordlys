@@ -1,6 +1,6 @@
 <mobile-nav-toggle>
   <button
-    class="group flex size-11 items-center justify-center rounded-full text-current/80 transition-all duration-200 hover:bg-surface-hover hover:text-title active:scale-90"
+    class="group flex size-11 items-center justify-center border border-transparent text-current/80 transition-all duration-200 hover:border-border-medium hover:text-accent active:scale-90"
     title="Toggle mobile nav"
     aria-label="打开导航菜单"
     aria-controls="mobile-nav"
@@ -8,36 +8,43 @@
   >
     <span
       aria-hidden="true"
-      id="mobile-nav-icon"
-      class="iconify tabler--menu-2 text-2xl transition-transform duration-300 group-hover:scale-110"
+      class="menu-glyph"
     ></span>
   </button>
 </mobile-nav-toggle>
 
 <script>
   class MobileNavToggle extends HTMLElement {
-    connectedCallback() {
-      const iconOpen = 'tabler--x'
-      const iconClosed = 'tabler--menu-2'
+    private controller?: AbortController
 
-      const nav = document.querySelector('#mobile-nav')
-      const icon = this.querySelector('#mobile-nav-icon')
+    disconnectedCallback() {
+      this.controller?.abort()
+    }
+
+    connectedCallback() {
+      this.controller?.abort()
+      this.controller = new AbortController()
+      const { signal } = this.controller
+      const nav = document.querySelector<HTMLElement>('#mobile-nav')
       const button = this.querySelector('button')
 
-      if (!nav || !icon || !button) return
+      if (!nav || !button) return
 
-      const navIsOpen = () => !nav.classList.contains('hidden')
+      const navIsOpen = () => nav.dataset.open === 'true'
 
       const close = () => {
-        nav.classList.add('hidden')
-        icon.classList.replace(iconOpen, iconClosed)
+        if (nav.contains(document.activeElement)) button.focus()
+        nav.dataset.open = 'false'
+        nav.inert = true
+        nav.setAttribute('aria-hidden', 'true')
         button.setAttribute('aria-label', '打开导航菜单')
         button.setAttribute('aria-expanded', 'false')
       }
 
       const open = () => {
-        nav.classList.remove('hidden')
-        icon.classList.replace(iconClosed, iconOpen)
+        nav.dataset.open = 'true'
+        nav.inert = false
+        nav.setAttribute('aria-hidden', 'false')
         button.setAttribute('aria-label', '关闭导航菜单')
         button.setAttribute('aria-expanded', 'true')
       }
@@ -47,7 +54,17 @@
         else open()
       }
 
-      button.addEventListener('click', handleToggle)
+      button.addEventListener('click', handleToggle, { signal })
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && navIsOpen()) {
+          close()
+          button.focus()
+        }
+      }, { signal })
+      document.addEventListener('click', (event) => {
+        if (navIsOpen() && !nav.contains(event.target as Node) && !this.contains(event.target as Node)) close()
+      }, { signal })
+      window.matchMedia('(min-width: 640px)').addEventListener('change', () => close(), { signal })
     }
   }
 

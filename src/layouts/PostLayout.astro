@@ -1,4 +1,5 @@
 ---
+import AdjacentPostsBar from '@/components/AdjacentPostsBar.astro'
 import TagsBar from '@/components/TagsBar.astro'
 import ToC from '@/components/ToC.astro'
 import PageLayout, {
@@ -83,9 +84,10 @@ frontmatter.keywords = [post.data.title, ...post.data.tags]
 ---
 
 <PageLayout {frontmatter}>
-  <div slot="top" class="mb-10">
+  <div slot="top" data-entrance data-entrance-order="1" class="mb-10">
     <a
       href="/posts/"
+      data-magnetic
       class="group inline-flex items-center gap-1.5 font-mono text-xs text-muted hover:text-title transition-colors"
     >
       <span class="iconify tabler--arrow-left text-sm transition-transform duration-200 group-hover:-translate-x-0.5"></span>
@@ -94,7 +96,7 @@ frontmatter.keywords = [post.data.title, ...post.data.tags]
   </div>
 
   <!-- 杂志与工坊式文章标题排印 -->
-  <header class="mb-12 pb-8 hairline-bottom">
+  <header data-entrance data-entrance-order="2" class="mb-12 pb-8 hairline-bottom">
     <div class="flex items-center gap-3 text-xs font-mono text-muted mb-4">
       <time datetime={post.data.publishedDate.toISOString()}>
         {toDateString(post.data.publishedDate)}
@@ -140,5 +142,6 @@ frontmatter.keywords = [post.data.title, ...post.data.tags]
     <Content />
   </article>
 
+  <AdjacentPostsBar {post} slot="bottom" />
   <HeadingAnchorsPlugin />
 </PageLayout>
