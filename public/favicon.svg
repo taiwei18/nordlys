@@ -1,43 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="100%" height="100%" fill="none">
-  <rect
-    x="4"
-    y="4"
-    width="40"
-    height="40"
-    rx="10"
-    fill="#18181b"
-    stroke="#27272a"
-    stroke-width="1.2"
-  />
-  <!-- "T" 顶部水平主梁 -->
-  <rect
-    x="12"
-    y="13"
-    width="24"
-    height="3.5"
-    rx="1.75"
-    fill="#f4f4f5"
-  />
-  <!-- "T" 垂直中轴柱 -->
-  <rect
-    x="22.25"
-    y="16.5"
-    width="3.5"
-    height="18.5"
-    rx="1.75"
-    fill="#f4f4f5"
-  />
-  <!-- "W" 双翼折线动势 -->
-  <path
-    d="M13 22L18.5 32"
-    stroke="#a1a1aa"
-    stroke-width="2.5"
-    stroke-linecap="round"
-  />
-  <path
-    d="M35 22L29.5 32"
-    stroke="#a1a1aa"
-    stroke-width="2.5"
-    stroke-linecap="round"
-  />
+<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <line x1="4" y1="7" x2="28" y2="7" stroke="#000000" stroke-width="2.2" stroke-linecap="round" />
+  <line x1="16" y1="7" x2="16" y2="25" stroke="#000000" stroke-width="2.2" stroke-linecap="round" />
+  <polyline points="6,15 11,25 16,16" stroke="#71717a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  <polyline points="16,16 21,25 26,15" stroke="#71717a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="16" cy="16" r="1.25" fill="#000000" />
 </svg>
