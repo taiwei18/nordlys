@@ -1,32 +1,58 @@
 @layer base {
-  /* TaiWei / Monolithic Carbon & Paper: pure grayscale and ink contrast */
+  /* TaiWei / Monolithic Carbon & Paper: pure grayscale and ink contrast (Default: Light) */
   :root,
   .scheme-mono,
   .scheme-nord,
   .scheme-aurora {
-    --bg-canvas: #0c0d0e;
-    --text-title: #f4f4f5;
-    --text-body: #a1a1aa;
+    --bg-canvas: #fcfcfb;
+    --text-title: #18181b;
+    --text-body: #3f3f46;
     --text-muted: #71717a;
-    --text-faint: #52525b;
+    --text-faint: #a1a1aa;
 
-    --card-surface: #141517;
-    --card-hover: #1c1d20;
+    --card-surface: #ffffff;
+    --card-hover: #f4f4f5;
 
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --border-medium: rgba(255, 255, 255, 0.16);
-    --border-strong: rgba(255, 255, 255, 0.28);
+    --border-subtle: rgba(0, 0, 0, 0.08);
+    --border-medium: rgba(0, 0, 0, 0.16);
+    --border-strong: rgba(0, 0, 0, 0.3);
 
-    --accent: #f4f4f5;
-    --accent-strong: #ffffff;
-    --accent-soft: rgba(255, 255, 255, 0.08);
-    --accent-highlight: #ffffff;
-    --accent-selection-bg: rgba(255, 255, 255, 0.2);
-    --accent-selection-text: #ffffff;
+    --accent: #18181b;
+    --accent-strong: #09090b;
+    --accent-soft: rgba(0, 0, 0, 0.06);
+    --accent-highlight: #09090b;
+    --accent-selection-bg: rgba(0, 0, 0, 0.12);
+    --accent-selection-text: #09090b;
 
-    --kbd-bg: rgba(255, 255, 255, 0.06);
-    --kbd-border: rgba(255, 255, 255, 0.14);
-    --ambient-spotlight: rgba(255, 255, 255, 0.03);
+    --kbd-bg: rgba(0, 0, 0, 0.04);
+    --kbd-border: rgba(0, 0, 0, 0.12);
+    --ambient-spotlight: rgba(0, 0, 0, 0.02);
+
+    &[data-mode="dark"] {
+      --bg-canvas: #0c0d0e;
+      --text-title: #f4f4f5;
+      --text-body: #a1a1aa;
+      --text-muted: #71717a;
+      --text-faint: #52525b;
+
+      --card-surface: #141517;
+      --card-hover: #1c1d20;
+
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-medium: rgba(255, 255, 255, 0.16);
+      --border-strong: rgba(255, 255, 255, 0.28);
+
+      --accent: #f4f4f5;
+      --accent-strong: #ffffff;
+      --accent-soft: rgba(255, 255, 255, 0.08);
+      --accent-highlight: #ffffff;
+      --accent-selection-bg: rgba(255, 255, 255, 0.2);
+      --accent-selection-text: #ffffff;
+
+      --kbd-bg: rgba(255, 255, 255, 0.06);
+      --kbd-border: rgba(255, 255, 255, 0.14);
+      --ambient-spotlight: rgba(255, 255, 255, 0.03);
+    }
 
     &[data-mode="light"] {
       --bg-canvas: #fcfcfb;

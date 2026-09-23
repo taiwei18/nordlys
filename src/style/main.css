@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    color-scheme: dark;
+    color-scheme: light;
     background-color: var(--bg-canvas);
     color: var(--text-body);
     @apply overflow-x-hidden overflow-y-scroll scroll-smooth font-sans antialiased;
@@ -16,6 +16,12 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  [data-mode="dark"] {
+    color-scheme: dark;
+    background-color: var(--bg-canvas);
+    color: var(--text-body);
   }
 
   [data-mode="light"] {

@@ -33,7 +33,7 @@ export default defineThemeConfig({
 
   // optional settings
   locale: 'zh-CN',
-  mode: 'dark',
+  mode: 'light',
   modeToggle: true,
   colorScheme: 'scheme-nord',
   openGraphImage: undefined,
