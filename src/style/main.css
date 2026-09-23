@@ -673,6 +673,18 @@ dropdown-parent[data-open='true'] .tabler--chevron-down {
   border-color: var(--border-subtle) !important;
 }
 
+/* 保证正文内联行内代码与代码片段高对比清晰可见 */
+.prose code:not(.expressive-code code) {
+  color: var(--text-title) !important;
+  background-color: var(--card-hover) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: 4px !important;
+  padding-inline: 0.35em !important;
+  padding-block: 0.15em !important;
+  font-size: 0.875em !important;
+  font-weight: 500 !important;
+}
+
 /* 文章标题滚动定位预留 Header 间距 */
 .prose :where(h1, h2, h3, h4, h5, h6) {
   scroll-margin-top: 5.5rem;

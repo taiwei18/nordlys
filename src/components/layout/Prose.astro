@@ -11,9 +11,13 @@ const { class: className, ...rest } = Astro.props
 
 <style is:global>
   .prose code:not(.expressive-code code) {
-    background-color: color-mix(in oklab, rgb(var(--accent)) 15%, transparent);
-    border-radius: var(--radius-sm);
-    padding-inline: calc(var(--spacing) * 1);
-    padding-top: calc(var(--spacing) * 0.5);
+    color: var(--text-title);
+    background-color: var(--card-hover);
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    padding-inline: 0.35rem;
+    padding-block: 0.125rem;
+    font-size: 0.875em;
+    font-weight: 500;
   }
 </style>
