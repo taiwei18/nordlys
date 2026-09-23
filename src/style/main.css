@@ -561,6 +561,17 @@ dropdown-parent[data-open='true'] .tabler--chevron-down {
   transform: translateY(-2.75px) rotate(-45deg);
 }
 
+.nav-mode-toggle {
+  line-height: 1;
+}
+
+.nav-mode-toggle span {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  transform: translateY(1px);
+}
+
 .studio-drawer {
   display: grid;
   grid-template-rows: 0fr;
