@@ -1,15 +1,10 @@
 ---
-import logo from "@/assets/logo.svg";
-import Dropdown from "@/components/Dropdown.astro";
-import HeaderItem from "@/components/layout/HeaderItem.astro";
-import MobileNavToggle from "@/components/layout/MobileNavToggle.astro";
 import ModeToggle from "@/components/mode/ModeToggle.astro";
 import config from "@/theme.config";
 import type {
   HeaderItem as HeaderItemType,
   NavItem as NavItemType,
 } from "@/types";
-import { Image } from "astro:assets";
 
 export interface Props {
   activeHeaderLink?: string;
@@ -17,185 +12,318 @@ export interface Props {
 
 const { activeHeaderLink } = Astro.props;
 
-export const isNavItem = (item: HeaderItemType): item is NavItemType =>
+const isNavItem = (item: HeaderItemType): item is NavItemType =>
   Object.hasOwn(item, "href");
+
+const primaryNavLinks = config.navbarItems.flatMap((item) =>
+  isNavItem(item) ? [item] : [],
+);
+const desktopNavLinks = primaryNavLinks.filter((item) => item.href !== "/");
+const utilityNavLinks = config.navbarItems.flatMap((item) =>
+  isNavItem(item) ? [] : item.children,
+);
+const isActive = (item: NavItemType) =>
+  activeHeaderLink === item.label || activeHeaderLink === item.href;
 ---
 
-<header id="site-header" class="site-header sticky top-0 z-40 w-full mb-8 sm:mb-12 transition-[background-color,border-color,backdrop-filter] duration-300">
-  <div class="mx-auto flex max-w-2xl items-center justify-between border-b border-border-subtle/80 px-5 py-4 sm:px-6 md:px-0">
-    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-[2px] focus:bg-title focus:px-3 focus:py-1 focus:text-canvas font-mono text-xs">
-      Skip to content
-    </a>
+<!-- Progressive Blur Top Shelf: 滚动时在页面顶部呈现平滑的多阶渐进式毛玻璃过渡 -->
+<div
+  id="progressive-blur-shelf"
+  class="progressive-blur-shelf pointer-events-none fixed inset-x-0 top-0 z-30"
+  aria-hidden="true"
+>
+  <div class="blur-step blur-step-1"></div>
+  <div class="blur-step blur-step-2"></div>
+  <div class="blur-step blur-step-3"></div>
+  <div class="blur-step blur-step-4"></div>
+  <div class="blur-step blur-step-5"></div>
+  <div class="blur-gradient"></div>
+</div>
 
-    <!-- Wordmark & Logo Mark -->
-    <a
-      href="/"
-      class="group flex items-center gap-2.5 text-title transition-colors hover:text-accent select-none"
-      transition:name="branding"
-    >
-      <div class="h-6 w-6 text-title flex items-center justify-center">
+<header
+  id="site-header"
+  class="site-header pointer-events-none sticky top-5 z-40 mb-10 w-full px-5 sm:mb-12 lg:px-10"
+>
+  <a
+    href="#main"
+    class="focus:bg-title focus:text-canvas pointer-events-auto sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-5 focus:z-50 focus:px-3 focus:py-2 focus:font-mono focus:text-xs"
+  >
+    跳到正文
+  </a>
+
+  <nav
+    id="site-island"
+    class="site-island pointer-events-auto mx-auto w-full"
+    aria-label="主导航"
+  >
+    <div class="flex h-[3.375rem] items-center justify-between px-4 sm:px-6">
+      <a
+        href="/"
+        class="brand-link group text-title flex shrink-0 items-center gap-2.5 focus-visible:outline-none"
+        transition:name="branding"
+        aria-label={`${config.title} 首页`}
+      >
         <svg
           viewBox="0 0 32 32"
-          class="size-5 sm:size-5.5 text-title overflow-visible transition-transform duration-300 ease-out group-hover:scale-105"
+          class="size-5 overflow-visible"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
         >
-          <!-- T horizontal bar -->
-          <line
-            x1="4"
-            y1="7"
-            x2="28"
-            y2="7"
+          <path
+            d="M4 7h24M16 7v18M6 15l5 10 5-9 5 9 5-10"
             stroke="currentColor"
-            stroke-width="2.2"
+            stroke-width="1.75"
             stroke-linecap="round"
-            class="transition-all duration-300 ease-out group-hover:stroke-accent"
-          />
-          <!-- T vertical stem -->
-          <line
-            x1="16"
-            y1="7"
-            x2="16"
-            y2="25"
-            stroke="currentColor"
-            stroke-width="2.2"
-            stroke-linecap="round"
-            class="transition-all duration-300 ease-out group-hover:stroke-accent"
-          />
-          <!-- W left chevron -->
-          <polyline
-            points="6,15 11,25 16,16"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="opacity-45 transition-all duration-300 ease-out group-hover:opacity-90 group-hover:translate-y-[-1px]"
-          />
-          <!-- W right chevron -->
-          <polyline
-            points="16,16 21,25 26,15"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="opacity-45 transition-all duration-300 ease-out group-hover:opacity-90 group-hover:translate-y-[-1px]"
-          />
-          <!-- Center precision anchor point -->
-          <circle
-            cx="16"
-            cy="16"
-            r="1.25"
-            fill="currentColor"
-            class="transition-all duration-300 ease-out group-hover:scale-125 group-hover:fill-accent"
-          />
+            stroke-linejoin="round"></path>
+          <circle cx="16" cy="16" r="1.2" fill="currentColor"></circle>
         </svg>
-      </div>
-      <span class="font-sans text-sm sm:text-base font-semibold tracking-tight text-title">
-        {config.title}
-      </span>
-    </a>
-
-    <!-- Desktop Navigation -->
-    <nav class="hidden items-center gap-6 sm:flex">
-      <ul class="flex items-center gap-6 text-sm">
-        {
-          config.navbarItems.map((item) => (
-            <li>
-              {isNavItem(item) ? (
-                <HeaderItem
-                  {item}
-                  isActive={
-                    activeHeaderLink === item.label ||
-                    activeHeaderLink === item.href
-                  }
-                />
-              ) : (
-                <Dropdown {item} {activeHeaderLink} />
-              )}
-            </li>
-          ))
-        }
-      </ul>
-
-      <div class="flex items-center gap-2.5 border-l border-border-subtle pl-4">
-        <a
-          href="/search/"
-          class="flex size-8 items-center justify-center rounded-[2px] text-muted transition-colors hover:text-title hover:bg-surface active:scale-95"
-          aria-label="Search"
+        <span
+          class="text-sm font-semibold tracking-[-0.035em] sm:text-[0.9375rem]"
         >
-          <span class="iconify tabler--search text-base"></span>
-        </a>
-
-        {config.modeToggle && <ModeToggle />}
-      </div>
-    </nav>
-
-    <!-- Mobile Nav Controls -->
-    <div class="flex items-center gap-1.5 sm:hidden">
-      <a
-        href="/search/"
-        class="flex size-9 items-center justify-center rounded-[2px] text-muted transition-colors hover:text-title hover:bg-surface"
-        aria-label="Search"
-      >
-        <span class="iconify tabler--search text-lg"></span>
+          {config.title}
+        </span>
       </a>
-      {config.modeToggle && <ModeToggle />}
-      <MobileNavToggle />
-    </div>
-  </div>
 
-  <!-- Mobile Drawer -->
-  <div id="mobile-nav" data-open="false" class="mobile-nav-panel sm:hidden border-b border-border-subtle/80 bg-surface/95 backdrop-blur-xl" inert aria-hidden="true">
-    <nav aria-label="Mobile navigation">
-      <ul class="flex flex-col gap-1 px-5 pt-3 pb-5 text-sm">
-        {
-          config.navbarItems.map((item) => (
-            <li>
-              {isNavItem(item) ? (
-                <HeaderItem
-                  {item}
-                  isActive={
-                    activeHeaderLink === item.label ||
-                    activeHeaderLink === item.href
-                  }
-                />
-              ) : (
-                <Dropdown {item} {activeHeaderLink} />
-              )}
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
-  </div>
+      <div class="flex min-w-0 items-center gap-1 sm:gap-2">
+        <div class="nav-desktop-cluster hidden items-center md:flex">
+          <div class="nav-primary flex items-center">
+            {
+              desktopNavLinks.map((item) => (
+                <a
+                  href={item.href}
+                  aria-current={isActive(item) ? "page" : undefined}
+                  class:list={[
+                    "nav-primary-link relative block px-3 py-2 text-[0.8125rem] tracking-[-0.02em] transition-opacity duration-200 focus-visible:outline-none",
+                    isActive(item)
+                      ? "text-title"
+                      : "text-muted hover:text-title",
+                  ]}
+                >
+                  <span>{item.label}</span>
+                </a>
+              ))
+            }
+          </div>
+
+          <span class="bg-border-subtle mx-1 block h-4 w-px" aria-hidden="true"
+          ></span>
+
+          <a
+            href="/search/"
+            class="nav-control text-muted hover:text-title flex size-9 items-center justify-center focus-visible:outline-none"
+            aria-label="搜索全站文章"
+            title="搜索全站文章"
+          >
+            <span class="iconify tabler--search text-[0.9375rem]"></span>
+          </a>
+
+          {
+            config.modeToggle && (
+              <div class="nav-mode-toggle block">
+                <ModeToggle />
+              </div>
+            )
+          }
+        </div>
+
+        <button
+          id="menu-toggle-btn"
+          type="button"
+          class="nav-control menu-toggle-btn group text-title flex size-9 items-center justify-center focus-visible:outline-none"
+          aria-expanded="false"
+          aria-controls="studio-drawer"
+          aria-label="打开网站菜单"
+        >
+          <span class="studio-hamburger" aria-hidden="true">
+            <span class="line line-1"></span>
+            <span class="line line-2"></span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <div
+      id="studio-drawer"
+      class="studio-drawer"
+      data-open="false"
+      aria-hidden="true"
+      inert
+    >
+      <div class="drawer-inner">
+        <div
+          class="drawer-content border-border-subtle border-t px-4 pt-5 pb-6 sm:px-6 sm:pt-7 sm:pb-7"
+        >
+          <div class="drawer-menu">
+            <p class="drawer-caption">Menu</p>
+            <div class="mt-2 flex flex-col items-start sm:mt-3">
+              {
+                primaryNavLinks.map((item) => (
+                  <a
+                    href={item.href}
+                    aria-current={isActive(item) ? "page" : undefined}
+                    class:list={[
+                      "drawer-main-link group relative w-fit text-[clamp(1.85rem,4vw,3.75rem)] leading-[0.95] tracking-[-0.055em] transition-opacity duration-200 focus-visible:outline-none",
+                      isActive(item)
+                        ? "text-title"
+                        : "text-title/76 hover:text-title",
+                    ]}
+                  >
+                    <span>{item.label}</span>
+                    {isActive(item) && (
+                      <span class="sr-only">（当前页面）</span>
+                    )}
+                  </a>
+                ))
+              }
+            </div>
+          </div>
+
+          <div
+            class="drawer-meta border-border-subtle mt-8 grid gap-7 border-t pt-5 sm:mt-10 sm:grid-cols-12 sm:gap-6 sm:pt-6"
+          >
+            <div class="sm:col-span-4">
+              <p class="drawer-caption">Explore</p>
+              <div class="text-title mt-2 flex flex-col items-start text-sm">
+                <a class="drawer-small-link" href="/search/">全站搜索</a>
+                <a
+                  class="drawer-small-link"
+                  href="/feed.xml"
+                  target="_blank"
+                  rel="noopener noreferrer">RSS 订阅</a
+                >
+                {
+                  config.modeToggle && (
+                    <div class="nav-mode-toggle mt-1 flex items-center gap-1 md:hidden">
+                      <span class="text-muted text-xs">显示模式</span>
+                      <ModeToggle />
+                    </div>
+                  )
+                }
+              </div>
+            </div>
+
+            <div class="sm:col-span-4">
+              <p class="drawer-caption">Elsewhere</p>
+              <div class="text-title mt-2 flex flex-col items-start text-sm">
+                {
+                  utilityNavLinks.map((item) => (
+                    <a class="drawer-small-link" href={item.href}>
+                      {item.label}
+                    </a>
+                  ))
+                }
+              </div>
+            </div>
+
+            <div class="hidden sm:col-span-4 sm:block">
+              <p class="drawer-caption">Journal</p>
+              <p class="text-muted mt-2 max-w-[18rem] text-sm leading-relaxed">
+                {config.description}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
 </header>
 
 <script>
-  let cleanupHeader = () => {}
+  let cleanupNavigation = () => {};
 
-  const setupHeaderMotion = () => {
-    cleanupHeader()
-    const controller = new AbortController()
-    const { signal } = controller
-    const header = document.querySelector<HTMLElement>('#site-header')
+  const setupNavigation = () => {
+    cleanupNavigation();
 
-    if (header) {
-      const handleScroll = () => {
-        if (window.scrollY > 20) {
-          header.classList.add('header-scrolled')
-        } else {
-          header.classList.remove('header-scrolled')
-        }
+    const controller = new AbortController();
+    const { signal } = controller;
+    const island = document.querySelector<HTMLElement>("#site-island");
+    const button =
+      document.querySelector<HTMLButtonElement>("#menu-toggle-btn");
+    const drawer = document.querySelector<HTMLElement>("#studio-drawer");
+    const blurShelf = document.querySelector<HTMLElement>(
+      "#progressive-blur-shelf",
+    );
+    const desktopCluster = island?.querySelector<HTMLElement>(
+      ".nav-desktop-cluster",
+    );
+
+    if (!island || !button || !drawer) return;
+
+    const desktopMedia = window.matchMedia("(min-width: 768px)");
+    const isOpen = () => drawer.dataset.open === "true";
+    const syncNavigationState = () => {
+      const scrollY = window.scrollY;
+      const scrolled = scrollY > 20;
+      island.classList.toggle("island-scrolled", scrolled);
+
+      if (blurShelf) {
+        // 随上下滑动连续平滑渐进：0~36px 之间平滑过渡
+        const progress = Math.min(1, Math.max(0, scrollY / 36));
+        blurShelf.style.opacity = progress.toFixed(3);
+        blurShelf.classList.toggle("is-active", progress > 0);
       }
-      handleScroll()
-      window.addEventListener('scroll', handleScroll, { passive: true, signal })
-    }
 
-    cleanupHeader = () => {
-      controller.abort()
-    }
-  }
+      if (desktopCluster)
+        desktopCluster.inert = desktopMedia.matches && (scrolled || isOpen());
+    };
 
-  document.addEventListener('astro:page-load', setupHeaderMotion)
-  document.addEventListener('astro:before-swap', () => cleanupHeader())
+    const setOpen = (open: boolean) => {
+      drawer.dataset.open = String(open);
+      drawer.inert = !open;
+      drawer.setAttribute("aria-hidden", String(!open));
+      button.setAttribute("aria-expanded", String(open));
+      button.setAttribute("aria-label", open ? "关闭网站菜单" : "打开网站菜单");
+      island.toggleAttribute("data-drawer-open", open);
+      syncNavigationState();
+    };
+
+    button.addEventListener(
+      "click",
+      (event) => {
+        event.stopPropagation();
+        setOpen(!isOpen());
+      },
+      { signal },
+    );
+
+    document.addEventListener(
+      "click",
+      (event) => {
+        if (isOpen() && !island.contains(event.target as Node)) setOpen(false);
+      },
+      { signal },
+    );
+
+    document.addEventListener(
+      "keydown",
+      (event) => {
+        if (event.key === "Escape" && isOpen()) {
+          setOpen(false);
+          button.focus();
+        }
+      },
+      { signal },
+    );
+
+    drawer.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => setOpen(false), { signal });
+    });
+
+    const handleBreakpointChange = () => {
+      if (desktopMedia.matches) setOpen(false);
+      else syncNavigationState();
+    };
+
+    syncNavigationState();
+    desktopMedia.addEventListener("change", handleBreakpointChange, { signal });
+    window.addEventListener("scroll", syncNavigationState, {
+      passive: true,
+      signal,
+    });
+
+    cleanupNavigation = () => controller.abort();
+  };
+
+  document.addEventListener("astro:page-load", setupNavigation);
+  document.addEventListener("astro:before-swap", () => cleanupNavigation());
 </script>

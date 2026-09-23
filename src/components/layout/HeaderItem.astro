@@ -18,7 +18,7 @@ const {
 
 <a
   href={href}
-  class={`group/nav relative inline-flex min-h-11 items-center gap-1.5 transition-colors duration-150 sm:min-h-0 sm:py-1 ${
+  class={`group/nav relative inline-flex items-center gap-1.5 py-1 text-xs tracking-tight transition-[color,opacity] duration-200 select-none ${
     isActive
       ? 'text-title font-medium'
       : 'text-muted hover:text-title'
@@ -28,17 +28,18 @@ const {
 >
   {
     icon && (
-      <span class={`iconify text-sm ${icon}`} />
+      <span class={`iconify text-sm transition-transform duration-200 group-hover/nav:scale-110 ${icon}`} />
     )
   }
-  <span class="relative">
+  <span class="wrapper relative flex items-center">
     {label}
-    <span
-      class={`absolute -bottom-1 left-0 h-[1.5px] w-full origin-left bg-accent transition-transform duration-250 ease-out ${
-        isActive
-          ? 'scale-x-100'
-          : 'scale-x-0 group-hover/nav:scale-x-100 group-focus-visible/nav:scale-x-100'
-      }`}
-    ></span>
   </span>
+  <span
+    aria-hidden="true"
+    class={`h-1 w-1 rounded-full bg-title transition-all duration-300 ease-out sm:inline-block ${
+      isActive
+        ? 'opacity-100 scale-100 shadow-[0_0_6px_rgba(0,0,0,0.3)] dark:shadow-[0_0_8px_rgba(255,255,255,0.4)]'
+        : 'opacity-0 scale-50 group-hover/nav:opacity-40 group-hover/nav:scale-75'
+    }`}
+  ></span>
 </a>

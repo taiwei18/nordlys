@@ -33,7 +33,7 @@ const menuId = generateItemId(`${label}-${instanceId}-menu`)
     aria-controls={menuId}
     aria-expanded="false"
     class:list={[
-      'group relative flex min-h-11 w-full cursor-pointer items-center gap-1.5 whitespace-nowrap transition-colors duration-150 sm:min-h-0 sm:w-auto sm:py-1',
+      'group relative flex items-center gap-1 py-1.5 text-xs tracking-tight select-none transition-colors duration-200 sm:w-auto sm:py-1',
       { 'text-title font-medium': isActive },
       { 'text-muted hover:text-title': !isActive }
     ]}
@@ -41,21 +41,16 @@ const menuId = generateItemId(`${label}-${instanceId}-menu`)
     {
       icon && (
         <span
-          class={`iconify text-xl transition-transform duration-300 group-hover:-translate-y-0.5 ${icon}`}
+          class={`iconify text-sm transition-transform duration-200 group-hover:-translate-y-0.5 ${icon}`}
         />
       )
     }
     <span class="relative">
       {label}
-      <span
-        class={`absolute -bottom-1 left-0 h-[1.5px] w-full origin-left bg-accent transition-transform duration-250 ease-out ${
-          isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100'
-        }`}
-      ></span>
     </span>
     <span
       aria-hidden="true"
-      class="iconify tabler--chevron-down ml-auto text-xl transition-transform duration-300 ease-out group-hover:translate-y-0.5 sm:ml-0"
+      class="iconify tabler--chevron-down ml-1 text-xs opacity-60 transition-transform duration-200 ease-out group-hover:translate-y-0.5 group-hover:opacity-100"
     ></span>
   </button>
 
@@ -65,15 +60,15 @@ const menuId = generateItemId(`${label}-${instanceId}-menu`)
     aria-labelledby={buttonId}
     hidden
     inert
-    class="dropdown-surface mt-1 w-full flex-col gap-1 border border-border-medium bg-surface p-1.5 sm:absolute sm:right-0 sm:z-20 sm:mt-3 sm:min-w-[150px] sm:w-auto"
+    class="dropdown-surface mt-1.5 w-full flex-col gap-0.5 border border-border-subtle bg-surface/95 p-1 backdrop-blur-xl shadow-xl shadow-black/10 rounded-[2px] sm:absolute sm:right-0 sm:z-30 sm:mt-2.5 sm:min-w-[140px] sm:w-auto"
   >
     {
       children.map((item) => (
         <li
           role="none"
-          class="transition-colors duration-150 hover:bg-accent/10"
+          class="rounded-[2px] transition-colors duration-150 hover:bg-card-hover"
         >
-          <div class="px-2.5 sm:py-1">
+          <div class="px-2.5 py-1">
             <HeaderItem
               role="menuitem"
               {item}

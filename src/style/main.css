@@ -168,26 +168,6 @@ dropdown-parent[data-open='true'] > button {
   animation: signal-in 560ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.mobile-nav-panel {
-  display: grid;
-  grid-template-rows: 0fr;
-  overflow: hidden;
-  opacity: 0;
-  border-bottom: 1px solid transparent;
-  transition: grid-template-rows 320ms cubic-bezier(0.16, 1, 0.3, 1), opacity 180ms ease, border-color 220ms ease;
-}
-
-.mobile-nav-panel > nav {
-  min-height: 0;
-  overflow: hidden;
-}
-
-.mobile-nav-panel[data-open='true'] {
-  grid-template-rows: 1fr;
-  opacity: 1;
-  border-bottom-color: var(--border-subtle);
-}
-
 .interactive-underline {
   text-decoration: none !important;
   background-image: linear-gradient(var(--accent), var(--accent));
@@ -295,30 +275,363 @@ dropdown-parent[data-open='true'] .tabler--chevron-down {
   }
 }
 
-/* 顶部极简导航滚动质感 */
-.site-header {
-  border-bottom: 1px solid transparent;
+/* Progressive Blur Top Shelf: 滚动时页面顶部的多阶平滑渐进式毛玻璃 */
+.progressive-blur-shelf {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6.75rem;
+  pointer-events: none;
+  z-index: 30;
+  opacity: 0;
+  will-change: opacity;
+  transition: opacity 160ms ease-out;
 }
 
-.site-header.header-scrolled {
-  background-color: color-mix(in oklab, var(--bg-canvas) 82%, transparent);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border-bottom-color: var(--border-subtle);
-  box-shadow: 0 4px 20px -8px color-mix(in oklab, var(--text-title) 10%, transparent);
+@media (min-width: 768px) {
+  .progressive-blur-shelf {
+    height: 7.75rem;
+  }
 }
 
-:where(header button, header a[aria-label='Search']) {
-  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 220ms var(--ease-surface), box-shadow 220ms ease;
+.progressive-blur-shelf .blur-step {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
-:where(header button, header a[aria-label='Search']):hover {
-  background-color: var(--card-hover);
-  box-shadow: inset 0 1px color-mix(in oklab, var(--text-title) 6%, transparent);
+.progressive-blur-shelf .blur-step-1 {
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  mask-image: linear-gradient(to bottom, black 0%, black 15%, transparent 35%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 15%, transparent 35%);
 }
 
-:where(header button, header a[aria-label='Search']):active {
-  transform: scale(0.94);
+.progressive-blur-shelf .blur-step-2 {
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  mask-image: linear-gradient(to bottom, black 10%, black 30%, transparent 50%);
+  -webkit-mask-image: linear-gradient(to bottom, black 10%, black 30%, transparent 50%);
+}
+
+.progressive-blur-shelf .blur-step-3 {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  mask-image: linear-gradient(to bottom, black 25%, black 45%, transparent 68%);
+  -webkit-mask-image: linear-gradient(to bottom, black 25%, black 45%, transparent 68%);
+}
+
+.progressive-blur-shelf .blur-step-4 {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  mask-image: linear-gradient(to bottom, black 40%, black 60%, transparent 85%);
+  -webkit-mask-image: linear-gradient(to bottom, black 40%, black 60%, transparent 85%);
+}
+
+.progressive-blur-shelf .blur-step-5 {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  mask-image: linear-gradient(to bottom, black 55%, black 75%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 55%, black 75%, transparent 100%);
+}
+
+.progressive-blur-shelf .blur-gradient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--bg-canvas) 85%, transparent) 0%,
+    color-mix(in oklab, var(--bg-canvas) 60%, transparent) 40%,
+    color-mix(in oklab, var(--bg-canvas) 20%, transparent) 75%,
+    transparent 100%
+  );
+}
+
+/* Floating navigation: borrows new.studio's wide frosted bar and expanding menu. */
+.site-island {
+  position: relative;
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--bg-canvas) 65%, transparent);
+  box-shadow:
+    0 0 0 2px color-mix(in oklab, white 35%, transparent),
+    inset 0 0 60px 0 rgba(255, 255, 255, 0.3),
+    inset 0 0 60px 0 rgba(255, 255, 255, 0.3),
+    0 4px 20px 0 rgba(0, 0, 20, 0.16);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  transition:
+    max-width 420ms var(--ease-surface),
+    background-color 240ms ease,
+    box-shadow 360ms var(--ease-surface);
+}
+
+[data-mode="dark"] .site-island {
+  background: color-mix(in oklab, var(--bg-canvas) 68%, transparent);
+  box-shadow:
+    0 0 0 1.5px color-mix(in oklab, var(--text-title) 14%, transparent),
+    inset 0 0 50px 0 rgba(255, 255, 255, 0.05),
+    inset 0 0 50px 0 rgba(255, 255, 255, 0.05),
+    0 8px 28px 0 rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(20px) saturate(130%);
+  -webkit-backdrop-filter: blur(20px) saturate(130%);
+}
+
+@media (min-width: 768px) {
+  .site-island {
+    max-width: 100%;
+  }
+
+  .site-island.island-scrolled:not([data-drawer-open]) {
+    max-width: min(34rem, 52%);
+  }
+
+  .site-island[data-drawer-open] {
+    max-width: 100%;
+  }
+}
+
+.site-island.island-scrolled,
+.site-island[data-drawer-open] {
+  background: color-mix(in oklab, var(--bg-canvas) 72%, transparent);
+  box-shadow:
+    0 0 0 2px color-mix(in oklab, white 45%, transparent),
+    inset 0 0 60px 0 rgba(255, 255, 255, 0.36),
+    inset 0 0 60px 0 rgba(255, 255, 255, 0.36),
+    0 8px 26px 0 rgba(0, 0, 20, 0.22);
+}
+
+[data-mode="dark"] .site-island.island-scrolled,
+[data-mode="dark"] .site-island[data-drawer-open] {
+  background: color-mix(in oklab, var(--bg-canvas) 78%, transparent);
+  box-shadow:
+    0 0 0 1.5px color-mix(in oklab, var(--text-title) 20%, transparent),
+    inset 0 0 50px 0 rgba(255, 255, 255, 0.08),
+    inset 0 0 50px 0 rgba(255, 255, 255, 0.08),
+    0 12px 34px 0 rgba(0, 0, 0, 0.58);
+}
+
+.brand-link svg {
+  transition: transform 300ms var(--ease-surface);
+}
+
+.brand-link:hover svg {
+  transform: rotate(-3deg) scale(1.04);
+}
+
+.nav-primary-link::after {
+  content: "";
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.25rem;
+  left: 0.75rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition:
+    opacity 180ms ease,
+    transform 260ms var(--ease-surface);
+}
+
+.nav-primary-link:is(:hover, :focus-visible)::after,
+.nav-primary-link[aria-current="page"]::after {
+  opacity: 0.72;
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-primary:hover .nav-primary-link:not(:hover) {
+    opacity: 0.38;
+  }
+}
+
+.nav-desktop-cluster {
+  max-width: 32rem;
+  overflow: hidden;
+  opacity: 1;
+  transform: scaleX(1);
+  transform-origin: right;
+  transition:
+    max-width 360ms var(--ease-surface),
+    opacity 180ms ease,
+    transform 320ms var(--ease-surface);
+}
+
+@media (min-width: 768px) {
+  .site-island:is(.island-scrolled, [data-drawer-open]) .nav-desktop-cluster {
+    max-width: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: scaleX(0.92);
+  }
+
+  .site-island:not(.island-scrolled):not([data-drawer-open]) .menu-toggle-btn {
+    width: 0;
+    border-width: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: scaleX(0);
+    visibility: hidden;
+  }
+}
+
+.nav-control {
+  border: 1px solid transparent;
+  border-radius: 3px;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 220ms var(--ease-surface);
+}
+
+.nav-control:hover {
+  border-color: var(--border-subtle);
+  background: var(--card-hover);
+}
+
+.nav-control:active {
+  transform: scale(0.92);
+}
+
+.menu-toggle-btn {
+  overflow: hidden;
+  transition:
+    width 320ms var(--ease-surface),
+    opacity 180ms ease,
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 280ms var(--ease-surface),
+    visibility 0s linear;
+}
+
+.nav-mode-toggle {
+  border-radius: 3px;
+}
+
+.nav-mode-toggle:hover {
+  background: var(--card-hover);
+}
+
+.nav-mode-toggle:active {
+  transform: scale(0.92);
+}
+
+.studio-hamburger {
+  display: flex;
+  width: 17px;
+  height: 12px;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+}
+
+.studio-hamburger .line {
+  display: block;
+  width: 17px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: currentColor;
+  transform-origin: center;
+  transition:
+    width 200ms ease,
+    transform 280ms var(--ease-surface);
+}
+
+.studio-hamburger .line-2 {
+  width: 12px;
+}
+
+.menu-toggle-btn:hover .line-2,
+.menu-toggle-btn[aria-expanded="true"] .line-2 {
+  width: 17px;
+}
+
+.menu-toggle-btn[aria-expanded="true"] .line-1 {
+  transform: translateY(2.75px) rotate(45deg);
+}
+
+.menu-toggle-btn[aria-expanded="true"] .line-2 {
+  transform: translateY(-2.75px) rotate(-45deg);
+}
+
+.studio-drawer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 420ms var(--ease-surface);
+}
+
+.studio-drawer > .drawer-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.studio-drawer[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+
+.drawer-caption {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  line-height: 1;
+  color: var(--text-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.drawer-main-link {
+  padding-block: 0.075em;
+}
+
+@media (max-width: 767px) {
+  .drawer-main-link {
+    font-size: 1.75rem;
+    line-height: 1.06;
+    letter-spacing: -0.045em;
+  }
+}
+
+.drawer-main-link::after {
+  content: "↗";
+  position: absolute;
+  top: 0.12em;
+  left: calc(100% + 0.25em);
+  font-family: var(--font-sans);
+  font-size: 0.28em;
+  font-weight: 400;
+  letter-spacing: 0;
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition:
+    opacity 180ms ease,
+    transform 260ms var(--ease-surface);
+}
+
+.drawer-main-link:is(:hover, :focus-visible)::after {
+  opacity: 0.58;
+  transform: translate(0, 0);
+}
+
+.drawer-small-link {
+  width: fit-content;
+  padding-block: 0.125rem;
+  transition: opacity 180ms ease;
+}
+
+.drawer-small-link:hover {
+  opacity: 0.48;
+}
+
+@media (max-width: 639px) {
+  .drawer-meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .interactive-underline > span[aria-hidden='true']:not(.iconify) {
@@ -430,12 +743,6 @@ dropdown-parent[data-open='true'] .tabler--chevron-down {
   border-radius: 2px;
   background: color-mix(in oklab, var(--bg-canvas) 85%, black 15%);
   box-shadow: inset 0 1px color-mix(in oklab, var(--text-title) 5%, transparent), 0 16px 36px -24px color-mix(in oklab, var(--text-title) 18%, transparent);
-}
-
-@media (min-width: 640px) {
-  .mobile-nav-panel {
-    display: none;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
