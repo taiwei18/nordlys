@@ -302,36 +302,36 @@ dropdown-parent[data-open='true'] .tabler--chevron-down {
 }
 
 .progressive-blur-shelf .blur-step-1 {
-  backdrop-filter: blur(1px);
   -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
   mask-image: linear-gradient(to bottom, black 0%, black 15%, transparent 35%);
   -webkit-mask-image: linear-gradient(to bottom, black 0%, black 15%, transparent 35%);
 }
 
 .progressive-blur-shelf .blur-step-2 {
-  backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
   mask-image: linear-gradient(to bottom, black 10%, black 30%, transparent 50%);
   -webkit-mask-image: linear-gradient(to bottom, black 10%, black 30%, transparent 50%);
 }
 
 .progressive-blur-shelf .blur-step-3 {
-  backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
   mask-image: linear-gradient(to bottom, black 25%, black 45%, transparent 68%);
   -webkit-mask-image: linear-gradient(to bottom, black 25%, black 45%, transparent 68%);
 }
 
 .progressive-blur-shelf .blur-step-4 {
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   mask-image: linear-gradient(to bottom, black 40%, black 60%, transparent 85%);
   -webkit-mask-image: linear-gradient(to bottom, black 40%, black 60%, transparent 85%);
 }
 
 .progressive-blur-shelf .blur-step-5 {
-  backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
   mask-image: linear-gradient(to bottom, black 55%, black 75%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 55%, black 75%, transparent 100%);
 }
@@ -359,8 +359,8 @@ dropdown-parent[data-open='true'] .tabler--chevron-down {
     inset 0 0 60px 0 rgba(255, 255, 255, 0.3),
     inset 0 0 60px 0 rgba(255, 255, 255, 0.3),
     0 4px 20px 0 rgba(0, 0, 20, 0.16);
-  backdrop-filter: blur(18px) saturate(140%);
   -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
   transition:
     max-width 420ms var(--ease-surface),
     background-color 240ms ease,
@@ -374,8 +374,8 @@ dropdown-parent[data-open='true'] .tabler--chevron-down {
     inset 0 0 50px 0 rgba(255, 255, 255, 0.05),
     inset 0 0 50px 0 rgba(255, 255, 255, 0.05),
     0 8px 28px 0 rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(20px) saturate(130%);
   -webkit-backdrop-filter: blur(20px) saturate(130%);
+  backdrop-filter: blur(20px) saturate(130%);
 }
 
 @media (min-width: 768px) {
@@ -512,6 +512,7 @@ dropdown-parent[data-open='true'] .tabler--chevron-down {
 
 .nav-mode-toggle {
   border-radius: 3px;
+  line-height: 1;
 }
 
 .nav-mode-toggle:hover {
@@ -561,15 +562,14 @@ dropdown-parent[data-open='true'] .tabler--chevron-down {
   transform: translateY(-2.75px) rotate(-45deg);
 }
 
-.nav-mode-toggle {
-  line-height: 1;
-}
-
-.nav-mode-toggle span {
+/* 显示模式标签与右侧模式图标完全视觉对齐：
+   CJK 字形墨迹中心比 12px 行盒几何中心偏高约 0.44px，
+   实测将标签下移 0.45px 后，文字墨迹中心与图标墨迹中心重合 */
+.mode-toggle-label {
   display: inline-flex;
   align-items: center;
   line-height: 1;
-  transform: translateY(1px);
+  transform: translateY(0.45px);
 }
 
 .studio-drawer {
