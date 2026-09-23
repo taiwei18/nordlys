@@ -193,8 +193,8 @@ const isActive = (item: NavItemType) =>
                 >
                 {
                   config.modeToggle && (
-                    <div class="nav-mode-toggle mt-1 flex items-center gap-1 md:hidden">
-                      <span class="text-muted text-xs">显示模式</span>
+                    <div class="nav-mode-toggle mt-2 flex items-center gap-1.5">
+                      <span class="text-muted text-xs leading-none">显示模式</span>
                       <ModeToggle />
                     </div>
                   )
@@ -207,9 +207,7 @@ const isActive = (item: NavItemType) =>
               <div class="text-title mt-2 flex flex-col items-start text-sm">
                 {
                   utilityNavLinks.map((item) => (
-                    <a class="drawer-small-link" href={item.href}>
-                      {item.label}
-                    </a>
+                    <a class="drawer-small-link" href={item.href}>{item.label}</a>
                   ))
                 }
               </div>

@@ -384,11 +384,11 @@ dropdown-parent[data-open='true'] .tabler--chevron-down {
   }
 
   .site-island.island-scrolled:not([data-drawer-open]) {
-    max-width: min(34rem, 52%);
+    max-width: var(--container-2xl, 42rem);
   }
 
   .site-island[data-drawer-open] {
-    max-width: 100%;
+    max-width: var(--container-2xl, 42rem);
   }
 }
 
